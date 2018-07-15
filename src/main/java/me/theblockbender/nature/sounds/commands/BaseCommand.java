@@ -13,19 +13,7 @@
  *
  */
 
-package me.theblockbender.nature.sounds;
+package me.theblockbender.nature.sounds.commands;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
-public class NatureSounds extends JavaPlugin {
-
-    @Override
-    public void onEnable() {
-
-    }
-
-    @Override
-    public void onDisable() {
-
-    }
+public class BaseCommand {
 }
