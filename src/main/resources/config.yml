@@ -1,0 +1,7 @@
+# General Configuration file for NatureSounds plugin.
+
+# The amount of seconds between so called 'sound checks'.
+# Default value is 4 (seconds). This means that every 4 seconds, we'll go over all players and check if they should hear any sounds.
+# If you LOWER this value: More server impact, and players might hear sounds to frequently.
+# If you HIGHER this value: Less server impact, but players might hear less sounds.
+interval: 4

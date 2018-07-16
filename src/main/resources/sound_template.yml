@@ -1,0 +1,121 @@
+# Sound Configuration file for NatureSounds plugin.
+# This is the default file that contains all options.
+
+# ----------------------------------------------------------------- #
+# SOUND OPTIONS
+# name: Name of the sound to be played. Without the .ogg extension.
+# minVolume: The minimum volume this sound should be played at. (Should not be negative)
+# maxVolume: The maximum volume this sound should be played at. (Should not be negative)
+# pitch: The pitch this sound should be played at. (Should be between 0 and 2)
+# ----------------------------------------------------------------- #
+sound:
+  name: "ambient_forest_birds"
+  minVolume: 0.75
+  maxVolume: 1.0
+  pitch: 1.0
+
+# ----------------------------------------------------------------- #
+# CHANCE
+# chance: How likely this sound is to be played. (0 = never, 100 = always)
+# ----------------------------------------------------------------- #
+chance: 100
+
+# ----------------------------------------------------------------- #
+# CONDITIONS
+# You can disable a condition by removing the condition's section. (eg. removing 'weather' and the 3 items listed underneath)
+# You can see conditions like so: In order for the sound to be played, the weather condition should be either THUNDER, RAIN or CLEAR.
+#
+# weather: A list of weather types that this sound will play in. (All types: THUNDER, RAIN, CLEAR)
+# altitude: 'above' - The player should be above this Y level. 'below' - The player should be below this Y level. (Y ranges from 0 to 256)
+# biome: A list of biomes that this sound will play in. (All types: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html)
+# time: 'after' - The time should be later than this. 'before' - The time should be earlier than this. (Time ranges from 0 to 24000)
+# world: A list of world names that this sound will play in. (Worlds should exist)
+# cooldown: How much time should pass before the player can hear this sound again. (In milliseconds)
+# ----------------------------------------------------------------- #
+condition:
+  weather:
+  - THUNDER
+  - RAIN
+  - CLEAR
+  altitude:
+    above: 0
+    below: 256
+  biome:
+  - BIRCH_FOREST
+  - BIRCH_FOREST_HILLS
+  - COLD_OCEAN
+  - DARK_FOREST
+  - DARK_FOREST_HILLS
+  - DEEP_COLD_OCEAN
+  - DEEP_FROZEN_OCEAN
+  - DEEP_LUKEWARM_OCEAN
+  - DEEP_OCEAN
+  - DEEP_WARM_OCEAN
+  - DESERT
+  - DESERT_HILLS
+  - DESERT_LAKES
+  - END_BARRENS
+  - END_HIGHLANDS
+  - END_MIDLANDS
+  - ERODED_BADLANDS
+  - FLOWER_FOREST
+  - FOREST
+  - FROZEN_OCEAN
+  - FROZEN_RIVER
+  - GIANT_SPRUCE_TAIGA
+  - GIANT_SPRUCE_TAIGA_HILLS
+  - GIANT_TREE_TAIGA
+  - GIANT_TREE_TAIGA_HILLS
+  - GRAVELLY_MOUNTAINS
+  - ICE_SPIKES
+  - JUNGLE
+  - JUNGLE_EDGE
+  - JUNGLE_HILLS
+  - LUKEWARM_OCEAN
+  - MODIFIED_BADLANDS_PLATEAU
+  - MODIFIED_GRAVELLY_MOUNTAINS
+  - MODIFIED_JUNGLE
+  - MODIFIED_JUNGLE_EDGE
+  - MODIFIED_WOODED_BADLANDS_PLATEAU
+  - MOUNTAIN_EDGE
+  - MOUNTAINS
+  - MUSHROOM_FIELD_SHORE
+  - MUSHROOM_FIELDS
+  - NETHER
+  - OCEAN
+  - PLAINS
+  - RIVER
+  - SAVANNA
+  - SAVANNA_PLATEAU
+  - SHATTERED_SAVANNA
+  - SHATTERED_SAVANNA_PLATEAU
+  - SMALL_END_ISLANDS
+  - SNOWY_BEACH
+  - SNOWY_MOUNTAINS
+  - SNOWY_TAIGA
+  - SNOWY_TAIGA_HILLS
+  - SNOWY_TAIGA_MOUNTAINS
+  - SNOWY_TUNDRA
+  - STONE_SHORE
+  - SUNFLOWER_PLAINS
+  - SWAMP
+  - SWAMP_HILLS
+  - TAIGA
+  - TAIGA_HILLS
+  - TAIGA_MOUNTAINS
+  - TALL_BIRCH_FOREST
+  - TALL_BIRCH_HILLS
+  - THE_END
+  - THE_VOID
+  - WARM_OCEAN
+  - WOODED_BADLANDS_PLATEAU
+  - WOODED_HILLS
+  - WOODED_MOUNTAINS
+  time:
+    after: 0
+    before: 24000
+  world:
+  - world
+  - world_nether
+  - world_the_end
+  cooldown: 0

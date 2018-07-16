@@ -60,6 +60,9 @@
                 <directory>${basedir}/src/main/resources/</directory>
                 <includes>
                     <include>plugin.yml</include>
+                    <include>config.yml</include>
+                    <include>language.yml</include>
+                    <include>sound_template.yml</include>
                 </includes>
             </resource>
         </resources>

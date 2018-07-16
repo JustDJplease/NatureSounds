@@ -50,8 +50,8 @@ public class WeatherCondition {
     }
 
     private String getWeatherType(World world) {
-        if (world.isThundering()) return "THUNDER";
         if (world.hasStorm()) return "RAIN";
+        if (world.isThundering()) return "THUNDER";
         return "CLEAR";
     }
 }

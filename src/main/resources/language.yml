@@ -1,0 +1,8 @@
+# Language Configuration file for NatureSounds plugin.
+# You can use '&' for colour in every message.
+
+prefix: "&e\u00BB &7"
+resourcepack:
+  loaded: Successfully loaded the resource-pack.
+  rejected: You have rejected the resource-pack. You will therefore not hear any nature ambiance whilst roaming the world.
+  downloading: Loading the resource-pack... This might take a moment.

@@ -254,7 +254,7 @@ public class Sound {
     // -------------------------------------------- //
     // GETTERS
     // -------------------------------------------- //
-    public boolean isLoaded() {
+    private boolean isLoaded() {
         return loaded;
     }
 
@@ -270,6 +270,7 @@ public class Sound {
     // RUNNER
     // -------------------------------------------- //
     public boolean run(Player player, Location location) {
+        if(!isLoaded()) return false;
         World world = location.getWorld();
         if (!weatherCondition.isTrue(world)) return false;
         if (!timeCondition.isTrue(world)) return false;

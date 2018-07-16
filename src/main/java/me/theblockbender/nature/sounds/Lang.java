@@ -23,10 +23,4 @@ public class Lang {
     public static String format(String key) {
         return key;
     }
-
-    // Messages so far:
-    // prefix                       &e» &7
-    // resourcepack.loaded          Successfully loaded the resource-pack.
-    // resourcepack.rejected        You have rejected the resource-pack. You will therefore not hear any nature ambiance whilst roaming the world.
-    // resourcepack.downloading     Loading the resource-pack... This might take a moment.
 }
