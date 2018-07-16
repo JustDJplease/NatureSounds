@@ -36,7 +36,7 @@ public class WorldCondition {
     // -------------------------------------------- //
     // PARSING DATA
     // -------------------------------------------- //
-    public boolean parseWorlds() {
+    public boolean parse() {
         for (String string : worlds) {
             if (Bukkit.getWorld(string) == null) return false;
         }

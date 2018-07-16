@@ -13,37 +13,33 @@
  *
  */
 
-package me.theblockbender.nature.sounds.conditions;
+package me.theblockbender.nature.sounds.utilities;
 
-import org.bukkit.World;
+import me.theblockbender.nature.sounds.NatureSounds;
+import me.theblockbender.nature.sounds.Sound;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
-public class TimeCondition {
-    // -------------------------------------------- //
-    // DATA
-    // -------------------------------------------- //
-    private Long before;
-    private Long after;
+public class SoundTask implements Runnable {
 
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public TimeCondition(Long before, Long after) {
-        this.before = before;
-        this.after = after;
+    private NatureSounds main;
+
+    public SoundTask(NatureSounds main) {
+        this.main = main;
     }
 
     // -------------------------------------------- //
-    // PARSING DATA
+    // RUNNER
     // -------------------------------------------- //
-    public boolean parse() {
-        return after <= before && before >= 0 && before <= 24000 && after >= 0 && after <= 24000;
-    }
-
-    // -------------------------------------------- //
-    // CONDITION VALIDATOR
-    // -------------------------------------------- //
-    public boolean isTrue(World world) {
-        Long time = world.getTime();
-        return time <= before && time >= after;
+    @Override
+    public void run() {
+        for (Sound sound : main.getSounds()) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                sound.run(player, player.getLocation());
+            }
+        }
     }
 }

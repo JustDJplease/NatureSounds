@@ -16,7 +16,6 @@
 package me.theblockbender.nature.sounds.conditions;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 
 public class AltitudeCondition {
     // -------------------------------------------- //
@@ -36,7 +35,7 @@ public class AltitudeCondition {
     // -------------------------------------------- //
     // PARSING DATA
     // -------------------------------------------- //
-    public boolean parseAltitude() {
+    public boolean parse() {
         return below >= 0 && below <= 256 && above >= 0 && above <= 256 && below >= above;
     }
 

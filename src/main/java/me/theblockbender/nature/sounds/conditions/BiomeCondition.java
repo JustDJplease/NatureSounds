@@ -16,7 +16,6 @@
 package me.theblockbender.nature.sounds.conditions;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
 
 import java.util.List;
@@ -37,7 +36,7 @@ public class BiomeCondition {
     // -------------------------------------------- //
     // PARSING DATA
     // -------------------------------------------- //
-    public boolean parseBiomes() {
+    public boolean parse() {
         for (String string : biomes) {
             try {
                 Biome.valueOf(string);

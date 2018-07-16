@@ -15,43 +15,56 @@
 
 package me.theblockbender.nature.sounds.conditions;
 
-import org.bukkit.World;
+import org.bukkit.entity.Player;
 
-import java.util.List;
+import java.util.*;
 
-public class WeatherCondition {
+public class CooldownCondition {
     // -------------------------------------------- //
     // DATA
     // -------------------------------------------- //
-    private List<String> weatherTypes;
+    private Map<UUID, Long> onCooldown = new HashMap<>();
+    private Long cooldown;
 
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public WeatherCondition(List<String> weatherTypes) {
-        this.weatherTypes = weatherTypes;
+    public CooldownCondition(Long cooldown) {
+        this.cooldown = cooldown;
     }
 
     // -------------------------------------------- //
     // PARSING DATA
     // -------------------------------------------- //
     public boolean parse() {
-        for (String string : weatherTypes) {
-            if (!string.equals("THUNDER") && !string.equals("RAIN") && !string.equals("CLEAR")) return false;
-        }
-        return true;
+        return cooldown > 0L;
+    }
+
+    // -------------------------------------------- //
+    // SETTER
+    // -------------------------------------------- //
+    public void setCooldown(Player player) {
+        onCooldown.put(player.getUniqueId(), System.currentTimeMillis() + cooldown);
     }
 
     // -------------------------------------------- //
     // CONDITION VALIDATOR
     // -------------------------------------------- //
-    public boolean isTrue(World world) {
-        return weatherTypes.contains(getWeatherType(world));
+    public boolean isOnCooldown(Player player) {
+        cleanUpMap();
+        return onCooldown.containsKey(player.getUniqueId());
     }
 
-    private String getWeatherType(World world) {
-        if (world.isThundering()) return "THUNDER";
-        if (world.hasStorm()) return "RAIN";
-        return "CLEAR";
+    private void cleanUpMap() {
+        List<UUID> cleanThese = new ArrayList<>();
+        for (Map.Entry<UUID, Long> cooldowns : onCooldown.entrySet()) {
+            if (System.currentTimeMillis() >= cooldowns.getValue()) {
+                cleanThese.add(cooldowns.getKey());
+            }
+        }
+        for (UUID uuid : cleanThese) {
+            onCooldown.remove(uuid);
+        }
+        cleanThese.clear();
     }
 }

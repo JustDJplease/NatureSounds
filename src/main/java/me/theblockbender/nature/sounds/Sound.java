@@ -39,6 +39,7 @@ public class Sound {
     private AltitudeCondition altitudeCondition;
     private WeatherCondition weatherCondition;
     private WorldCondition worldCondition;
+    private CooldownCondition cooldownCondition;
     private Double chance;
 
     // -------------------------------------------- //
@@ -52,7 +53,7 @@ public class Sound {
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public Sound(NatureSounds main, String fileName, YamlConfiguration soundConfiguration) {
+    Sound(NatureSounds main, String fileName, YamlConfiguration soundConfiguration) {
         loaded = false;
         assert main != null;
         this.main = main;
@@ -140,7 +141,7 @@ public class Sound {
                 List<String> weatherTypes = soundConfiguration.getStringList("condition.weather");
                 if (!weatherTypes.isEmpty()) {
                     weatherCondition = new WeatherCondition(weatherTypes);
-                    if (!weatherCondition.parseWeatherTypes()) {
+                    if (!weatherCondition.parse()) {
                         main.outputError("Invalid weatherCondition (unknown weather type) inside soundconfiguration file " + fileName);
                         return;
                     }
@@ -160,7 +161,7 @@ public class Sound {
 
                 if (!(below == 0 && above == 0)) {
                     altitudeCondition = new AltitudeCondition(below, above);
-                    if (!altitudeCondition.parseAltitude()) {
+                    if (!altitudeCondition.parse()) {
                         main.outputError("Invalid altitudeCondition (< 0 or > 256 or above > below) inside soundconfiguration file " + fileName);
                         return;
                     }
@@ -178,7 +179,7 @@ public class Sound {
                 List<String> biomes = soundConfiguration.getStringList("condition.biome");
                 if (!biomes.isEmpty()) {
                     biomeCondition = new BiomeCondition(biomes);
-                    if (!biomeCondition.parseBiomes()) {
+                    if (!biomeCondition.parse()) {
                         main.outputError("Invalid biomeCondition (unknown biome type) inside soundconfiguration file " + fileName);
                         return;
                     }
@@ -198,7 +199,7 @@ public class Sound {
 
                 if (!(before == 0 && after == 0)) {
                     timeCondition = new TimeCondition(before, after);
-                    if (!timeCondition.parseTime()) {
+                    if (!timeCondition.parse()) {
                         main.outputError("Invalid timeCondition (< 0 or > 24000 or after > before) inside soundconfiguration file " + fileName);
                         return;
                     }
@@ -216,7 +217,7 @@ public class Sound {
                 List<String> worlds = soundConfiguration.getStringList("condition.world");
                 if (!worlds.isEmpty()) {
                     worldCondition = new WorldCondition(worlds);
-                    if (!worldCondition.parseWorlds()) {
+                    if (!worldCondition.parse()) {
                         main.outputError("Invalid worldCondition (unknown world) inside soundconfiguration file " + fileName);
                         return;
                     }
@@ -224,6 +225,24 @@ public class Sound {
             }
         } catch (Exception ex) {
             main.outputError("Invalid worldCondition inside soundconfiguration file " + fileName);
+            return;
+        }
+        // -------------------------------------------- //
+        // COOLDOWN CONDITION
+        // -------------------------------------------- //
+        try {
+            if (soundConfiguration.contains("condition.cooldown")) {
+                Long cooldown = soundConfiguration.getLong("condition.cooldown");
+                if (cooldown != 0) {
+                    cooldownCondition = new CooldownCondition(cooldown);
+                    if (!cooldownCondition.parse()) {
+                        main.outputError("Invalid cooldownCondition (< 0) inside soundconfiguration file " + fileName);
+                        return;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            main.outputError("Invalid cooldownCondition inside soundconfiguration file " + fileName);
             return;
         }
         // -------------------------------------------- //
@@ -257,6 +276,7 @@ public class Sound {
         if (!biomeCondition.isTrue(location)) return false;
         if (!altitudeCondition.isTrue(location)) return false;
         if (!worldCondition.isTrue(world)) return false;
+        if (cooldownCondition.isOnCooldown(player)) return false;
         double random = 100 * main.random.nextDouble();
         if (chance > random) return false;
         playSound(player, location, soundName, minVolume, maxVolume, pitch);
@@ -264,6 +284,7 @@ public class Sound {
     }
 
     private void playSound(Player player, Location location, String soundName, Float minVolume, Float maxVolume, Float pitch) {
+        cooldownCondition.setCooldown(player);
         player.playSound(location, soundName, getVolumeBetween(minVolume, maxVolume), pitch);
     }
 }
