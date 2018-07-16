@@ -36,10 +36,14 @@ public class SoundTask implements Runnable {
     // -------------------------------------------- //
     @Override
     public void run() {
+        int soundsPlayed = 0;
         for (Sound sound : main.getSounds()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                sound.run(player, player.getLocation());
+                if(sound.run(player, player.getLocation())){
+                    soundsPlayed++;
+                }
             }
         }
+        main.debug("Playing " + soundsPlayed + " sounds.");
     }
 }

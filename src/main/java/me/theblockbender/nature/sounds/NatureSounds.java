@@ -79,9 +79,9 @@ public class NatureSounds extends JavaPlugin {
     }
 
     // -------------------------------------------- //
-    // ERROR LOGGING
+    // ERROR & LOGGING
     // -------------------------------------------- //
-    public void outputError(String errorMessage) {
+    void outputError(String errorMessage) {
         errorCounter++;
         logger.severe("// -------------------------------------------- //");
         logger.severe("// EXCEPTION OCCURED IN NATURESOUNDS PLUGIN:");
@@ -96,6 +96,10 @@ public class NatureSounds extends JavaPlugin {
         logger.severe("// unsure how to fix these? Contact JustDJplease");
         logger.severe("// on the spigot forums (Via discussion / PM)");
         logger.severe("// -------------------------------------------- //");
+    }
+
+    public void debug(String debugMessage) {
+        logger.info(debugMessage);
     }
 
     // -------------------------------------------- //
