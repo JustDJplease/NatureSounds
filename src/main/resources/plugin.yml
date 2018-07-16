@@ -7,4 +7,6 @@ main: me.theblockbender.nature.sounds.NatureSounds
 website: https://github.com/JustDJplease/NatureSounds
 database: false
 
+softdepend: [Multiverse-Core]
+
 api-version: 1.13
