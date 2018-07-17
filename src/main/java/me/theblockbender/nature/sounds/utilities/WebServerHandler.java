@@ -12,6 +12,7 @@ public class WebServerHandler {
     // INSTANCES & VARIABLES
     // -------------------------------------------- //
     public int port;
+    public String ip;
 
     private HttpServer httpServer;
     private NatureSounds main;
@@ -26,21 +27,28 @@ public class WebServerHandler {
     // -------------------------------------------- //
     // WEB HANDLERS
     // -------------------------------------------- //
-    // TODO verify if this works.
     public boolean start() {
+        ip = main.getServer().getIp();
+        if (ip == null || ip.equals("")) ip = "localhost";
         try {
             port = main.getConfig().getInt("port");
         } catch (Exception ex) {
             main.outputError("Invalid port configured in the config.yml");
             return false;
         }
-        httpServer = Vertx.vertx().createHttpServer();
-        httpServer.requestHandler(httpServerRequest -> httpServerRequest.response().sendFile(getFileLocation()).end());
-        httpServer.listen(port);
+        try {
+            httpServer = Vertx.vertx().createHttpServer();
+            httpServer.requestHandler(httpServerRequest -> httpServerRequest.response().sendFile(getFileLocation()));
+            httpServer.listen(port);
+        }catch(Exception ex){
+            main.outputError("Unable to bind to port. Please assign the plugin to a different port!");
+            ex.printStackTrace();
+            return false;
+        }
         return true;
     }
 
-    // TODO verify if this works.
+    // TODO this does not unassign the web server from the port.
     public void stop() {
         httpServer.close();
     }
@@ -48,8 +56,7 @@ public class WebServerHandler {
     // -------------------------------------------- //
     // GETTERS
     // -------------------------------------------- //
-    // TODO verify if this works.
     private String getFileLocation() {
-        return main.getDataFolder().getPath() + File.separator + "web" + File.separator + "rp.zip";
+        return main.getDataFolder().getPath() + File.separator + "web" + File.separator + "index.html";
     }
 }

@@ -15,7 +15,6 @@
 
 package me.theblockbender.nature.sounds;
 
-import co.aikar.commands.BukkitCommandManager;
 import me.theblockbender.nature.sounds.commands.WebTestCommand;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
 import me.theblockbender.nature.sounds.utilities.SoundTask;
@@ -26,8 +25,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -42,7 +40,6 @@ public class NatureSounds extends JavaPlugin {
 
     Random random;
 
-    private BukkitCommandManager commandManager;
     private int errorCounter;
     private Logger logger;
 
@@ -54,15 +51,39 @@ public class NatureSounds extends JavaPlugin {
         logger = getLogger();
         errorCounter = 0;
         random = new Random();
-        saveDefaultConfig();
+        createFiles();
         registerEvents();
         registerCommands();
         registerSounds();
         registerRunnables();
         registerWebServer();
         showErrorsFound();
-        commandManager = new BukkitCommandManager(this);
+    }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private void createFiles() {
+        saveDefaultConfig();
+        File webDirectory = new File(getDataFolder().getPath() + File.separator + "web");
+        if (!webDirectory.exists())
+            webDirectory.mkdirs();
+        File indexFile = new File(webDirectory, "index.html");
+        if (!indexFile.exists()) {
+            indexFile.getParentFile().mkdirs();
+            try {
+                OutputStream out = new FileOutputStream(indexFile);
+                InputStream in = getResource("index.html");
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                out.close();
+                in.close();
+            } catch (IOException ex) {
+                outputError("Unable to save file web/index.html");
+                ex.printStackTrace();
+            }
+        }
     }
 
     private void registerWebServer() {
@@ -70,8 +91,7 @@ public class NatureSounds extends JavaPlugin {
     }
 
     private void registerCommands() {
-        commandManager.enableUnstableAPI("help");
-        commandManager.registerCommand(new WebTestCommand(this));
+        getCommand("web").setExecutor(new WebTestCommand(this));
     }
 
     private void registerEvents() {
