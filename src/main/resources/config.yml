@@ -5,3 +5,8 @@
 # If you LOWER this value: More server impact, and players might hear sounds to frequently.
 # If you HIGHER this value: Less server impact, but players might hear less sounds.
 interval: 4
+
+# A free port on your hosting machine. This works very similar to services like Dynmap.
+# It allows the server to host its own resource pack. The plugin will not start if this port is claimed already.
+# Default value is 8080. Typically, you want to use a value between 8000 and 9000.
+port: 8080
