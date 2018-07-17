@@ -16,10 +16,13 @@
 package me.theblockbender.nature.sounds.commands;
 
 import me.theblockbender.nature.sounds.NatureSounds;
+import me.theblockbender.nature.sounds.utilities.ChecksumHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Objects;
 
 public class WebTestCommand implements CommandExecutor {
 
@@ -97,12 +100,9 @@ public class WebTestCommand implements CommandExecutor {
                 return true;
             case "send":
                 sender.sendMessage("[Test] Sending you the resource pack...");
-                String hash = "7036BA280057E0726433";
                 Player player = (Player) sender;
-                String url = main.webServerHandler.ip + ":" + main.webServerHandler.port + "/rp.zip";
-                url = "https://www.dropbox.com/s/anc2ucrrxa8qugq/rp.zip?dl=1";
-                sender.sendMessage("[Test] Fabricated url = " + url);
-                player.setResourcePack(url, hash.getBytes());
+                String url = "http://" + main.webServerHandler.ip + ":" + main.webServerHandler.port;
+                player.setResourcePack(url, ChecksumHandler.getChecksum(ChecksumHandler.fileToByteArray(main.webServerHandler.getFileLocation())));
                 return true;
             default:
                 return false;

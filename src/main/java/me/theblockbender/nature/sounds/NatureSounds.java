@@ -25,7 +25,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -64,26 +65,7 @@ public class NatureSounds extends JavaPlugin {
     private void createFiles() {
         saveDefaultConfig();
         File webDirectory = new File(getDataFolder().getPath() + File.separator + "web");
-        if (!webDirectory.exists())
-            webDirectory.mkdirs();
-        File indexFile = new File(webDirectory, "index.html");
-        if (!indexFile.exists()) {
-            indexFile.getParentFile().mkdirs();
-            try {
-                OutputStream out = new FileOutputStream(indexFile);
-                InputStream in = getResource("index.html");
-                byte[] buf = new byte[1024];
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-                out.close();
-                in.close();
-            } catch (IOException ex) {
-                outputError("Unable to save file web/index.html");
-                ex.printStackTrace();
-            }
-        }
+        if (!webDirectory.exists()) webDirectory.mkdirs();
     }
 
     private void registerWebServer() {

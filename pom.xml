@@ -25,6 +25,11 @@
     <name>NatureSounds</name>
     <description>Create amazing moments with real life sound ambiance</description>
 
+    <properties>
+        <!-- the main class -->
+        <exec.mainClass>me.theblockbender.nature.sounds.NatureSounds</exec.mainClass>
+    </properties>
+
     <repositories>
         <!-- Spigot, Bukkit & NMS repository -->
         <repository>
@@ -83,6 +88,23 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+            <!-- Shader -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

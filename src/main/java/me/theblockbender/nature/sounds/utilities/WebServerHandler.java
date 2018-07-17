@@ -56,7 +56,7 @@ public class WebServerHandler {
     // -------------------------------------------- //
     // GETTERS
     // -------------------------------------------- //
-    private String getFileLocation() {
-        return main.getDataFolder().getPath() + File.separator + "web" + File.separator + "index.html";
+    public String getFileLocation() {
+        return main.getDataFolder().getPath() + File.separator + "web" + File.separator + "rp.zip";
     }
 }

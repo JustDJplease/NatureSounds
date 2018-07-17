@@ -266,11 +266,15 @@ public class Sound {
         return minVolume + main.random.nextFloat() * (maxVolume - minVolume);
     }
 
+    public String getSoundName() {
+        return soundName;
+    }
+
     // -------------------------------------------- //
     // RUNNER
     // -------------------------------------------- //
     public boolean run(Player player, Location location) {
-        if(!isLoaded()) return false;
+        if (!isLoaded()) return false;
         World world = location.getWorld();
         if (!weatherCondition.isTrue(world)) return false;
         if (!timeCondition.isTrue(world)) return false;
