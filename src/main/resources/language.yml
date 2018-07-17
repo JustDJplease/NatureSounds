@@ -2,6 +2,7 @@
 # You can use '&' for colour in every message.
 
 prefix: "&e\u00BB &7"
+header: "&e*&7&m----------------------------------------&e*"
 resourcepack:
   loaded: Successfully loaded the resource-pack.
   rejected: You have rejected the resource-pack. You will therefore not hear any nature ambiance whilst roaming the world.

@@ -15,8 +15,11 @@
 
 package me.theblockbender.nature.sounds;
 
+import co.aikar.commands.BukkitCommandManager;
+import me.theblockbender.nature.sounds.commands.WebTestCommand;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
 import me.theblockbender.nature.sounds.utilities.SoundTask;
+import me.theblockbender.nature.sounds.utilities.WebServerHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -30,13 +33,17 @@ import java.util.logging.Logger;
 
 public class NatureSounds extends JavaPlugin {
 
-    public List<UUID> playersWithRP = new ArrayList<>();
-    public Random random;
-    public Map<String, Sound> sounds = new HashMap<>();
-    private int errorCounter;
     // -------------------------------------------- //
     // INSTANCES & VARIABLES
     // -------------------------------------------- //
+    public List<UUID> playersWithRP = new ArrayList<>();
+    public Map<String, Sound> sounds = new HashMap<>();
+    public WebServerHandler webServerHandler;
+
+    Random random;
+
+    private BukkitCommandManager commandManager;
+    private int errorCounter;
     private Logger logger;
 
     // -------------------------------------------- //
@@ -47,10 +54,24 @@ public class NatureSounds extends JavaPlugin {
         logger = getLogger();
         errorCounter = 0;
         random = new Random();
+        saveDefaultConfig();
         registerEvents();
-        loadSounds();
-        startRunnables();
+        registerCommands();
+        registerSounds();
+        registerRunnables();
+        registerWebServer();
         showErrorsFound();
+        commandManager = new BukkitCommandManager(this);
+
+    }
+
+    private void registerWebServer() {
+        webServerHandler = new WebServerHandler(this);
+    }
+
+    private void registerCommands() {
+        commandManager.enableUnstableAPI("help");
+        commandManager.registerCommand(new WebTestCommand(this));
     }
 
     private void registerEvents() {
@@ -58,7 +79,7 @@ public class NatureSounds extends JavaPlugin {
         pluginManager.registerEvents(new ResourcePackListener(this), this);
     }
 
-    private void startRunnables() {
+    private void registerRunnables() {
         Long interval;
         try {
             interval = getConfig().getLong("interval");
@@ -68,6 +89,23 @@ public class NatureSounds extends JavaPlugin {
             return;
         }
         Bukkit.getScheduler().runTaskTimer(this, new SoundTask(this), 1L, 20L * interval);
+    }
+
+    private void registerSounds() {
+        int counter = 0;
+        for (File soundFile : getSoundFiles()) {
+            counter++;
+            YamlConfiguration soundConfiguration = new YamlConfiguration();
+            try {
+                soundConfiguration.load(soundFile);
+            } catch (IOException | InvalidConfigurationException ex) {
+                outputError("Unable to load soundconfiguration file " + soundFile.getName());
+                ex.printStackTrace();
+                continue;
+            }
+            sounds.put(soundFile.getName(), new Sound(this, soundFile.getName(), soundConfiguration));
+        }
+        logger.info(counter + " sound configuration files have been loaded.");
     }
 
     // -------------------------------------------- //
@@ -103,23 +141,10 @@ public class NatureSounds extends JavaPlugin {
     }
 
     // -------------------------------------------- //
-    // SOUND FILE LOADING
+    // GETTERS
     // -------------------------------------------- //
-    private void loadSounds() {
-        int counter = 0;
-        for (File soundFile : getSoundFiles()) {
-            counter++;
-            YamlConfiguration soundConfiguration = new YamlConfiguration();
-            try {
-                soundConfiguration.load(soundFile);
-            } catch (IOException | InvalidConfigurationException ex) {
-                outputError("Unable to load soundconfiguration file " + soundFile.getName());
-                ex.printStackTrace();
-                continue;
-            }
-            sounds.put(soundFile.getName(), new Sound(this, soundFile.getName(), soundConfiguration));
-        }
-        logger.info(counter + " sound configuration files have been loaded.");
+    public List<Sound> getSounds() {
+        return new ArrayList<>(sounds.values());
     }
 
     private File[] getSoundFiles() {
@@ -127,12 +152,5 @@ public class NatureSounds extends JavaPlugin {
         if (!folder.exists()) //noinspection ResultOfMethodCallIgnored
             folder.mkdirs();
         return folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
-    }
-
-    // -------------------------------------------- //
-    // GETTERS
-    // -------------------------------------------- //
-    public List<Sound> getSounds() {
-        return new ArrayList<>(sounds.values());
     }
 }
