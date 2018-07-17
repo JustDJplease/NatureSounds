@@ -81,7 +81,7 @@ public class NatureSounds extends JavaPlugin {
     // -------------------------------------------- //
     // ERROR & LOGGING
     // -------------------------------------------- //
-    void outputError(String errorMessage) {
+    public void outputError(String errorMessage) {
         errorCounter++;
         logger.severe("// -------------------------------------------- //");
         logger.severe("// EXCEPTION OCCURED IN NATURESOUNDS PLUGIN:");
