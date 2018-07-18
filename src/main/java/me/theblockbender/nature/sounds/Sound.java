@@ -274,16 +274,37 @@ public class Sound {
     // RUNNER
     // -------------------------------------------- //
     public boolean run(Player player, Location location) {
+        main.debug("Trying to run a sound");
         if (!isLoaded()) return false;
+        main.debug("+ Sound loaded");
         World world = location.getWorld();
-        if (!weatherCondition.isTrue(world)) return false;
-        if (!timeCondition.isTrue(world)) return false;
-        if (!biomeCondition.isTrue(location)) return false;
-        if (!altitudeCondition.isTrue(location)) return false;
-        if (!worldCondition.isTrue(world)) return false;
-        if (cooldownCondition.isOnCooldown(player)) return false;
+        if (weatherCondition != null) {
+            if (!weatherCondition.isTrue(world)) return false;
+            main.debug("+ Weather passed");
+        }
+        if (timeCondition != null) {
+            if (!timeCondition.isTrue(world)) return false;
+            main.debug("+ Time passed");
+        }
+        if (biomeCondition != null) {
+            if (!biomeCondition.isTrue(location)) return false;
+            main.debug("+ Biome passed");
+        }
+        if (altitudeCondition != null) {
+            if (!altitudeCondition.isTrue(location)) return false;
+            main.debug("+ Altitude passed");
+        }
+        if (weatherCondition != null) {
+            if (!worldCondition.isTrue(world)) return false;
+            main.debug("+ World passed");
+        }
+        if (cooldownCondition != null) {
+            if (cooldownCondition.isOnCooldown(player)) return false;
+            main.debug("+ Cooldown passed");
+        }
         double random = 100 * main.random.nextDouble();
         if (chance > random) return false;
+        main.debug("+ Chance passed");
         playSound(player, location, soundName, minVolume, maxVolume, pitch);
         return true;
     }

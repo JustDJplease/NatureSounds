@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.theblockbender.nature.sounds.NatureSounds;
 import me.theblockbender.nature.sounds.Sound;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.*;
+import java.nio.channels.FileLock;
 
 @SuppressWarnings({"ResultOfMethodCallIgnored", "unchecked"})
 public class ResourcePackUtil {
@@ -39,7 +41,7 @@ public class ResourcePackUtil {
         }
         main.debug("[DONE] Zipping completed!");
         main.debug("Deleting /web/rp folder...");
-        delete(main.webServerHandler.getUnzippedFileLocation());
+        deleteDir(main.webServerHandler.getUnzippedFileLocation());
         main.debug("[DONE] RESOURCE PACK SAVED!");
         Long timeTaken = System.currentTimeMillis() - timeStart;
         main.debug("(took " + timeTaken + " ms!)");
@@ -47,12 +49,12 @@ public class ResourcePackUtil {
 
     private void deleteOldFolders() {
         main.debug("Deleting old /web/rp folder...");
-        delete(main.webServerHandler.getUnzippedFileLocation());
+        deleteDir(main.webServerHandler.getUnzippedFileLocation());
         main.debug("Deleting old /web/rp.zip folder...");
-        delete(main.webServerHandler.getFileLocation());
+        deleteZip(main.webServerHandler.getFileLocation());
     }
 
-    private void delete(String path) {
+    private void deleteZip(String path) {
         File file = new File(path);
         if (!file.exists()) {
             main.debug("Folder did not exist, skipping...");
@@ -60,6 +62,21 @@ public class ResourcePackUtil {
         }
         file.delete();
         main.debug("Folder deleted");
+    }
+
+    private void deleteDir(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            main.debug("Folder did not exist, skipping...");
+            return;
+        }
+        try {
+            FileUtils.forceDelete(file);
+            main.debug("Folder deleted");
+        } catch (IOException e) {
+            main.debug("Could not delete folder");
+            e.printStackTrace();
+        }
     }
 
     private void zipFolder() {
@@ -110,7 +127,7 @@ public class ResourcePackUtil {
     }
 
     private void addFileToPack(Sound sound) {
-        File file = new File(main.getDataFolder() + File.separator + "sounds" + sound.getSoundName() + ".ogg");
+        File file = new File(main.getDataFolder() + File.separator + "sounds" + File.separator + sound.getSoundName() + ".ogg");
         if (!file.exists()) {
             main.debug("Could not find associated " + file.getName() + " file!");
             return;
@@ -165,12 +182,12 @@ public class ResourcePackUtil {
         try {
             assert is != null;
             rawJson = IOUtils.toString(is, "UTF-8");
+            is.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JSONObject file = gson.fromJson(rawJson, JSONObject.class);
-        JSONObject soundObject = new JSONObject();
         JSONObject soundProperties = new JSONObject();
         soundProperties.put("name", sound.getSoundName());
         soundProperties.put("stream", true);
@@ -193,7 +210,6 @@ public class ResourcePackUtil {
             FileWriter fileWriter = new FileWriter(file);
             bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(json);
-            main.debug(" - sounds.json saved.");
         } catch (IOException e) {
             main.debug("failed to save sounds.json!");
             e.printStackTrace();
@@ -201,6 +217,7 @@ public class ResourcePackUtil {
             try {
                 if (bufferedWriter != null) {
                     bufferedWriter.close();
+                    main.debug(" - sounds.json saved.");
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
