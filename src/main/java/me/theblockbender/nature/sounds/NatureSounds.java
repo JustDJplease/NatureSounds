@@ -17,6 +17,7 @@ package me.theblockbender.nature.sounds;
 
 import me.theblockbender.nature.sounds.commands.WebTestCommand;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
+import me.theblockbender.nature.sounds.utilities.ResourcePackUtil;
 import me.theblockbender.nature.sounds.utilities.SoundTask;
 import me.theblockbender.nature.sounds.utilities.WebServerHandler;
 import org.bukkit.Bukkit;
@@ -38,6 +39,7 @@ public class NatureSounds extends JavaPlugin {
     public List<UUID> playersWithRP = new ArrayList<>();
     public Map<String, Sound> sounds = new HashMap<>();
     public WebServerHandler webServerHandler;
+    public ResourcePackUtil resourcePackUtil;
 
     Random random;
 
@@ -57,6 +59,7 @@ public class NatureSounds extends JavaPlugin {
         registerCommands();
         registerSounds();
         registerRunnables();
+        resourcePackUtil = new ResourcePackUtil(this);
         registerWebServer();
         showErrorsFound();
     }

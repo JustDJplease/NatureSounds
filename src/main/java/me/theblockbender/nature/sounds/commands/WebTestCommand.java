@@ -22,8 +22,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class WebTestCommand implements CommandExecutor {
 
     // -------------------------------------------- //
@@ -104,6 +102,10 @@ public class WebTestCommand implements CommandExecutor {
                 String url = "http://" + main.webServerHandler.ip + ":" + main.webServerHandler.port;
                 player.setResourcePack(url, ChecksumHandler.getChecksum(ChecksumHandler.fileToByteArray(main.webServerHandler.getFileLocation())));
                 return true;
+            case "generate":
+                sender.sendMessage("[Test] Generating pack...");
+                main.resourcePackUtil.addAllFilesToPack();
+                sender.sendMessage("[Test] Done!");
             default:
                 return false;
         }
