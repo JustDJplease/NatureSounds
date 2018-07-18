@@ -40,7 +40,7 @@ public class WebServerHandler {
             httpServer = Vertx.vertx().createHttpServer();
             httpServer.requestHandler(httpServerRequest -> httpServerRequest.response().sendFile(getFileLocation()));
             httpServer.listen(port);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             main.outputError("Unable to bind to port. Please assign the plugin to a different port!");
             ex.printStackTrace();
             return false;
@@ -58,5 +58,13 @@ public class WebServerHandler {
     // -------------------------------------------- //
     public String getFileLocation() {
         return main.getDataFolder().getPath() + File.separator + "web" + File.separator + "rp.zip";
+    }
+
+    String getUnzippedFileLocation() {
+        return main.getDataFolder().getPath() + File.separator + "web" + File.separator + "rp";
+    }
+
+    File getWebDirectory() {
+        return new File(main.getDataFolder().getPath() + File.separator + "web");
     }
 }

@@ -139,7 +139,7 @@ public class NatureSounds extends JavaPlugin {
     }
 
     public void debug(String debugMessage) {
-        logger.info(debugMessage);
+        logger.info("[+] " + debugMessage);
     }
 
     // -------------------------------------------- //
