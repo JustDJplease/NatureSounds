@@ -85,6 +85,19 @@
                 <includes>
                     <include>**/*.yml</include>
                 </includes>
+                <excludes>
+                    <exclude>**/*.zip</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <targetPath>.</targetPath>
+                <directory>${basedir}/src/main/resources/</directory>
+                <includes>
+                    <include>**/*.zip</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*.yml</exclude>
+                </excludes>
             </resource>
         </resources>
         <plugins>

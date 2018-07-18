@@ -44,6 +44,6 @@ public class SoundTask implements Runnable {
                 }
             }
         }
-        main.debug("Playing " + soundsPlayed + " sounds.");
+//        main.debug("Playing " + soundsPlayed + " sounds.");
     }
 }
