@@ -7,6 +7,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerListener implements Listener {
 
+    // -------------------------------------------- //
+    // EVENT
+    // -------------------------------------------- //
     @EventHandler
     public void PlayerQuit(PlayerQuitEvent event) {
         UtilToken.removeToken(event.getPlayer().getUniqueId());

@@ -1,89 +1,100 @@
 package me.theblockbender.nature.sounds.utilities;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 class UtilZip {
 
-    // V.2
-    static void zipFolder(String sourceDirPath, String zipFilePath) throws IOException {
-        Path p = Files.createFile(Paths.get(zipFilePath));
-        OutputStream outputStream = Files.newOutputStream(p);
-        try (ZipOutputStream zs = new ZipOutputStream(outputStream)) {
-            Path pp = Paths.get(sourceDirPath);
-            Files.walk(pp)
-                    .filter(path -> !Files.isDirectory(path))
-                    .forEach(path -> {
-                        ZipEntry zipEntry = new ZipEntry(pp.relativize(path).toString());
-                        try {
-                            zs.putNextEntry(zipEntry);
-                            Files.copy(path, zs);
-                            zs.closeEntry();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
+    // -------------------------------------------- //
+    // ZIPPING A FILE
+    // -------------------------------------------- //
+    static void zipFolder(String sourceDirPath, String zipFilePath) {
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(zipFilePath);
+            ZipOutputStream zipOut = new ZipOutputStream(fos);
+            File fileToZip = new File(sourceDirPath);
+            zipFile(fileToZip, fileToZip.getName(), zipOut);
+            zipOut.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        outputStream.close();
     }
 
-    // V.1
-//    static void zipFolder(String srcFolder, String destZipFile) throws Exception {
-//        ZipOutputStream zip;
-//        FileOutputStream fileWriter;
-//
-//        fileWriter = new FileOutputStream(destZipFile);
-//        zip = new ZipOutputStream(fileWriter);
-//
-//        File packFolder = new File(srcFolder);
-//        for (File file : Objects.requireNonNull(packFolder.listFiles())) {
-//            if (file.isDirectory()) {
-//                addFolderToZip("", file.getPath(), zip);
-//            }else{
-//                addFileToZip("", file.getPath(), zip);
-//            }
-//        }
-//        zip.flush();
-//        zip.close();
-//        fileWriter.close();
-//    }
-//
-//    private static void addFolderToZip(String path, String srcFolder, ZipOutputStream zip)
-//            throws Exception {
-//        File folder = new File(srcFolder);
-//
-//        for (String fileName : Objects.requireNonNull(folder.list())) {
-//            if (path.equals("")) {
-//                addFileToZip(folder.getName(), srcFolder + "/" + fileName, zip);
-//            } else {
-//                addFileToZip(path + "/" + folder.getName(), srcFolder + "/" + fileName, zip);
-//            }
-//        }
-//    }
-//
-//    private static void addFileToZip(String path, String srcFile, ZipOutputStream zip)
-//            throws Exception {
-//
-//        File folder = new File(srcFile);
-//        if (folder.isDirectory()) {
-//            addFolderToZip(path, srcFile, zip);
-//        } else {
-//            byte[] buf = new byte[1024];
-//            int len;
-//            FileInputStream in = new FileInputStream(srcFile);
-//            zip.putNextEntry(new ZipEntry(path + "/" + folder.getName()));
-//            while ((len = in.read(buf)) > 0) {
-//                zip.write(buf, 0, len);
-//            }
-//            in.close();
-//        }
-//    }
+    private static void zipFile(File fileToZip, String fileName, ZipOutputStream zipOut) throws IOException {
+        if (fileToZip.isHidden()) {
+            return;
+        }
+        if (fileToZip.isDirectory()) {
+            File[] children = fileToZip.listFiles();
+            assert children != null;
+            for (File childFile : children) {
+                zipChildFile(childFile, childFile.getName(), zipOut);
+            }
+            return;
+        }
+        FileInputStream fis = new FileInputStream(fileToZip);
+        ZipEntry zipEntry = new ZipEntry(fileName);
+        zipOut.putNextEntry(zipEntry);
+        byte[] bytes = new byte[1024];
+        int length;
+        while ((length = fis.read(bytes)) >= 0) {
+            zipOut.write(bytes, 0, length);
+        }
+        fis.close();
+    }
 
+    private static void zipChildFile(File fileToZip, String fileName, ZipOutputStream zipOut) throws IOException {
+        if (fileToZip.isHidden()) {
+            return;
+        }
+        if (fileToZip.isDirectory()) {
+            File[] children = fileToZip.listFiles();
+            assert children != null;
+            for (File childFile : children) {
+                zipChildFile(childFile, fileName + "/" + childFile.getName(), zipOut);
+            }
+            return;
+        }
+        FileInputStream fis = new FileInputStream(fileToZip);
+        ZipEntry zipEntry = new ZipEntry(fileName);
+        zipOut.putNextEntry(zipEntry);
+        byte[] bytes = new byte[1024];
+        int length;
+        while ((length = fis.read(bytes)) >= 0) {
+            zipOut.write(bytes, 0, length);
+        }
+        fis.close();
+    }
+
+    // -------------------------------------------- //
+    // VALIDATING A ZIP FILE
+    // -------------------------------------------- //
+    static boolean isValid(final File file) {
+        ZipFile zipfile = null;
+        try {
+            zipfile = new ZipFile(file);
+            return true;
+        } catch (IOException e) {
+            return false;
+        } finally {
+            try {
+                if (zipfile != null) {
+                    zipfile.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    // -------------------------------------------- //
+    // UNZIPPING A FILE
+    // -------------------------------------------- //
     @SuppressWarnings("ResultOfMethodCallIgnored")
     static void unzip(File source, String out) throws IOException {
         try (ZipInputStream zis = new ZipInputStream(new FileInputStream(source))) {

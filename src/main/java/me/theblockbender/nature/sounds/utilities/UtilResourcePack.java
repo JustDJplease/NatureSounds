@@ -13,12 +13,21 @@ import java.io.*;
 
 @SuppressWarnings({"ResultOfMethodCallIgnored", "unchecked"})
 public class UtilResourcePack {
+    // -------------------------------------------- //
+    // INSTANCES & VARIABLES
+    // -------------------------------------------- //
     private NatureSounds main;
 
+    // -------------------------------------------- //
+    // CONSTRUCTOR
+    // -------------------------------------------- //
     public UtilResourcePack(NatureSounds main) {
         this.main = main;
     }
 
+    // -------------------------------------------- //
+    // MAIN METHOD
+    // -------------------------------------------- //
     public void addAllFilesToPack() {
         long timeStart = System.currentTimeMillis();
         main.debug("Task started: Generating the resource pack");
@@ -42,10 +51,18 @@ public class UtilResourcePack {
         main.debug("Deleting /web/rp folder...");
         deleteDir(main.utilWebServer.getUnzippedFileLocation());
         main.debug("[DONE] RESOURCE PACK SAVED!");
+        if (UtilZip.isValid(new File(main.utilWebServer.getFileLocation()))) {
+            main.debug("[SUCCES] PACK VALIDATED!");
+        } else {
+            main.debug("[ERROR] PACK INVALID!");
+        }
         Long timeTaken = System.currentTimeMillis() - timeStart;
         main.debug("(took " + timeTaken + " ms!)");
     }
 
+    // -------------------------------------------- //
+    // SUB-METHODS
+    // -------------------------------------------- //
     private void deleteOldFolders() {
         main.debug("Deleting old /web/rp folder...");
         deleteDir(main.utilWebServer.getUnzippedFileLocation());

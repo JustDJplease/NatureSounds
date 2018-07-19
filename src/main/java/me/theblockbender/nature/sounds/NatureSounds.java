@@ -59,7 +59,7 @@ public class NatureSounds extends JavaPlugin {
         registerEvents();
         registerCommands();
         registerSounds();
-        registerRunnables();
+        // TODO RE-ENABLE registerRunnables();
         utilResourcePack = new UtilResourcePack(this);
         registerWebServer();
         showErrorsFound();
