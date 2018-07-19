@@ -39,28 +39,39 @@ public class UtilWebServer {
         try {
             httpServer = Vertx.vertx().createHttpServer();
             httpServer.requestHandler(httpServerRequest -> {
+                main.debug("------------------------------------------");
                 main.debug("http request of " + httpServerRequest.uri());
-                if (!httpServerRequest.uri().contains("/")) {
-                    main.debug("uri did not contain a /.");
+                if (httpServerRequest.uri().contains("/favicon.ico")) {
+                    main.debug("favicon request");
+                    httpServerRequest.response().setStatusCode(401);
                     httpServerRequest.response().end();
                 } else {
-                    String[] parts = httpServerRequest.uri().split("/");
-                    main.debug("parts length = " + parts.length);
-                    if (parts.length != 2) {
-                        main.debug("uri did not contain a token");
+                    if (!httpServerRequest.uri().contains("/")) {
+                        main.debug("uri did not contain a /.");
+                        httpServerRequest.response().setStatusCode(401);
                         httpServerRequest.response().end();
                     } else {
-                        String token = parts[1];
-                        main.debug("token = " + token);
-                        if (UtilToken.isValidToken(token)) {
-                            main.debug("token is valid, sending file.");
-                            httpServerRequest.response().sendFile(getFileLocation());
-                        } else {
-                            main.debug("token is invalid.");
+                        String[] parts = httpServerRequest.uri().split("/");
+                        main.debug("parts length = " + parts.length);
+                        if (parts.length != 2) {
+                            main.debug("uri did not contain a token");
+                            httpServerRequest.response().setStatusCode(401);
                             httpServerRequest.response().end();
+                        } else {
+                            String token = parts[1];
+                            main.debug("token = " + token);
+                            if (UtilToken.isValidToken(token)) {
+                                main.debug("token is valid, sending file.");
+                                httpServerRequest.response().sendFile(getFileLocation());
+                            } else {
+                                main.debug("token is invalid.");
+                                httpServerRequest.response().setStatusCode(401);
+                                httpServerRequest.response().end();
+                            }
                         }
                     }
                 }
+                main.debug("------------------------------------------");
             });
             httpServer.listen(port);
         } catch (Exception ex) {
