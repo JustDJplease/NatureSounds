@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class ChecksumHandler {
+public class UtilChecksum {
 
     // -------------------------------------------- //
     // CHECKSUM CALCULATOR

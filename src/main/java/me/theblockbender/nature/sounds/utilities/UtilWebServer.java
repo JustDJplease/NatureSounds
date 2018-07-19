@@ -6,7 +6,7 @@ import me.theblockbender.nature.sounds.NatureSounds;
 
 import java.io.File;
 
-public class WebServerHandler {
+public class UtilWebServer {
 
     // -------------------------------------------- //
     // INSTANCES & VARIABLES
@@ -20,7 +20,7 @@ public class WebServerHandler {
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public WebServerHandler(NatureSounds main) {
+    public UtilWebServer(NatureSounds main) {
         this.main = main;
     }
 

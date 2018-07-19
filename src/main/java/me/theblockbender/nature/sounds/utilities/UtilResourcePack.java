@@ -10,13 +10,12 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.*;
-import java.nio.channels.FileLock;
 
 @SuppressWarnings({"ResultOfMethodCallIgnored", "unchecked"})
-public class ResourcePackUtil {
+public class UtilResourcePack {
     private NatureSounds main;
 
-    public ResourcePackUtil(NatureSounds main) {
+    public UtilResourcePack(NatureSounds main) {
         this.main = main;
     }
 
@@ -41,7 +40,7 @@ public class ResourcePackUtil {
         }
         main.debug("[DONE] Zipping completed!");
         main.debug("Deleting /web/rp folder...");
-        deleteDir(main.webServerHandler.getUnzippedFileLocation());
+        deleteDir(main.utilWebServer.getUnzippedFileLocation());
         main.debug("[DONE] RESOURCE PACK SAVED!");
         Long timeTaken = System.currentTimeMillis() - timeStart;
         main.debug("(took " + timeTaken + " ms!)");
@@ -49,9 +48,9 @@ public class ResourcePackUtil {
 
     private void deleteOldFolders() {
         main.debug("Deleting old /web/rp folder...");
-        deleteDir(main.webServerHandler.getUnzippedFileLocation());
+        deleteDir(main.utilWebServer.getUnzippedFileLocation());
         main.debug("Deleting old /web/rp.zip folder...");
-        deleteZip(main.webServerHandler.getFileLocation());
+        deleteZip(main.utilWebServer.getFileLocation());
     }
 
     private void deleteZip(String path) {
@@ -82,7 +81,7 @@ public class ResourcePackUtil {
     private void zipFolder() {
         main.debug("Zipping /web/rp to /web/rp.zip ...");
         try {
-            ZipDirectoryUtil.zipFolder(main.webServerHandler.getUnzippedFileLocation(), main.webServerHandler.getFileLocation());
+            UtilZip.zipFolder(main.utilWebServer.getUnzippedFileLocation(), main.utilWebServer.getFileLocation());
             main.debug("Zipped!");
         } catch (Exception e) {
             main.debug("Failed to zip file!");
@@ -92,7 +91,7 @@ public class ResourcePackUtil {
 
     private void createPackBase() {
         main.debug("Creating new /web/template.zip from /resource/template_pack.zip ...");
-        File templateZip = new File(main.webServerHandler.getWebDirectory(), "template.zip");
+        File templateZip = new File(main.utilWebServer.getWebDirectory(), "template.zip");
         if (!templateZip.exists()) {
             templateZip.getParentFile().mkdirs();
             try {
@@ -115,7 +114,7 @@ public class ResourcePackUtil {
         }
         try {
             main.debug("Unzipping /web/template.zip to /web/rp ...");
-            ZipDirectoryUtil.unzip(templateZip, main.webServerHandler.getUnzippedFileLocation());
+            UtilZip.unzip(templateZip, main.utilWebServer.getUnzippedFileLocation());
             main.debug("Unzipped!");
         } catch (IOException e) {
             main.outputError("Unable to unzip template resource pack!");
@@ -142,7 +141,7 @@ public class ResourcePackUtil {
             main.debug("Sound does not exist!");
             return;
         }
-        File packLocation = new File(main.webServerHandler.getUnzippedFileLocation() + File.separator + "assets" + File.separator + "minecraft" + File.separator + "sounds", file.getName());
+        File packLocation = new File(main.utilWebServer.getUnzippedFileLocation() + File.separator + "assets" + File.separator + "minecraft" + File.separator + "sounds", file.getName());
         if (!packLocation.exists()) {
             packLocation.getParentFile().mkdirs();
             try {
@@ -167,7 +166,7 @@ public class ResourcePackUtil {
 
     private void addSoundToJson(Sound sound) {
         main.debug(" - adding sound to sounds.json ...");
-        File soundsJSON = new File(main.webServerHandler.getUnzippedFileLocation() + File.separator + "assets" + File.separator + "minecraft" + File.separator, "sounds.json");
+        File soundsJSON = new File(main.utilWebServer.getUnzippedFileLocation() + File.separator + "assets" + File.separator + "minecraft" + File.separator, "sounds.json");
         if (!soundsJSON.exists()) {
             main.debug("sounds.json did not exist!");
             return;

@@ -16,7 +16,7 @@
 package me.theblockbender.nature.sounds.commands;
 
 import me.theblockbender.nature.sounds.NatureSounds;
-import me.theblockbender.nature.sounds.utilities.ChecksumHandler;
+import me.theblockbender.nature.sounds.utilities.UtilChecksum;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -53,7 +53,7 @@ public class WebTestCommand implements CommandExecutor {
 //    @CommandPermission("nature.admin.web")
 //    public void commandStartWeb(CommandSender sender) {
 //        sender.sendMessage("[Test] Starting web server...");
-//        if (main.webServerHandler.start()) {
+//        if (main.utilWebServer.start()) {
 //            sender.sendMessage("[Test] Started web server!");
 //            return;
 //        }
@@ -65,7 +65,7 @@ public class WebTestCommand implements CommandExecutor {
 //    @CommandPermission("nature.admin.web")
 //    public void commandStopWeb(CommandSender sender) {
 //        sender.sendMessage("[Test] Stopping web server...");
-//        main.webServerHandler.stop();
+//        main.utilWebServer.stop();
 //        sender.sendMessage("[Test] Stopped web server!");
 //    }
 //
@@ -73,7 +73,7 @@ public class WebTestCommand implements CommandExecutor {
 //    @Description("Sends a link to the web-page in chat.")
 //    @CommandPermission("nature.admin.web")
 //    public void commandLinkWeb(CommandSender sender) {
-//        sender.sendMessage("[Test] URL of web-page is: " + main.getServer().getIp() + ":" + main.webServerHandler.port);
+//        sender.sendMessage("[Test] URL of web-page is: " + main.getServer().getIp() + ":" + main.utilWebServer.port);
 //    }
 
     @Override
@@ -82,7 +82,7 @@ public class WebTestCommand implements CommandExecutor {
         switch (args[0].toLowerCase()) {
             case "start":
                 sender.sendMessage("[Test] Starting web server...");
-                if (main.webServerHandler.start()) {
+                if (main.utilWebServer.start()) {
                     sender.sendMessage("[Test] Started web server!");
                     return true;
                 }
@@ -90,21 +90,21 @@ public class WebTestCommand implements CommandExecutor {
                 return true;
             case "stop":
                 sender.sendMessage("[Test] Stopping web server...");
-                main.webServerHandler.stop();
+                main.utilWebServer.stop();
                 sender.sendMessage("[Test] Stopped web server!");
                 return true;
             case "link":
-                sender.sendMessage("[Test] URL of web-page is: " + main.webServerHandler.ip + ":" + main.webServerHandler.port);
+                sender.sendMessage("[Test] URL of web-page is: " + main.utilWebServer.ip + ":" + main.utilWebServer.port);
                 return true;
             case "send":
                 sender.sendMessage("[Test] Sending you the resource pack...");
                 Player player = (Player) sender;
-                String url = "http://" + main.webServerHandler.ip + ":" + main.webServerHandler.port;
-                player.setResourcePack(url, ChecksumHandler.getChecksum(ChecksumHandler.fileToByteArray(main.webServerHandler.getFileLocation())));
+                String url = "http://" + main.utilWebServer.ip + ":" + main.utilWebServer.port;
+                player.setResourcePack(url, UtilChecksum.getChecksum(UtilChecksum.fileToByteArray(main.utilWebServer.getFileLocation())));
                 return true;
             case "generate":
                 sender.sendMessage("[Test] Generating pack...");
-                main.resourcePackUtil.addAllFilesToPack();
+                main.utilResourcePack.addAllFilesToPack();
                 sender.sendMessage("[Test] Done!");
             default:
                 return false;

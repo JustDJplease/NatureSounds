@@ -17,9 +17,9 @@ package me.theblockbender.nature.sounds;
 
 import me.theblockbender.nature.sounds.commands.WebTestCommand;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
-import me.theblockbender.nature.sounds.utilities.ResourcePackUtil;
+import me.theblockbender.nature.sounds.utilities.UtilResourcePack;
 import me.theblockbender.nature.sounds.utilities.SoundTask;
-import me.theblockbender.nature.sounds.utilities.WebServerHandler;
+import me.theblockbender.nature.sounds.utilities.UtilWebServer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -38,8 +38,8 @@ public class NatureSounds extends JavaPlugin {
     // -------------------------------------------- //
     public List<UUID> playersWithRP = new ArrayList<>();
     public Map<String, Sound> sounds = new HashMap<>();
-    public WebServerHandler webServerHandler;
-    public ResourcePackUtil resourcePackUtil;
+    public UtilWebServer utilWebServer;
+    public UtilResourcePack utilResourcePack;
 
     Random random;
 
@@ -59,7 +59,7 @@ public class NatureSounds extends JavaPlugin {
         registerCommands();
         registerSounds();
         registerRunnables();
-        resourcePackUtil = new ResourcePackUtil(this);
+        utilResourcePack = new UtilResourcePack(this);
         registerWebServer();
         showErrorsFound();
     }
@@ -72,7 +72,7 @@ public class NatureSounds extends JavaPlugin {
     }
 
     private void registerWebServer() {
-        webServerHandler = new WebServerHandler(this);
+        utilWebServer = new UtilWebServer(this);
     }
 
     private void registerCommands() {
