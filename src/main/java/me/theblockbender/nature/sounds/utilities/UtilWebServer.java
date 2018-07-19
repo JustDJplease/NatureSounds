@@ -38,7 +38,30 @@ public class UtilWebServer {
         }
         try {
             httpServer = Vertx.vertx().createHttpServer();
-            httpServer.requestHandler(httpServerRequest -> httpServerRequest.response().sendFile(getFileLocation()));
+            httpServer.requestHandler(httpServerRequest -> {
+                main.debug("http request of " + httpServerRequest.uri());
+                if (!httpServerRequest.uri().contains("/")) {
+                    main.debug("uri did not contain a /.");
+                    httpServerRequest.response().end();
+                } else {
+                    String[] parts = httpServerRequest.uri().split("/");
+                    main.debug("parts length = " + parts.length);
+                    if (parts.length != 2) {
+                        main.debug("uri did not contain a token");
+                        httpServerRequest.response().end();
+                    } else {
+                        String token = parts[1];
+                        main.debug("token = " + token);
+                        if (UtilToken.isValidToken(token)) {
+                            main.debug("token is valid, sending file.");
+                            httpServerRequest.response().sendFile(getFileLocation());
+                        } else {
+                            main.debug("token is invalid.");
+                            httpServerRequest.response().end();
+                        }
+                    }
+                }
+            });
             httpServer.listen(port);
         } catch (Exception ex) {
             main.outputError("Unable to bind to port. Please assign the plugin to a different port!");

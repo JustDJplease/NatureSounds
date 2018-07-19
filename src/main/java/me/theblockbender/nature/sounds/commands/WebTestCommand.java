@@ -17,6 +17,7 @@ package me.theblockbender.nature.sounds.commands;
 
 import me.theblockbender.nature.sounds.NatureSounds;
 import me.theblockbender.nature.sounds.utilities.UtilChecksum;
+import me.theblockbender.nature.sounds.utilities.UtilToken;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -99,7 +100,8 @@ public class WebTestCommand implements CommandExecutor {
             case "send":
                 sender.sendMessage("[Test] Sending you the resource pack...");
                 Player player = (Player) sender;
-                String url = "http://" + main.utilWebServer.ip + ":" + main.utilWebServer.port;
+                String url = "http://" + main.utilWebServer.ip + ":" + main.utilWebServer.port + "/" + UtilToken.getToken(player.getUniqueId());
+                player.sendMessage("Url: " + url);
                 player.setResourcePack(url, UtilChecksum.getChecksum(UtilChecksum.fileToByteArray(main.utilWebServer.getFileLocation())));
                 return true;
             case "generate":

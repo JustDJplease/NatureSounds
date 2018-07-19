@@ -7,10 +7,10 @@ import java.util.UUID;
 
 public class UtilToken {
 
-    private SecureRandom random = new SecureRandom();
-    private Map<UUID, String> tokens = new HashMap<>();
+    private static SecureRandom random = new SecureRandom();
+    private static Map<UUID, String> tokens = new HashMap<>();
 
-    private String randomString() {
+    private static String randomString() {
         StringBuilder stringBuilder = new StringBuilder(10);
         String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         for (int i = 0; i < 10; i++)
@@ -18,7 +18,7 @@ public class UtilToken {
         return stringBuilder.toString();
     }
 
-    private String generateToken(UUID uuid) {
+    private static String generateToken(UUID uuid) {
         String token = randomString();
         int attempts = 0;
         while (tokens.containsValue(token) && attempts < 20) {
@@ -30,7 +30,7 @@ public class UtilToken {
         return token;
     }
 
-    public String getToken(UUID uuid) {
+    public static String getToken(UUID uuid) {
         if (tokens.containsKey(uuid)) {
             return tokens.get(uuid);
         } else {
@@ -38,7 +38,11 @@ public class UtilToken {
         }
     }
 
-    public void removeToken(UUID uuid) {
+    public static void removeToken(UUID uuid) {
         tokens.remove(uuid);
+    }
+
+    static boolean isValidToken(String token) {
+        return tokens.containsValue(token);
     }
 }

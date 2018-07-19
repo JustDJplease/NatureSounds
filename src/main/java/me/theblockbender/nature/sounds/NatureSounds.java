@@ -16,9 +16,10 @@
 package me.theblockbender.nature.sounds;
 
 import me.theblockbender.nature.sounds.commands.WebTestCommand;
+import me.theblockbender.nature.sounds.listeners.PlayerListener;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
-import me.theblockbender.nature.sounds.utilities.UtilResourcePack;
 import me.theblockbender.nature.sounds.utilities.SoundTask;
+import me.theblockbender.nature.sounds.utilities.UtilResourcePack;
 import me.theblockbender.nature.sounds.utilities.UtilWebServer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -82,6 +83,8 @@ public class NatureSounds extends JavaPlugin {
     private void registerEvents() {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new ResourcePackListener(this), this);
+        pluginManager.registerEvents(new PlayerListener(), this);
+
     }
 
     private void registerRunnables() {
