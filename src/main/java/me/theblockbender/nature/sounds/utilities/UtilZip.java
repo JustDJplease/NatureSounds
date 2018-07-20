@@ -41,9 +41,6 @@ class UtilZip {
     }
 
     private static void zipFile(File fileToZip, String fileName, ZipOutputStream zipOut) throws IOException {
-        if (fileToZip.isHidden()) {
-            return;
-        }
         if (fileToZip.isDirectory()) {
             File[] children = fileToZip.listFiles();
             assert children != null;

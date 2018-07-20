@@ -15,18 +15,29 @@
 
 package me.theblockbender.nature.sounds.listeners;
 
+import me.theblockbender.nature.sounds.NatureSounds;
 import me.theblockbender.nature.sounds.utilities.UtilToken;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.UUID;
+
 public class PlayerListener implements Listener {
+
+    private NatureSounds main;
+
+    public PlayerListener(NatureSounds main) {
+        this.main = main;
+    }
 
     // -------------------------------------------- //
     // EVENT
     // -------------------------------------------- //
     @EventHandler
     public void PlayerQuit(PlayerQuitEvent event) {
-        UtilToken.removeToken(event.getPlayer().getUniqueId());
+        UUID uuid = event.getPlayer().getUniqueId();
+        UtilToken.removeToken(uuid);
+        main.playersWithRP.remove(uuid);
     }
 }

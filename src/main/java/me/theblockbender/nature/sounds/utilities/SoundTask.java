@@ -20,6 +20,10 @@ import me.theblockbender.nature.sounds.Sound;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class SoundTask implements Runnable {
 
     // -------------------------------------------- //
@@ -36,14 +40,24 @@ public class SoundTask implements Runnable {
     // -------------------------------------------- //
     @Override
     public void run() {
-        int soundsPlayed = 0;
+        List<UUID> cleanup = new ArrayList<>();
         for (Sound sound : main.getSounds()) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if(sound.run(player, player.getLocation())){
-                    soundsPlayed++;
+            for (UUID uuid : main.playersWithRP) {
+                Player player = Bukkit.getPlayer(uuid);
+                if (player == null) {
+                    cleanup.add(uuid);
+                } else {
+                    if (sound.run(player, player.getLocation())) {
+                        main.debug("sound played");
+                    } else {
+                        main.debug("sound did not play");
+                    }
                 }
             }
         }
-//        main.debug("Playing " + soundsPlayed + " sounds.");
+        for (UUID uuid : cleanup) {
+            main.playersWithRP.remove(uuid);
+        }
+        cleanup.clear();
     }
 }

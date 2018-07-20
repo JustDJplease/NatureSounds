@@ -47,6 +47,11 @@ public class NatureSounds extends JavaPlugin {
     private int errorCounter;
     private Logger logger;
 
+    @Deprecated
+    public static void lazyStaticLog(String s) {
+        Bukkit.getLogger().info(s);
+    }
+
     // -------------------------------------------- //
     // ENABLING
     // -------------------------------------------- //
@@ -59,7 +64,7 @@ public class NatureSounds extends JavaPlugin {
         registerEvents();
         registerCommands();
         registerSounds();
-        // TODO RE-ENABLE registerRunnables();
+        registerRunnables();
         utilResourcePack = new UtilResourcePack(this);
         registerWebServer();
         showErrorsFound();
@@ -83,7 +88,7 @@ public class NatureSounds extends JavaPlugin {
     private void registerEvents() {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new ResourcePackListener(this), this);
-        pluginManager.registerEvents(new PlayerListener(), this);
+        pluginManager.registerEvents(new PlayerListener(this), this);
 
     }
 
