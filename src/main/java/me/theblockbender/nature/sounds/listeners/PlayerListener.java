@@ -17,8 +17,11 @@ package me.theblockbender.nature.sounds.listeners;
 
 import me.theblockbender.nature.sounds.NatureSounds;
 import me.theblockbender.nature.sounds.utilities.UtilToken;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.UUID;
@@ -39,5 +42,15 @@ public class PlayerListener implements Listener {
         UUID uuid = event.getPlayer().getUniqueId();
         UtilToken.removeToken(uuid);
         main.playersWithRP.remove(uuid);
+    }
+
+    @EventHandler
+    public void PlayerJoin(PlayerJoinEvent event) {
+        Bukkit.getScheduler().runTaskLater(main, () -> {
+            Player player = event.getPlayer();
+            player.sendMessage("§6§lWould you like to hear nature sounds on this server?");
+            // TODO lang file + textcomponents
+        }, 2 * 20L);
+
     }
 }

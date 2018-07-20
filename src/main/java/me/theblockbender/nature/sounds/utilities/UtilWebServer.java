@@ -18,6 +18,7 @@ package me.theblockbender.nature.sounds.utilities;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import me.theblockbender.nature.sounds.NatureSounds;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 
@@ -39,81 +40,81 @@ public class UtilWebServer {
         this.main = main;
     }
 
+
     // -------------------------------------------- //
     // WEB HANDLERS
     // -------------------------------------------- //
-    public boolean start() {
+    public void start() {
         ip = main.getServer().getIp();
         if (ip == null || ip.equals("")) ip = "localhost";
         try {
             port = main.getConfig().getInt("port");
         } catch (Exception ex) {
             main.outputError("Invalid port configured in the config.yml");
-            return false;
+            return;
         }
-        try {
-            httpServer = Vertx.vertx().createHttpServer();
-            httpServer.requestHandler(httpServerRequest -> {
-                main.debug("------------------------------------------");
-                main.debug("http request of " + httpServerRequest.uri());
-                if (httpServerRequest.uri().contains("/favicon.ico")) {
-                    main.debug("favicon request");
-                    httpServerRequest.response().setStatusCode(401);
-                    httpServerRequest.response().end();
-                } else {
-                    if (!httpServerRequest.uri().contains("/")) {
-                        main.debug("uri did not contain a /.");
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+            try {
+                httpServer = Vertx.vertx().createHttpServer();
+                httpServer.requestHandler(httpServerRequest -> {
+                    main.debug("------------------------------------------");
+                    main.debug("http request of " + httpServerRequest.uri());
+                    if (httpServerRequest.uri().contains("/favicon.ico")) {
+                        main.debug("favicon request");
                         httpServerRequest.response().setStatusCode(401);
                         httpServerRequest.response().end();
                     } else {
-                        String[] parts = httpServerRequest.uri().split("/");
-                        main.debug("parts length = " + parts.length);
-                        if (parts.length != 2) {
-                            main.debug("uri did not contain a token");
+                        if (!httpServerRequest.uri().contains("/")) {
+                            main.debug("uri did not contain a /.");
                             httpServerRequest.response().setStatusCode(401);
                             httpServerRequest.response().end();
                         } else {
-                            String token = parts[1];
-                            main.debug("token = " + token);
-                            if (UtilToken.isValidToken(token)) {
-                                main.debug("token is valid, sending file.");
-                                httpServerRequest.response().sendFile(getFileLocation());
-                            } else {
-                                main.debug("token is invalid.");
+                            String[] parts = httpServerRequest.uri().split("/");
+                            main.debug("parts length = " + parts.length);
+                            if (parts.length != 2) {
+                                main.debug("uri did not contain a token");
                                 httpServerRequest.response().setStatusCode(401);
                                 httpServerRequest.response().end();
+                            } else {
+                                String token = parts[1];
+                                main.debug("token = " + token);
+                                if (UtilToken.isValidToken(token)) {
+                                    main.debug("token is valid, sending file.");
+                                    httpServerRequest.response().sendFile(getFileLocation());
+                                } else {
+                                    main.debug("token is invalid.");
+                                    httpServerRequest.response().setStatusCode(401);
+                                    httpServerRequest.response().end();
+                                }
                             }
                         }
                     }
-                }
-                main.debug("------------------------------------------");
-            });
-            httpServer.listen(port);
-        } catch (Exception ex) {
-            main.outputError("Unable to bind to port. Please assign the plugin to a different port!");
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
+                    main.debug("------------------------------------------");
+                });
+                httpServer.listen(port);
+            } catch (Exception ex) {
+                main.outputError("Unable to bind to port. Please assign the plugin to a different port!");
+                ex.printStackTrace();
+            }
+        });
     }
 
-    // TODO this does not unassign the web server from the port.
     public void stop() {
-        httpServer.close();
+        Bukkit.getServer().getScheduler().runTaskAsynchronously(main, () -> httpServer.close());
     }
 
     // -------------------------------------------- //
     // GETTERS
     // -------------------------------------------- //
-    public String getFileLocation() {
+    public final String getFileLocation() {
         return main.getDataFolder().getPath() + File.separator + "web" + File.separator + "rp.zip";
     }
 
-    String getUnzippedFileLocation() {
+    final String getUnzippedFileLocation() {
         return main.getDataFolder().getPath() + File.separator + "web" + File.separator + "rp";
     }
 
-    File getWebDirectory() {
+    final File getWebDirectory() {
         return new File(main.getDataFolder().getPath() + File.separator + "web");
     }
 }

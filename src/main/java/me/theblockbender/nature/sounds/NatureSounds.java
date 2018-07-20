@@ -79,6 +79,8 @@ public class NatureSounds extends JavaPlugin {
 
     private void registerWebServer() {
         utilWebServer = new UtilWebServer(this);
+        utilResourcePack.addAllFilesToPack();
+        utilWebServer.start();
     }
 
     private void registerCommands() {

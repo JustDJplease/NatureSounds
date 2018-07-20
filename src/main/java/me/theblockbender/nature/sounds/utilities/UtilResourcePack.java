@@ -21,6 +21,7 @@ import me.theblockbender.nature.sounds.NatureSounds;
 import me.theblockbender.nature.sounds.Sound;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.bukkit.Bukkit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -44,35 +45,37 @@ public class UtilResourcePack {
     // MAIN METHOD
     // -------------------------------------------- //
     public void addAllFilesToPack() {
-        long timeStart = System.currentTimeMillis();
-        main.debug("Task started: Generating the resource pack");
-        deleteOldFolders();
-        main.debug("[DONE] Old folder deleted");
-        createPackBase();
-        main.debug("[DONE] Pack template created in /web/rp");
-        main.debug("Adding all loaded sounds to the resource pack...");
-        for (Sound sound : main.getSounds()) {
-            main.debug("Adding sound " + sound.getFileName() + "...");
-            addFileToPack(sound);
-        }
-        main.debug("[DONE] All sounds are added to /web/rp");
-        try {
-            zipFolder();
-        } catch (Exception e) {
-            main.outputError("Unable to zip the resource pack!");
-            e.printStackTrace();
-        }
-        main.debug("[DONE] Zipping completed!");
-        main.debug("Deleting /web/rp folder...");
-        deleteDir(main.utilWebServer.getUnzippedFileLocation());
-        main.debug("[DONE] RESOURCE PACK SAVED!");
-        if (UtilZip.isValid(new File(main.utilWebServer.getFileLocation()))) {
-            main.debug("[SUCCES] PACK VALIDATED!");
-        } else {
-            main.debug("[ERROR] PACK INVALID!");
-        }
-        Long timeTaken = System.currentTimeMillis() - timeStart;
-        main.debug("(took " + timeTaken + " ms!)");
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+            long timeStart = System.currentTimeMillis();
+            main.debug("Task started: Generating the resource pack");
+            deleteOldFolders();
+            main.debug("[DONE] Old folder deleted");
+            createPackBase();
+            main.debug("[DONE] Pack template created in /web/rp");
+            main.debug("Adding all loaded sounds to the resource pack...");
+            for (Sound sound : main.getSounds()) {
+                main.debug("Adding sound " + sound.getFileName() + "...");
+                addFileToPack(sound);
+            }
+            main.debug("[DONE] All sounds are added to /web/rp");
+            try {
+                zipFolder();
+            } catch (Exception e) {
+                main.outputError("Unable to zip the resource pack!");
+                e.printStackTrace();
+            }
+            main.debug("[DONE] Zipping completed!");
+            main.debug("Deleting /web/rp folder...");
+            deleteDir(main.utilWebServer.getUnzippedFileLocation());
+            main.debug("[DONE] RESOURCE PACK SAVED!");
+            if (UtilZip.isValid(new File(main.utilWebServer.getFileLocation()))) {
+                main.debug("[SUCCES] PACK VALIDATED!");
+            } else {
+                main.debug("[ERROR] PACK INVALID!");
+            }
+            Long timeTaken = System.currentTimeMillis() - timeStart;
+            main.debug("(took " + timeTaken + " ms!)");
+        });
     }
 
     // -------------------------------------------- //

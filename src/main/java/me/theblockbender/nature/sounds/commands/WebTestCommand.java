@@ -83,11 +83,7 @@ public class WebTestCommand implements CommandExecutor {
         switch (args[0].toLowerCase()) {
             case "start":
                 sender.sendMessage("[Test] Starting web server...");
-                if (main.utilWebServer.start()) {
-                    sender.sendMessage("[Test] Started web server!");
-                    return true;
-                }
-                sender.sendMessage("[Test] Failed to start web server! See the console for errors!");
+                main.utilWebServer.start();
                 return true;
             case "stop":
                 sender.sendMessage("[Test] Stopping web server...");
