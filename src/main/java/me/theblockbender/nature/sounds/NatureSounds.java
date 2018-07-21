@@ -15,6 +15,7 @@
 
 package me.theblockbender.nature.sounds;
 
+import co.aikar.commands.BukkitCommandManager;
 import me.theblockbender.nature.sounds.commands.WebTestCommand;
 import me.theblockbender.nature.sounds.listeners.PlayerListener;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
@@ -84,7 +85,8 @@ public class NatureSounds extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("web").setExecutor(new WebTestCommand(this));
+        BukkitCommandManager commandManager = new BukkitCommandManager(this);
+        commandManager.registerCommand(new WebTestCommand(this));
     }
 
     private void registerEvents() {
