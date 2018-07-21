@@ -15,8 +15,15 @@
 
 package me.theblockbender.nature.sounds.listeners;
 
+import me.theblockbender.nature.sounds.Lang;
 import me.theblockbender.nature.sounds.NatureSounds;
+import me.theblockbender.nature.sounds.utilities.UtilText;
 import me.theblockbender.nature.sounds.utilities.UtilToken;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,8 +55,15 @@ public class PlayerListener implements Listener {
     public void PlayerJoin(PlayerJoinEvent event) {
         Bukkit.getScheduler().runTaskLater(main, () -> {
             Player player = event.getPlayer();
-            player.sendMessage("§6§lWould you like to hear nature sounds on this server?");
-            // TODO lang file + textcomponents
+            player.sendMessage(Lang.format("header"));
+            player.sendMessage(" ");
+            UtilText.sendCenteredMessage(player, "§7Can we send you a resource-pack?");
+            UtilText.sendCenteredMessage(player, "§7It will allow you to hear various nature sounds!");
+            player.sendMessage(" ");
+            BaseComponent[] confirm = new ComponentBuilder("Yes, go ahead!").color(ChatColor.GREEN).bold(true).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click this message to accept the resource-pack!").color(ChatColor.GREEN).create())).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/web accept")).append("   ").reset().append("No, thanks!").color(ChatColor.RED).bold(true).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click this message to reject the resource-pack").color(ChatColor.RED).create())).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/web reject")).create();
+            player.spigot().sendMessage(confirm);
+            player.sendMessage(" ");
+            player.sendMessage(Lang.format("header"));
         }, 2 * 20L);
 
     }

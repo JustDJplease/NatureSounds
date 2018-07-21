@@ -16,6 +16,7 @@
 package me.theblockbender.nature.sounds;
 
 import co.aikar.commands.BukkitCommandManager;
+import co.aikar.commands.MessageType;
 import me.theblockbender.nature.sounds.commands.WebTestCommand;
 import me.theblockbender.nature.sounds.listeners.PlayerListener;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
@@ -23,6 +24,7 @@ import me.theblockbender.nature.sounds.utilities.SoundTask;
 import me.theblockbender.nature.sounds.utilities.UtilResourcePack;
 import me.theblockbender.nature.sounds.utilities.UtilWebServer;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -84,8 +86,13 @@ public class NatureSounds extends JavaPlugin {
         utilWebServer.start();
     }
 
+    @SuppressWarnings("deprecation")
     private void registerCommands() {
         BukkitCommandManager commandManager = new BukkitCommandManager(this);
+        commandManager.enableUnstableAPI("help");
+        commandManager.setFormat(MessageType.HELP, ChatColor.GRAY, ChatColor.YELLOW, ChatColor.GOLD);
+        commandManager.setFormat(MessageType.INFO, ChatColor.GRAY, ChatColor.YELLOW, ChatColor.GOLD);
+        commandManager.setFormat(MessageType.SYNTAX, ChatColor.GRAY, ChatColor.YELLOW, ChatColor.GOLD);
         commandManager.registerCommand(new WebTestCommand(this));
     }
 

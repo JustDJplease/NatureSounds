@@ -56,7 +56,7 @@ public class ResourcePackListener implements Listener {
                 player.sendMessage(Lang.format("resourcepack.rejected"));
                 break;
             case ACCEPTED:
-                main.playersWithRP.remove(uuid);
+                main.playersWithRP.add(uuid);
                 player.sendMessage(Lang.format("resourcepack.downloading"));
                 break;
         }

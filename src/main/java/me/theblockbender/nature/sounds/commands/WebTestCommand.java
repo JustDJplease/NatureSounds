@@ -57,36 +57,42 @@ public class WebTestCommand extends BaseCommand {
     @Description("Start the web server")
     @CommandPermission("nature.admin.web")
     public void commandStartWeb(CommandSender sender) {
-        sender.sendMessage("[Test] Starting web server...");
+        sender.sendMessage("§e» §7Starting web server...");
         main.utilWebServer.start();
-        sender.sendMessage("[Test] Started web server!");
+        sender.sendMessage("§e» §7Started web server!");
     }
 
     @Subcommand("stop")
     @Description("Stops the web server")
     @CommandPermission("nature.admin.web")
     public void commandStopWeb(CommandSender sender) {
-        sender.sendMessage("[Test] Stopping web server...");
+        sender.sendMessage("§e» §7Stopping web server...");
         main.utilWebServer.stop();
-        sender.sendMessage("[Test] Stopped web server!");
+        sender.sendMessage("§e» §7Stopped web server!");
     }
 
     @Subcommand("generate")
     @Description("Stops the web server")
     @CommandPermission("nature.admin.web")
     public void commandGenerate(CommandSender sender) {
-        sender.sendMessage("[Test] Generating pack...");
+        sender.sendMessage("§e» §7Generating pack...");
         main.utilResourcePack.addAllFilesToPack();
-        sender.sendMessage("[Test] Done!");
+        sender.sendMessage("§e» §7Done!");
     }
 
-    @Subcommand("send")
+    @Subcommand("accept")
     @Description("Sends the resource pack to the player executing the command")
     @CommandPermission("nature.admin.web")
-    public void commandLinkWeb(Player player) {
-        player.sendMessage("[Test] Sending you the resource pack...");
+    public void commandAccept(Player player) {
+        player.sendMessage("§e» §7Sending the resource-pack to you!");
         String url = "http://" + main.utilWebServer.ip + ":" + main.utilWebServer.port + "/" + UtilToken.getToken(player.getUniqueId());
-        player.sendMessage("Url: " + url);
         player.setResourcePack(url, UtilChecksum.getChecksum(UtilChecksum.fileToByteArray(main.utilWebServer.getFileLocation())));
+    }
+
+    @Subcommand("reject")
+    @Description("Sends a rejected message to the player executing the command")
+    @CommandPermission("nature.admin.web")
+    public void commandReject(Player player) {
+        player.sendMessage("§e» §7You have rejected the resource-pack. If you change your mind, click the accept message above!");
     }
 }
