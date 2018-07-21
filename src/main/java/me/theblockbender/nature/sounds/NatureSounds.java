@@ -90,9 +90,9 @@ public class NatureSounds extends JavaPlugin {
     private void registerCommands() {
         BukkitCommandManager commandManager = new BukkitCommandManager(this);
         commandManager.enableUnstableAPI("help");
-        commandManager.setFormat(MessageType.HELP, ChatColor.GRAY, ChatColor.YELLOW, ChatColor.GOLD);
-        commandManager.setFormat(MessageType.INFO, ChatColor.GRAY, ChatColor.YELLOW, ChatColor.GOLD);
-        commandManager.setFormat(MessageType.SYNTAX, ChatColor.GRAY, ChatColor.YELLOW, ChatColor.GOLD);
+        commandManager.setFormat(MessageType.HELP, ChatColor.GRAY, ChatColor.GOLD, ChatColor.YELLOW);
+        commandManager.setFormat(MessageType.INFO, ChatColor.GRAY, ChatColor.GOLD, ChatColor.YELLOW);
+        commandManager.setFormat(MessageType.SYNTAX, ChatColor.GRAY, ChatColor.GOLD, ChatColor.YELLOW);
         commandManager.registerCommand(new WebTestCommand(this));
     }
 
