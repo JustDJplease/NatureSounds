@@ -60,7 +60,7 @@ public class PlayerListener implements Listener {
             UtilText.sendCenteredMessage(player, "§7Can we send you a resource-pack?");
             UtilText.sendCenteredMessage(player, "§7It will allow you to hear various nature sounds!");
             player.sendMessage(" ");
-            BaseComponent[] confirm = new ComponentBuilder("Yes, go ahead!").color(ChatColor.GREEN).bold(true).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click this message to accept the resource-pack!").color(ChatColor.GREEN).create())).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/web accept")).append("   ").reset().append("No, thanks!").color(ChatColor.RED).bold(true).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click this message to reject the resource-pack").color(ChatColor.RED).create())).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/web reject")).create();
+            BaseComponent[] confirm = new ComponentBuilder("            ").reset().append("Yes, go ahead!").color(ChatColor.GREEN).bold(true).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click this message to accept the resource-pack!").color(ChatColor.GREEN).create())).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/web accept")).append("   ").reset().append("No, thanks!").color(ChatColor.RED).bold(true).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click this message to reject the resource-pack").color(ChatColor.RED).create())).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/web reject")).create();
             player.spigot().sendMessage(confirm);
             player.sendMessage(" ");
             player.sendMessage(Lang.format("header"));

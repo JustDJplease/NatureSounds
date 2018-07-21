@@ -48,6 +48,6 @@ public class WorldCondition {
     // -------------------------------------------- //
     public boolean isTrue(World world) {
         //noinspection SuspiciousMethodCalls
-        return worlds.contains(world);
+        return worlds.contains(world.getName());
     }
 }
