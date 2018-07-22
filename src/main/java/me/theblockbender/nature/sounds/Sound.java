@@ -274,7 +274,6 @@ public class Sound {
     // RUNNER
     // -------------------------------------------- //
     public boolean run(Player player, Location location) {
-        main.debug("Trying to run a sound");
         if (!isLoaded()) return false;
         main.debug("+ Sound loaded");
         World world = location.getWorld();

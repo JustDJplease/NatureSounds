@@ -64,6 +64,7 @@ public class NatureSounds extends JavaPlugin {
         errorCounter = 0;
         random = new Random();
         createFiles();
+        registerLanguage();
         registerEvents();
         registerCommands();
         registerSounds();
@@ -71,6 +72,22 @@ public class NatureSounds extends JavaPlugin {
         utilResourcePack = new UtilResourcePack(this);
         registerWebServer();
         showErrorsFound();
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private void registerLanguage() {
+        File messagesFile = new File(getDataFolder(), "language.yml");
+        if (!messagesFile.exists()) {
+            messagesFile.getParentFile().mkdirs();
+            saveResource("language.yml", false);
+        }
+        YamlConfiguration messages = new YamlConfiguration();
+        try {
+            messages.load(messagesFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+        Lang.languageFile = messages;
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

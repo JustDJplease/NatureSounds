@@ -81,7 +81,7 @@ public class WebTestCommand extends BaseCommand {
     }
 
     @Subcommand("accept")
-    @Description("Sends the resource pack to the player executing the command")
+    @Description("Sends the resource pack to the player")
     @CommandPermission("nature.admin.web")
     public void commandAccept(Player player) {
         player.sendMessage("§e» §7Sending the resource-pack to you!");
@@ -90,7 +90,7 @@ public class WebTestCommand extends BaseCommand {
     }
 
     @Subcommand("reject")
-    @Description("Sends a rejected message to the player executing the command")
+    @Description("Sends a rejected message to the player")
     @CommandPermission("nature.admin.web")
     public void commandReject(Player player) {
         player.sendMessage("§e» §7You have rejected the resource-pack. If you change your mind, click the accept message above!");

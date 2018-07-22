@@ -15,12 +15,23 @@
 
 package me.theblockbender.nature.sounds;
 
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+
 public class Lang {
 
+    private static FileConfiguration languageFile;
+
     // -------------------------------------------- //
-    // MESSAGE FORMATTER //TODO
+    // MESSAGE FORMATTERS
     // -------------------------------------------- //
     public static String format(String key) {
-        return key;
+        if (!languageFile.contains(key)) return "§cError! Message §e" + key + "§c was not found!";
+        String message = languageFile.getString(key);
+        return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    public static String formatWithPrefix(String key) {
+        return format("prefix") + format(key);
     }
 }
