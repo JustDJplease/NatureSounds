@@ -5,11 +5,12 @@
 
 # ----------------------------------------------------------------- #
 # SOUND OPTIONS
-# name: Names of the sounds to be played. Without the .ogg extension.
+# name: Names of the sounds to be played. Without the .ogg extension. (Should contain at least 1 entry)
 # If you place multiple entries in this list, a random one will be chosen every time.
 # minVolume: The minimum volume this sound should be played at. (Should not be negative)
 # maxVolume: The maximum volume this sound should be played at. (Should not be negative)
 # pitch: The pitch this sound should be played at. (Should be between 0 and 2)
+# subtitle: The message to appear on screen if players enabled subtitles. (Should not be to long)
 # ----------------------------------------------------------------- #
 sound:
   names:
@@ -20,6 +21,7 @@ sound:
   minVolume: 0.75
   maxVolume: 1.0
   pitch: 1.0
+  subtitle: "A mysterious sound played!"
 
 # ----------------------------------------------------------------- #
 # CHANCE

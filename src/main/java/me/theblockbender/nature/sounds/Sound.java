@@ -50,6 +50,7 @@ public class Sound {
     private Float minVolume;
     private Float maxVolume;
     private Float pitch;
+    private String subtitle;
 
     // -------------------------------------------- //
     // CONSTRUCTOR
@@ -119,6 +120,15 @@ public class Sound {
             }
         } catch (Exception ex) {
             main.outputError("Invalid pitch inside soundconfiguration file " + fileName);
+            return;
+        }
+        // -------------------------------------------- //
+        // SUBTITLE
+        // -------------------------------------------- //
+        try {
+            subtitle = soundConfiguration.getString("sound.subtitle");
+        } catch (Exception ex) {
+            main.outputError("Invalid subtitle inside soundconfiguration file " + fileName);
             return;
         }
         // -------------------------------------------- //
@@ -271,6 +281,10 @@ public class Sound {
 
     private String getRandomSoundName() {
         return soundNames.get(main.random.nextInt(soundNames.size()));
+    }
+
+    public String getSubtitle() {
+        return subtitle;
     }
 
     // -------------------------------------------- //

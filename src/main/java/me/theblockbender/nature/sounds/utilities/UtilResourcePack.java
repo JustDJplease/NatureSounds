@@ -145,7 +145,7 @@ public class UtilResourcePack {
             if (!file.exists()) {
                 main.outputError("Could not find associated " + file.getName() + " sound file!");
             } else {
-                addSoundToJson(soundName);
+                addSoundToJson(soundName, sound.getSubtitle());
                 copySoundIntoPack(file);
                 soundsAdded++;
             }
@@ -175,7 +175,7 @@ public class UtilResourcePack {
         }
     }
 
-    private void addSoundToJson(String soundName) {
+    private void addSoundToJson(String soundName, String subtitle) {
         File soundsJSON = new File(main.utilWebServer.getUnzippedFileLocation() + File.separator + "assets" + File.separator + "minecraft" + File.separator, "sounds.json");
         if (!soundsJSON.exists()) {
             main.outputError("File sounds.json did not exist in template pack!");
@@ -204,6 +204,7 @@ public class UtilResourcePack {
         array.add(soundProperties);
         JSONObject soundGroup = new JSONObject();
         soundGroup.put("sounds", array);
+        soundGroup.put("subtitle", subtitle);
         file.put(soundName, soundGroup);
         writeJsonFile(soundsJSON, file.toString());
     }

@@ -52,11 +52,6 @@ public class NatureSounds extends JavaPlugin {
     private int errorCounter;
     private Logger logger;
 
-    @Deprecated
-    public static void lazyStaticLog(String s) {
-        Bukkit.getLogger().info(s);
-    }
-
     // -------------------------------------------- //
     // ENABLING
     // -------------------------------------------- //

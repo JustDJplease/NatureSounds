@@ -15,7 +15,6 @@
 
 package me.theblockbender.nature.sounds.conditions;
 
-import me.theblockbender.nature.sounds.NatureSounds;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
 
@@ -53,7 +52,6 @@ public class BiomeCondition {
     // -------------------------------------------- //
     public boolean isTrue(Location location) {
         Biome biome = location.getWorld().getBiome(location.getBlockX(), location.getBlockZ());
-        NatureSounds.lazyStaticLog("Biome at location is " + biome.name());
         //noinspection SuspiciousMethodCalls
         return biomes.contains(biome.name());
     }
