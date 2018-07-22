@@ -21,6 +21,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sound {
@@ -45,7 +46,7 @@ public class Sound {
     // -------------------------------------------- //
     // SOUND PROPERTIES
     // -------------------------------------------- //
-    private String soundName;
+    private List<String> soundNames = new ArrayList<>();
     private Float minVolume;
     private Float maxVolume;
     private Float pitch;
@@ -76,7 +77,7 @@ public class Sound {
         // SOUND NAME
         // -------------------------------------------- //
         try {
-            soundName = soundConfiguration.getString("sound.name");
+            soundNames = soundConfiguration.getStringList("sound.name");
         } catch (NullPointerException ex) {
             main.outputError("Invalid sound name inside soundconfiguration file " + fileName);
             return;
@@ -264,8 +265,12 @@ public class Sound {
         return minVolume + main.random.nextFloat() * (maxVolume - minVolume);
     }
 
-    public String getSoundName() {
-        return soundName;
+    public List<String> getSoundNames() {
+        return soundNames;
+    }
+
+    private String getRandomSoundName() {
+        return soundNames.get(main.random.nextInt(soundNames.size()));
     }
 
     // -------------------------------------------- //
@@ -294,7 +299,7 @@ public class Sound {
         }
         double random = 100 * main.random.nextDouble();
         if (random <= chance) {
-            playSound(player, location, soundName, minVolume, maxVolume, pitch);
+            playSound(player, location, getRandomSoundName(), minVolume, maxVolume, pitch);
         }
     }
 

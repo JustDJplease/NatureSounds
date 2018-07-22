@@ -54,8 +54,7 @@ public class UtilResourcePack {
             main.debug("| - Created template");
             int soundsAdded = 0;
             for (Sound sound : main.getSounds()) {
-                addFileToPack(sound);
-                soundsAdded++;
+                soundsAdded = soundsAdded + addFilesToPack(sound);
             }
             main.debug("| - Added " + soundsAdded + " sounds to template");
             try {
@@ -139,14 +138,19 @@ public class UtilResourcePack {
         templateZip.delete();
     }
 
-    private void addFileToPack(Sound sound) {
-        File file = new File(main.getDataFolder() + File.separator + "sounds" + File.separator + sound.getSoundName() + ".ogg");
-        if (!file.exists()) {
-            main.outputError("Could not find associated " + file.getName() + " sound file!");
-            return;
+    private int addFilesToPack(Sound sound) {
+        int soundsAdded = 0;
+        for (String soundName : sound.getSoundNames()) {
+            File file = new File(main.getDataFolder() + File.separator + "sounds" + File.separator + soundName + ".ogg");
+            if (!file.exists()) {
+                main.outputError("Could not find associated " + file.getName() + " sound file!");
+            } else {
+                addSoundToJson(soundName);
+                copySoundIntoPack(file);
+                soundsAdded++;
+            }
         }
-        addSoundToJson(sound);
-        copySoundIntoPack(file);
+        return soundsAdded;
     }
 
     private void copySoundIntoPack(File file) {
@@ -171,7 +175,7 @@ public class UtilResourcePack {
         }
     }
 
-    private void addSoundToJson(Sound sound) {
+    private void addSoundToJson(String soundName) {
         File soundsJSON = new File(main.utilWebServer.getUnzippedFileLocation() + File.separator + "assets" + File.separator + "minecraft" + File.separator, "sounds.json");
         if (!soundsJSON.exists()) {
             main.outputError("File sounds.json did not exist in template pack!");
@@ -194,13 +198,13 @@ public class UtilResourcePack {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JSONObject file = gson.fromJson(rawJson, JSONObject.class);
         JSONObject soundProperties = new JSONObject();
-        soundProperties.put("name", sound.getSoundName());
+        soundProperties.put("name", soundName);
         soundProperties.put("stream", true);
         JSONArray array = new JSONArray();
         array.add(soundProperties);
         JSONObject soundGroup = new JSONObject();
         soundGroup.put("sounds", array);
-        file.put(sound.getSoundName(), soundGroup);
+        file.put(soundName, soundGroup);
         writeJsonFile(soundsJSON, file.toString());
     }
 
