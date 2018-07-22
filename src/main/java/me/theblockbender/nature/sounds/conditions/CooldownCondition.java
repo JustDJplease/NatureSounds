@@ -37,7 +37,7 @@ public class CooldownCondition {
     // PARSING DATA
     // -------------------------------------------- //
     public boolean parse() {
-        return cooldown > 0L;
+        return cooldown >= 0L;
     }
 
     // -------------------------------------------- //

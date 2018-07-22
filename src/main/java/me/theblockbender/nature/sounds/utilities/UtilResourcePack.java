@@ -47,34 +47,33 @@ public class UtilResourcePack {
     public void addAllFilesToPack() {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             long timeStart = System.currentTimeMillis();
-            main.debug("Task started: Generating the resource pack");
+            main.debug("| Generating Resource Pack:");
             deleteOldFolders();
-            main.debug("[DONE] Old folder deleted");
+            main.debug("| - Cleaned up old folders");
             createPackBase();
-            main.debug("[DONE] Pack template created in /web/rp");
-            main.debug("Adding all loaded sounds to the resource pack...");
+            main.debug("| - Created template");
+            int soundsAdded = 0;
             for (Sound sound : main.getSounds()) {
-                main.debug("Adding sound " + sound.getFileName() + "...");
                 addFileToPack(sound);
+                soundsAdded++;
             }
-            main.debug("[DONE] All sounds are added to /web/rp");
+            main.debug("| - Added " + soundsAdded + " sounds to template");
             try {
                 zipFolder();
+                main.debug("| - Zipped folder");
             } catch (Exception e) {
                 main.outputError("Unable to zip the resource pack!");
                 e.printStackTrace();
             }
-            main.debug("[DONE] Zipping completed!");
-            main.debug("Deleting /web/rp folder...");
             deleteDir(main.utilWebServer.getUnzippedFileLocation());
-            main.debug("[DONE] RESOURCE PACK SAVED!");
+            main.debug("| - Cleaned up old folders");
             if (UtilZip.isValid(new File(main.utilWebServer.getFileLocation()))) {
-                main.debug("[SUCCES] PACK VALIDATED!");
+                main.debug("| Checked pack: valid");
             } else {
-                main.debug("[ERROR] PACK INVALID!");
+                main.debug("| Checked pack: invalid");
             }
             Long timeTaken = System.currentTimeMillis() - timeStart;
-            main.debug("(took " + timeTaken + " ms!)");
+            main.debug("| Time taken: " + timeTaken + " ms.");
         });
     }
 
@@ -82,50 +81,37 @@ public class UtilResourcePack {
     // SUB-METHODS
     // -------------------------------------------- //
     private void deleteOldFolders() {
-        main.debug("Deleting old /web/rp folder...");
         deleteDir(main.utilWebServer.getUnzippedFileLocation());
-        main.debug("Deleting old /web/rp.zip folder...");
         deleteZip(main.utilWebServer.getFileLocation());
     }
 
     private void deleteZip(String path) {
         File file = new File(path);
-        if (!file.exists()) {
-            main.debug("Folder did not exist, skipping...");
-            return;
-        }
+        if (!file.exists()) return;
         file.delete();
-        main.debug("Folder deleted");
     }
 
     private void deleteDir(String path) {
         File file = new File(path);
-        if (!file.exists()) {
-            main.debug("Folder did not exist, skipping...");
-            return;
-        }
+        if (!file.exists()) return;
         try {
             FileUtils.forceDelete(file);
-            main.debug("Folder deleted");
         } catch (IOException e) {
-            main.debug("Could not delete folder");
+            main.outputError("Could not delete folder " + path);
             e.printStackTrace();
         }
     }
 
     private void zipFolder() {
-        main.debug("Zipping /web/rp to /web/rp.zip ...");
         try {
             UtilZip.zipFolder(main.utilWebServer.getUnzippedFileLocation(), main.utilWebServer.getFileLocation());
-            main.debug("Zipped!");
         } catch (Exception e) {
-            main.debug("Failed to zip file!");
+            main.outputError("Failed to zip files!");
             e.printStackTrace();
         }
     }
 
     private void createPackBase() {
-        main.debug("Creating new /web/template.zip from /resource/template_pack.zip ...");
         File templateZip = new File(main.utilWebServer.getWebDirectory(), "template.zip");
         if (!templateZip.exists()) {
             templateZip.getParentFile().mkdirs();
@@ -139,31 +125,24 @@ public class UtilResourcePack {
                 }
                 out.close();
                 in.close();
-                main.debug("/web/template.zip created");
             } catch (IOException ex) {
-                main.debug("Could not save /web/template.zip!");
+                main.outputError("Could not save template pack!");
                 ex.printStackTrace();
             }
-        } else {
-            main.debug("Folder already contained a template.zip, skipping...");
         }
         try {
-            main.debug("Unzipping /web/template.zip to /web/rp ...");
             UtilZip.unzip(templateZip, main.utilWebServer.getUnzippedFileLocation());
-            main.debug("Unzipped!");
         } catch (IOException e) {
-            main.outputError("Unable to unzip template resource pack!");
+            main.outputError("Unable to unzip template pack!");
             e.printStackTrace();
         }
-        main.debug("Deleting /web/template.zip ...");
         templateZip.delete();
-        main.debug("File deleted");
     }
 
     private void addFileToPack(Sound sound) {
         File file = new File(main.getDataFolder() + File.separator + "sounds" + File.separator + sound.getSoundName() + ".ogg");
         if (!file.exists()) {
-            main.debug("Could not find associated " + file.getName() + " file!");
+            main.outputError("Could not find associated " + file.getName() + " sound file!");
             return;
         }
         addSoundToJson(sound);
@@ -171,11 +150,7 @@ public class UtilResourcePack {
     }
 
     private void copySoundIntoPack(File file) {
-        main.debug(" - copying sound into the pack ...");
-        if (!file.exists()) {
-            main.debug("Sound does not exist!");
-            return;
-        }
+        if (!file.exists()) return;
         File packLocation = new File(main.utilWebServer.getUnzippedFileLocation() + File.separator + "assets" + File.separator + "minecraft" + File.separator + "sounds", file.getName());
         if (!packLocation.exists()) {
             packLocation.getParentFile().mkdirs();
@@ -189,21 +164,17 @@ public class UtilResourcePack {
                 }
                 out.close();
                 in.close();
-                main.debug(" - copied sound to the pack.");
             } catch (IOException ex) {
                 main.outputError("Unable to save " + file.getName() + " into the resource pack!");
                 ex.printStackTrace();
             }
-        } else {
-            main.debug(" - pack already contained this sound file.");
         }
     }
 
     private void addSoundToJson(Sound sound) {
-        main.debug(" - adding sound to sounds.json ...");
         File soundsJSON = new File(main.utilWebServer.getUnzippedFileLocation() + File.separator + "assets" + File.separator + "minecraft" + File.separator, "sounds.json");
         if (!soundsJSON.exists()) {
-            main.debug("sounds.json did not exist!");
+            main.outputError("File sounds.json did not exist in template pack!");
             return;
         }
         InputStream is = null;
@@ -230,8 +201,6 @@ public class UtilResourcePack {
         JSONObject soundGroup = new JSONObject();
         soundGroup.put("sounds", array);
         file.put(sound.getSoundName(), soundGroup);
-        main.debug(" - added sound to json file.");
-        main.debug(" - saving json file ...");
         writeJsonFile(soundsJSON, file.toString());
     }
 
@@ -245,13 +214,12 @@ public class UtilResourcePack {
             bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(json);
         } catch (IOException e) {
-            main.debug("failed to save sounds.json!");
+            main.outputError("Failed to save sounds.json!");
             e.printStackTrace();
         } finally {
             try {
                 if (bufferedWriter != null) {
                     bufferedWriter.close();
-                    main.debug(" - sounds.json saved.");
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();

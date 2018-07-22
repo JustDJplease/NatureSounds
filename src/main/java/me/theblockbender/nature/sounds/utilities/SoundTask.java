@@ -47,13 +47,7 @@ public class SoundTask implements Runnable {
                 if (player == null) {
                     cleanup.add(uuid);
                 } else {
-                    main.debug("----------------------------");
-                    if (sound.run(player, player.getLocation())) {
-                        main.debug("TRUE - Sound played");
-                    } else {
-                        main.debug("False - Sound did not play");
-                    }
-                    main.debug("----------------------------");
+                    sound.run(player, player.getLocation());
                 }
             }
         }

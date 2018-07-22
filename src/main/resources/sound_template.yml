@@ -9,7 +9,7 @@
 # pitch: The pitch this sound should be played at. (Should be between 0 and 2)
 # ----------------------------------------------------------------- #
 sound:
-  name: "ambient_forest_birds"
+  name: "sound_file_name_no_ogg_extension"
   minVolume: 0.75
   maxVolume: 1.0
   pitch: 1.0
@@ -18,7 +18,7 @@ sound:
 # CHANCE
 # chance: How likely this sound is to be played. (0 = never, 100 = always)
 # ----------------------------------------------------------------- #
-chance: 100
+chance: 50
 
 # ----------------------------------------------------------------- #
 # CONDITIONS
@@ -41,6 +41,9 @@ condition:
     above: 0
     below: 256
   biome:
+  - BADLANDS
+  - BADLANDS_PLATEAU
+  - BEACH
   - BIRCH_FOREST
   - BIRCH_FOREST_HILLS
   - COLD_OCEAN

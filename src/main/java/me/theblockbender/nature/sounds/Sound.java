@@ -233,12 +233,10 @@ public class Sound {
         try {
             if (soundConfiguration.contains("condition.cooldown")) {
                 Long cooldown = soundConfiguration.getLong("condition.cooldown");
-                if (cooldown != 0) {
-                    cooldownCondition = new CooldownCondition(cooldown);
-                    if (!cooldownCondition.parse()) {
-                        main.outputError("Invalid cooldownCondition (< 0) inside soundconfiguration file " + fileName);
-                        return;
-                    }
+                cooldownCondition = new CooldownCondition(cooldown);
+                if (!cooldownCondition.parse()) {
+                    main.outputError("Invalid cooldownCondition (< 0) inside soundconfiguration file " + fileName);
+                    return;
                 }
             }
         } catch (Exception ex) {
@@ -273,39 +271,31 @@ public class Sound {
     // -------------------------------------------- //
     // RUNNER
     // -------------------------------------------- //
-    public boolean run(Player player, Location location) {
-        if (!isLoaded()) return false;
-        main.debug("+ Sound loaded");
+    public void run(Player player, Location location) {
+        if (!isLoaded()) return;
         World world = location.getWorld();
         if (weatherCondition != null) {
-            if (!weatherCondition.isTrue(world)) return false;
-            main.debug("+ Weather passed");
+            if (!weatherCondition.isTrue(world)) return;
         }
         if (timeCondition != null) {
-            if (!timeCondition.isTrue(world)) return false;
-            main.debug("+ Time passed");
+            if (!timeCondition.isTrue(world)) return;
         }
         if (biomeCondition != null) {
-            if (!biomeCondition.isTrue(location)) return false;
-            main.debug("+ Biome passed");
+            if (!biomeCondition.isTrue(location)) return;
         }
         if (altitudeCondition != null) {
-            if (!altitudeCondition.isTrue(location)) return false;
-            main.debug("+ Altitude passed");
+            if (!altitudeCondition.isTrue(location)) return;
         }
         if (weatherCondition != null) {
-            if (!worldCondition.isTrue(world)) return false;
-            main.debug("+ World passed");
+            if (!worldCondition.isTrue(world)) return;
         }
         if (cooldownCondition != null) {
-            if (cooldownCondition.isOnCooldown(player)) return false;
-            main.debug("+ Cooldown passed");
+            if (cooldownCondition.isOnCooldown(player)) return;
         }
         double random = 100 * main.random.nextDouble();
-        if (chance > random) return false;
-        main.debug("+ Chance passed");
-        playSound(player, location, soundName, minVolume, maxVolume, pitch);
-        return true;
+        if (random <= chance) {
+            playSound(player, location, soundName, minVolume, maxVolume, pitch);
+        }
     }
 
     private void playSound(Player player, Location location, String soundName, Float minVolume, Float maxVolume, Float pitch) {

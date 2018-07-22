@@ -57,39 +57,35 @@ public class UtilWebServer {
             try {
                 httpServer = Vertx.vertx().createHttpServer();
                 httpServer.requestHandler(httpServerRequest -> {
-                    main.debug("------------------------------------------");
-                    main.debug("http request of " + httpServerRequest.uri());
+                    main.debug("| HTTP Request:");
                     if (httpServerRequest.uri().contains("/favicon.ico")) {
-                        main.debug("favicon request");
+                        main.debug("| Rejected: Favicon sending");
                         httpServerRequest.response().setStatusCode(401);
                         httpServerRequest.response().end();
                     } else {
                         if (!httpServerRequest.uri().contains("/")) {
-                            main.debug("uri did not contain a /.");
+                            main.debug("| Rejected: Invalid URL");
                             httpServerRequest.response().setStatusCode(401);
                             httpServerRequest.response().end();
                         } else {
                             String[] parts = httpServerRequest.uri().split("/");
-                            main.debug("parts length = " + parts.length);
                             if (parts.length != 2) {
-                                main.debug("uri did not contain a token");
+                                main.debug("| Rejected: No token");
                                 httpServerRequest.response().setStatusCode(401);
                                 httpServerRequest.response().end();
                             } else {
                                 String token = parts[1];
-                                main.debug("token = " + token);
                                 if (UtilToken.isValidToken(token)) {
-                                    main.debug("token is valid, sending file.");
+                                    main.debug("| Sending file...");
                                     httpServerRequest.response().sendFile(getFileLocation());
                                 } else {
-                                    main.debug("token is invalid.");
+                                    main.debug("| Rejected: Invalid token");
                                     httpServerRequest.response().setStatusCode(401);
                                     httpServerRequest.response().end();
                                 }
                             }
                         }
                     }
-                    main.debug("------------------------------------------");
                 });
                 httpServer.listen(port);
             } catch (Exception ex) {
