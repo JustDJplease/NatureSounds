@@ -31,7 +31,7 @@ public class UtilResourcePack {
     // -------------------------------------------- //
     // INSTANCES & VARIABLES
     // -------------------------------------------- //
-    private NatureSounds main;
+    private final NatureSounds main;
 
     // -------------------------------------------- //
     // CONSTRUCTOR

@@ -24,7 +24,7 @@ public class BiomeCondition {
     // -------------------------------------------- //
     // DATA
     // -------------------------------------------- //
-    private List<String> biomes;
+    private final List<String> biomes;
 
     // -------------------------------------------- //
     // CONSTRUCTOR

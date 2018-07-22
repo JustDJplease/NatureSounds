@@ -29,7 +29,7 @@ public class SoundTask implements Runnable {
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    private NatureSounds main;
+    private final NatureSounds main;
 
     public SoundTask(NatureSounds main) {
         this.main = main;

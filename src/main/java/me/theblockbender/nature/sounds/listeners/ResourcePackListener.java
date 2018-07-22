@@ -29,7 +29,7 @@ public class ResourcePackListener implements Listener {
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    private NatureSounds main;
+    private final NatureSounds main;
 
     public ResourcePackListener(NatureSounds main) {
         this.main = main;

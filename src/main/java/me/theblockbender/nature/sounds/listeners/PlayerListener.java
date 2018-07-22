@@ -35,7 +35,7 @@ import java.util.UUID;
 
 public class PlayerListener implements Listener {
 
-    private NatureSounds main;
+    private final NatureSounds main;
 
     public PlayerListener(NatureSounds main) {
         this.main = main;

@@ -23,8 +23,8 @@ public class CooldownCondition {
     // -------------------------------------------- //
     // DATA
     // -------------------------------------------- //
-    private Map<UUID, Long> onCooldown = new HashMap<>();
-    private Long cooldown;
+    private final Map<UUID, Long> onCooldown = new HashMap<>();
+    private final Long cooldown;
 
     // -------------------------------------------- //
     // CONSTRUCTOR

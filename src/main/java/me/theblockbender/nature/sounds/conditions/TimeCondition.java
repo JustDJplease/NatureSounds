@@ -21,8 +21,8 @@ public class TimeCondition {
     // -------------------------------------------- //
     // DATA
     // -------------------------------------------- //
-    private Long before;
-    private Long after;
+    private final Long before;
+    private final Long after;
 
     // -------------------------------------------- //
     // CONSTRUCTOR

@@ -31,7 +31,7 @@ public class UtilWebServer {
     public String ip;
 
     private HttpServer httpServer;
-    private NatureSounds main;
+    private final NatureSounds main;
 
     // -------------------------------------------- //
     // CONSTRUCTOR

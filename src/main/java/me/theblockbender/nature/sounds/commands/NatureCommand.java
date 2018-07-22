@@ -29,7 +29,7 @@ public class NatureCommand extends BaseCommand {
     // -------------------------------------------- //
     // INSTANCES & VARIABLES
     // -------------------------------------------- //
-    private NatureSounds main;
+    private final NatureSounds main;
 
     // -------------------------------------------- //
     // CONSTRUCTOR

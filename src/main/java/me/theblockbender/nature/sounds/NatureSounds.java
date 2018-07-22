@@ -42,8 +42,8 @@ public class NatureSounds extends JavaPlugin {
     // -------------------------------------------- //
     // INSTANCES & VARIABLES
     // -------------------------------------------- //
-    public List<UUID> playersWithRP = new ArrayList<>();
-    public Map<String, Sound> sounds = new HashMap<>();
+    public final List<UUID> playersWithRP = new ArrayList<>();
+    private final Map<String, Sound> sounds = new HashMap<>();
     public UtilWebServer utilWebServer;
     public UtilResourcePack utilResourcePack;
 
@@ -163,7 +163,7 @@ public class NatureSounds extends JavaPlugin {
     public void outputError(String errorMessage) {
         errorCounter++;
         logger.severe("// -------------------------------------------- //");
-        logger.severe("// EXCEPTION OCCURED IN NATURESOUNDS PLUGIN:");
+        logger.severe("// EXCEPTION OCCURRED IN NATURESOUNDS PLUGIN:");
         logger.severe("// " + errorMessage);
         logger.severe("// -------------------------------------------- //");
     }

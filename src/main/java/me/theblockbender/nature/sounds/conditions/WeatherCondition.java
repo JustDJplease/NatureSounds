@@ -23,7 +23,7 @@ public class WeatherCondition {
     // -------------------------------------------- //
     // DATA
     // -------------------------------------------- //
-    private List<String> weatherTypes;
+    private final List<String> weatherTypes;
 
     // -------------------------------------------- //
     // CONSTRUCTOR

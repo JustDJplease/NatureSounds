@@ -132,7 +132,7 @@ public class UtilText {
         AMPERSAND('&', 5),
         ASTERISK('*', 5),
         LEFT_PARENTHESIS('(', 4),
-        RIGHT_PERENTHESIS(')', 4),
+        RIGHT_PARENTHESIS(')', 4),
         MINUS('-', 5),
         UNDERSCORE('_', 5),
         PLUS_SIGN('+', 5),
@@ -158,30 +158,30 @@ public class UtilText {
         SPACE(' ', 3),
         DEFAULT('a', 4);
 
-        private char character;
-        private int length;
+        private final char character;
+        private final int length;
 
         FontInformation(char character, int length) {
             this.character = character;
             this.length = length;
         }
 
-        public static FontInformation getDefaultFontInfo(char c) {
+        static FontInformation getDefaultFontInfo(char c) {
             for (FontInformation dFI : FontInformation.values()) {
                 if (dFI.getCharacter() == c) return dFI;
             }
             return FontInformation.DEFAULT;
         }
 
-        public char getCharacter() {
+        char getCharacter() {
             return this.character;
         }
 
-        public int getLength() {
+        int getLength() {
             return this.length;
         }
 
-        public int getBoldLength() {
+        int getBoldLength() {
             if (this == FontInformation.SPACE) return this.getLength();
             return this.length + 1;
         }

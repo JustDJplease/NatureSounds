@@ -24,7 +24,7 @@ public class WorldCondition {
     // -------------------------------------------- //
     // DATA
     // -------------------------------------------- //
-    private List<String> worlds;
+    private final List<String> worlds;
 
     // -------------------------------------------- //
     // CONSTRUCTOR

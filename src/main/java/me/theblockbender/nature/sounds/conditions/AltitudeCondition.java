@@ -21,8 +21,8 @@ public class AltitudeCondition {
     // -------------------------------------------- //
     // DATA
     // -------------------------------------------- //
-    private Double below;
-    private Double above;
+    private final Double below;
+    private final Double above;
 
     // -------------------------------------------- //
     // CONSTRUCTOR

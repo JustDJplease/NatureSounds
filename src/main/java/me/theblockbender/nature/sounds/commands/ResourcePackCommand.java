@@ -31,7 +31,7 @@ public class ResourcePackCommand extends BaseCommand {
     // -------------------------------------------- //
     // INSTANCES & VARIABLES
     // -------------------------------------------- //
-    private NatureSounds main;
+    private final NatureSounds main;
 
     // -------------------------------------------- //
     // CONSTRUCTOR

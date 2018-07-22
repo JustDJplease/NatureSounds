@@ -22,8 +22,8 @@ import java.util.UUID;
 
 public class UtilToken {
 
-    private static SecureRandom random = new SecureRandom();
-    private static Map<UUID, String> tokens = new HashMap<>();
+    private static final SecureRandom random = new SecureRandom();
+    private static final Map<UUID, String> tokens = new HashMap<>();
 
     private static String randomString() {
         StringBuilder stringBuilder = new StringBuilder(10);
