@@ -16,12 +16,17 @@
 package me.theblockbender.nature.sounds.utilities;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class UtilText {
     private final static int CENTER_PX = 154;
 
     public static void sendCenteredMessage(Player player, String message) {
+        sendCenteredMessage((CommandSender) player, message);
+    }
+
+    public static void sendCenteredMessage(CommandSender player, String message) {
         if (message == null || message.equals("")) {
             player.sendMessage("");
             return;

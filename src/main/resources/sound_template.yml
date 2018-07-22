@@ -1,5 +1,7 @@
 # Sound Configuration file for NatureSounds plugin.
 # This is the default file that contains all options.
+# CHANGES ARE APPLIED IMMEDIATELY ON /nature reload sounds
+# BE AWARE - IF YOU MODIFIED SOUND FILES, YOU'LL NEED TO MANUALLY RELOAD THE RESOURCE PACK USING /nature reload resource-pack
 
 # ----------------------------------------------------------------- #
 # SOUND OPTIONS

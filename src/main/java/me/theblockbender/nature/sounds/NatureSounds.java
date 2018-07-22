@@ -17,6 +17,8 @@ package me.theblockbender.nature.sounds;
 
 import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.MessageType;
+import com.google.common.collect.ImmutableList;
+import me.theblockbender.nature.sounds.commands.NatureCommand;
 import me.theblockbender.nature.sounds.commands.WebTestCommand;
 import me.theblockbender.nature.sounds.listeners.PlayerListener;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
@@ -75,7 +77,7 @@ public class NatureSounds extends JavaPlugin {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void registerLanguage() {
+    public void registerLanguage() {
         File messagesFile = new File(getDataFolder(), "language.yml");
         if (!messagesFile.exists()) {
             messagesFile.getParentFile().mkdirs();
@@ -110,7 +112,9 @@ public class NatureSounds extends JavaPlugin {
         commandManager.setFormat(MessageType.HELP, ChatColor.GRAY, ChatColor.GOLD, ChatColor.YELLOW);
         commandManager.setFormat(MessageType.INFO, ChatColor.GRAY, ChatColor.GOLD, ChatColor.YELLOW);
         commandManager.setFormat(MessageType.SYNTAX, ChatColor.GRAY, ChatColor.GOLD, ChatColor.YELLOW);
+        commandManager.getCommandCompletions().registerCompletion("reload", c -> ImmutableList.of("language", "sounds", "resource-pack"));
         commandManager.registerCommand(new WebTestCommand(this));
+        commandManager.registerCommand(new NatureCommand(this));
     }
 
     private void registerEvents() {
@@ -132,8 +136,9 @@ public class NatureSounds extends JavaPlugin {
         Bukkit.getScheduler().runTaskTimer(this, new SoundTask(this), 1L, 20L * interval);
     }
 
-    private void registerSounds() {
+    public void registerSounds() {
         int counter = 0;
+        sounds.clear();
         for (File soundFile : getSoundFiles()) {
             counter++;
             YamlConfiguration soundConfiguration = new YamlConfiguration();

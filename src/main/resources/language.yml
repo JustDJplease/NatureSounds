@@ -1,5 +1,7 @@
 # Language Configuration file for NatureSounds plugin.
 # You can use '&' for colour in every message.
+# %0%, %1%, etc... are placeholders. Their values can be guessed from the context they're in.
+# CHANGES CAN BE APPLIED IMMEDIATELY USING '/nature reload language'
 
 prefix: "&e\u00BB &7"
 header: "&e*&7&m--------------------------------------------------&e*"
@@ -7,3 +9,6 @@ resourcepack:
   loaded: Successfully loaded the resource-pack.
   rejected: You have rejected the resource-pack. You will therefore not hear any nature ambiance whilst roaming the world.
   downloading: Loading the resource-pack... This might take a moment.
+reloading: Reloading &e%0%&7...
+reloaded: Succesfully reloaded &e%0%&7!
+send-pack-again: Your players will need to rejoin the server to receive the updated pack!

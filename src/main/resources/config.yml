@@ -1,4 +1,5 @@
 # General Configuration file for NatureSounds plugin.
+# CHANGES ARE APPLIED ON RESTART. A PLUGIN RELOAD WILL IGNORE THEM!
 
 # The amount of seconds between so called 'sound checks'.
 # Default value is 4 (seconds). This means that every 4 seconds, we'll go over all players and check if they should hear any sounds.

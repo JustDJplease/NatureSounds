@@ -88,6 +88,7 @@ public class UtilWebServer {
                     }
                 });
                 httpServer.listen(port);
+                main.debug("| Started internal webserver");
             } catch (Exception ex) {
                 main.outputError("Unable to bind to port. Please assign the plugin to a different port!");
                 ex.printStackTrace();
