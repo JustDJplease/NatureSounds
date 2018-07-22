@@ -19,7 +19,7 @@ import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.MessageType;
 import com.google.common.collect.ImmutableList;
 import me.theblockbender.nature.sounds.commands.NatureCommand;
-import me.theblockbender.nature.sounds.commands.WebTestCommand;
+import me.theblockbender.nature.sounds.commands.ResourcePackCommand;
 import me.theblockbender.nature.sounds.listeners.PlayerListener;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
 import me.theblockbender.nature.sounds.utilities.SoundTask;
@@ -108,7 +108,7 @@ public class NatureSounds extends JavaPlugin {
         commandManager.setFormat(MessageType.INFO, ChatColor.GRAY, ChatColor.GOLD, ChatColor.YELLOW);
         commandManager.setFormat(MessageType.SYNTAX, ChatColor.GRAY, ChatColor.GOLD, ChatColor.YELLOW);
         commandManager.getCommandCompletions().registerCompletion("reload", c -> ImmutableList.of("language", "sounds", "resource-pack"));
-        commandManager.registerCommand(new WebTestCommand(this));
+        commandManager.registerCommand(new ResourcePackCommand(this));
         commandManager.registerCommand(new NatureCommand(this));
     }
 

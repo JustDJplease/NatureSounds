@@ -1,14 +1,27 @@
 # Language Configuration file for NatureSounds plugin.
-# You can use '&' for colour in every message.
-# %0%, %1%, etc... are placeholders. Their values can be guessed from the context they're in.
-# CHANGES CAN BE APPLIED IMMEDIATELY USING '/nature reload language'
 
-prefix: "&e\u00BB &7"
-header: "&e*&7&m--------------------------------------------------&e*"
+# You can use '&' for regular color codes in every message.
+# Additionally, <error> <argument> <primary> & <secondary> are replaced with the following color codes:
+
+color:
+  error: "&c"
+  argument: "&e"
+  primary: "&7"
+  secondary: "&6"
+
+# {0}, {1}, {2}, etc... are placeholders. Their values can be guessed from the context they are in.
+# Changes in this file can be applied immediately using '/nature reload language'.
+
+prefix: "<argument>\u00BB <primary>"
+header: "<argument><bold>*<primary>&m--------------------------------------------------<argument><bold>*"
 resourcepack:
-  loaded: Successfully loaded the resource-pack.
-  rejected: You have rejected the resource-pack. You will therefore not hear any nature ambiance whilst roaming the world.
-  downloading: Loading the resource-pack... This might take a moment.
-reloading: Reloading &e%0%&7...
-reloaded: Succesfully reloaded &e%0%&7!
-send-pack-again: Your players will need to rejoin the server to receive the updated pack!
+  loaded: "Successfully loaded the resource-pack."
+  rejected: "You have rejected the resource-pack. You will therefore not hear any nature ambiance whilst roaming the world."
+  downloading: "Loading the resource-pack... This might take a moment."
+reloading: "Reloading <argument>{0}<primary>..."
+reloaded: "Successfully reloaded <argument>{0}<primary>!"
+generating: "Generating a new resource-pack..."
+generated: "Successfully generated a resource-pack!"
+send-pack-again: "Your players will need to rejoin the server to receive the updated pack!"
+error:
+  no-reload-type: "<error>Error: Choose what to reload: <argument>Language<error>, <argument>Sounds<error> or <argument>Resource-pack<error>."

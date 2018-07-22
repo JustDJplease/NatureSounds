@@ -25,8 +25,8 @@ import me.theblockbender.nature.sounds.utilities.UtilToken;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandAlias("web|website|webtest")
-public class WebTestCommand extends BaseCommand {
+@CommandAlias("resourcepack|rp|pack")
+public class ResourcePackCommand extends BaseCommand {
 
     // -------------------------------------------- //
     // INSTANCES & VARIABLES
@@ -36,7 +36,7 @@ public class WebTestCommand extends BaseCommand {
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public WebTestCommand(NatureSounds main) {
+    public ResourcePackCommand(NatureSounds main) {
         this.main = main;
     }
 
@@ -47,52 +47,34 @@ public class WebTestCommand extends BaseCommand {
     @Default
     @HelpCommand
     @Description("View information on commands")
-    @CommandPermission("nature.admin.web")
+    @CommandPermission("nature.help")
     public void commandHelp(CommandSender sender, CommandHelp help) {
         sender.sendMessage(Lang.format("header"));
         help.showHelp();
     }
 
-    @Subcommand("start")
-    @Description("Start the web server")
-    @CommandPermission("nature.admin.web")
-    public void commandStartWeb(CommandSender sender) {
-        sender.sendMessage("§e» §7Starting web server...");
-        main.utilWebServer.start();
-        sender.sendMessage("§e» §7Started web server!");
-    }
-
-    @Subcommand("stop")
-    @Description("Stops the web server")
-    @CommandPermission("nature.admin.web")
-    public void commandStopWeb(CommandSender sender) {
-        sender.sendMessage("§e» §7Stopping web server...");
-        main.utilWebServer.stop();
-        sender.sendMessage("§e» §7Stopped web server!");
-    }
-
     @Subcommand("generate")
     @Description("Stops the web server")
-    @CommandPermission("nature.admin.web")
+    @CommandPermission("nature.admin.generate")
     public void commandGenerate(CommandSender sender) {
-        sender.sendMessage("§e» §7Generating pack...");
+        sender.sendMessage(Lang.formatWithPrefix("generating"));
         main.utilResourcePack.addAllFilesToPack();
-        sender.sendMessage("§e» §7Done!");
+        sender.sendMessage(Lang.formatWithPrefix("generated"));
     }
 
     @Subcommand("accept")
     @Description("Sends the resource pack to the player")
-    @CommandPermission("nature.admin.web")
+    @CommandPermission("nature.download")
     public void commandAccept(Player player) {
-        player.sendMessage("§e» §7Sending the resource-pack to you!");
+        player.sendMessage(Lang.formatWithPrefix("resourcepack.downloading"));
         String url = "http://" + main.utilWebServer.ip + ":" + main.utilWebServer.port + "/" + UtilToken.getToken(player.getUniqueId());
         player.setResourcePack(url, UtilChecksum.getChecksum(UtilChecksum.fileToByteArray(main.utilWebServer.getFileLocation())));
     }
 
     @Subcommand("reject")
     @Description("Sends a rejected message to the player")
-    @CommandPermission("nature.admin.web")
+    @CommandPermission("nature.download")
     public void commandReject(Player player) {
-        player.sendMessage("§e» §7You have rejected the resource-pack. If you change your mind, click the accept message above!");
+        player.sendMessage(Lang.formatWithPrefix("resourcepack.rejected"));
     }
 }

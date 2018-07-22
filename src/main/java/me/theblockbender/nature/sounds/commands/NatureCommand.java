@@ -53,11 +53,11 @@ public class NatureCommand extends BaseCommand {
 
     @Subcommand("reload")
     @Description("Reloads the plugin")
-    @CommandPermission("nature.reload")
+    @CommandPermission("nature.admin.reload")
     @CommandCompletion("@reload")
     public void commandReload(CommandSender sender, String[] args) {
         if (args.length < 1) {
-            sender.sendMessage("§cError: Choose what to reload: §eLanguage§c, §eSounds§c or §eResource-pack§c.");
+            sender.sendMessage(Lang.format("error.no-reload-type"));
             return;
         }
         switch (args[0].toLowerCase()) {
@@ -78,7 +78,7 @@ public class NatureCommand extends BaseCommand {
                 sender.sendMessage(Lang.formatWithPrefix("send-pack-again"));
                 break;
             default:
-                sender.sendMessage("§cError: Choose what to reload: §eLanguage§c, §eSounds§c or §eResource-pack§c.");
+                sender.sendMessage(Lang.format("error.no-reload-type"));
                 break;
         }
     }
@@ -88,11 +88,11 @@ public class NatureCommand extends BaseCommand {
     public void commandVersion(CommandSender sender) {
         sender.sendMessage(Lang.format("header"));
         sender.sendMessage(" ");
-        UtilText.sendCenteredMessage(sender, "§7Appreciate the subtle sounds whilst roaming?");
-        UtilText.sendCenteredMessage(sender, "§7They bring this game to a next level!");
+        UtilText.sendCenteredMessage(sender, Lang.color("<primary>Appreciate the subtle sounds whilst roaming?"));
+        UtilText.sendCenteredMessage(sender, Lang.color("<primary>They bring this game to a next level!"));
         sender.sendMessage(" ");
-        UtilText.sendCenteredMessage(sender, "§7Running §eNatureSounds §7version §e" + main.getDescription().getVersion() + "§7.");
-        UtilText.sendCenteredMessage(sender, "§7by §eTheBlockBender§7 & §eJustDJplease§7.");
+        UtilText.sendCenteredMessage(sender, Lang.color("<primary>Running <argument>NatureSounds <primary>version <argument>" + main.getDescription().getVersion() + "<primary>."));
+        UtilText.sendCenteredMessage(sender, Lang.color("<primary>by <argument>TheBlockBender<primary> & <argument>JustDJplease<primary>."));
         sender.sendMessage(" ");
         sender.sendMessage(Lang.format("header"));
     }
