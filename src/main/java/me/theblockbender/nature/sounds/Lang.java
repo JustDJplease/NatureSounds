@@ -20,7 +20,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class Lang {
 
-    private static FileConfiguration languageFile;
+    static FileConfiguration languageFile;
 
     // -------------------------------------------- //
     // MESSAGE FORMATTERS
