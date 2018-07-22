@@ -178,7 +178,7 @@ public class NatureSounds extends JavaPlugin {
     }
 
     public void debug(String debugMessage) {
-        logger.info("[+] " + debugMessage);
+        if (getConfig().getBoolean("debug")) logger.info("[+] " + debugMessage);
     }
 
     // -------------------------------------------- //

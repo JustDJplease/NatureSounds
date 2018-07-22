@@ -11,3 +11,8 @@ interval: 4
 # It allows the server to host its own resource pack. The plugin will not work if this port is claimed already.
 # Default value is 8080. Typically, you want to use a value between 8000 and 9000.
 port: 8080
+
+# Debugging output is disabled by default, as it might lead to unwanted spam in the console.
+# There is no need to enable this, unless you're struggling to get the plugin to work and need help.
+# If you send me a PM on the Spigot Forums, I will often ask you to enable this.
+debug: false
