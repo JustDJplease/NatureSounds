@@ -27,7 +27,6 @@ import org.json.simple.JSONObject;
 
 import java.io.*;
 
-@SuppressWarnings({"ResultOfMethodCallIgnored", "unchecked"})
 public class UtilResourcePack {
     // -------------------------------------------- //
     // INSTANCES & VARIABLES
@@ -84,6 +83,7 @@ public class UtilResourcePack {
         deleteZip(main.utilWebServer.getFileLocation());
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void deleteZip(String path) {
         File file = new File(path);
         if (!file.exists()) return;
@@ -110,6 +110,7 @@ public class UtilResourcePack {
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void createPackBase() {
         File templateZip = new File(main.utilWebServer.getWebDirectory(), "template.zip");
         if (!templateZip.exists()) {
@@ -153,6 +154,7 @@ public class UtilResourcePack {
         return soundsAdded;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void copySoundIntoPack(File file) {
         if (!file.exists()) return;
         File packLocation = new File(main.utilWebServer.getUnzippedFileLocation() + File.separator + "assets" + File.separator + "minecraft" + File.separator + "sounds", file.getName());
@@ -175,6 +177,7 @@ public class UtilResourcePack {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void addSoundToJson(String soundName, String subtitle) {
         File soundsJSON = new File(main.utilWebServer.getUnzippedFileLocation() + File.separator + "assets" + File.separator + "minecraft" + File.separator, "sounds.json");
         if (!soundsJSON.exists()) {
@@ -209,6 +212,7 @@ public class UtilResourcePack {
         writeJsonFile(soundsJSON, file.toString());
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void writeJsonFile(File file, String json) {
         BufferedWriter bufferedWriter = null;
         try {

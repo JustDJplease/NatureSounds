@@ -1,5 +1,5 @@
 # General Configuration file for NatureSounds plugin.
-# CHANGES ARE APPLIED ON RESTART. A PLUGIN RELOAD WILL IGNORE THEM!
+# Changes is this file are only applied on a complete server restart!
 
 # The amount of seconds between so called 'sound checks'.
 # Default value is 4 (seconds). This means that every 4 seconds, we'll go over all players and check if they should hear any sounds.
@@ -8,6 +8,6 @@
 interval: 4
 
 # A free port on your hosting machine. This works very similar to services like Dynmap.
-# It allows the server to host its own resource pack. The plugin will not start if this port is claimed already.
+# It allows the server to host its own resource pack. The plugin will not work if this port is claimed already.
 # Default value is 8080. Typically, you want to use a value between 8000 and 9000.
 port: 8080

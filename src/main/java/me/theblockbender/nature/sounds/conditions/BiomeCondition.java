@@ -52,7 +52,6 @@ public class BiomeCondition {
     // -------------------------------------------- //
     public boolean isTrue(Location location) {
         Biome biome = location.getWorld().getBiome(location.getBlockX(), location.getBlockZ());
-        //noinspection SuspiciousMethodCalls
         return biomes.contains(biome.name());
     }
 }

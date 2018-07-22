@@ -45,19 +45,19 @@ public class ResourcePackListener implements Listener {
         switch (event.getStatus()) {
             case SUCCESSFULLY_LOADED:
                 main.playersWithRP.add(uuid);
-                player.sendMessage(Lang.format("resourcepack.loaded"));
+                player.sendMessage(Lang.formatWithPrefix("resourcepack.loaded"));
                 break;
             case DECLINED:
                 main.playersWithRP.remove(uuid);
-                player.sendMessage(Lang.format("resourcepack.rejected"));
+                player.sendMessage(Lang.formatWithPrefix("resourcepack.rejected"));
                 break;
             case FAILED_DOWNLOAD:
                 main.playersWithRP.remove(uuid);
-                player.sendMessage(Lang.format("resourcepack.rejected"));
+                player.sendMessage(Lang.formatWithPrefix("resourcepack.rejected"));
                 break;
             case ACCEPTED:
                 main.playersWithRP.add(uuid);
-                player.sendMessage(Lang.format("resourcepack.downloading"));
+                player.sendMessage(Lang.formatWithPrefix("resourcepack.downloading"));
                 break;
         }
     }

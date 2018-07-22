@@ -26,9 +26,10 @@ public class UtilChecksum {
     // -------------------------------------------- //
     // CHECKSUM CALCULATOR
     // -------------------------------------------- //
+    @SuppressWarnings("UnusedAssignment")
     public static byte[] getChecksum(byte[] input) {
         try {
-            @SuppressWarnings("UnusedAssignment") byte[] hash = new byte[20];
+            byte[] hash = new byte[20];
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             hash = md.digest(input);
             return hash;

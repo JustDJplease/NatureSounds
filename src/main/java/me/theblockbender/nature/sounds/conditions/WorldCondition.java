@@ -47,7 +47,6 @@ public class WorldCondition {
     // CONDITION VALIDATOR
     // -------------------------------------------- //
     public boolean isTrue(World world) {
-        //noinspection SuspiciousMethodCalls
         return worlds.contains(world.getName());
     }
 }

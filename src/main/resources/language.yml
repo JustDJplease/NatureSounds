@@ -14,14 +14,26 @@ color:
 
 prefix: "<argument>\u00BB <primary>"
 header: "<argument><bold>*<primary>&m--------------------------------------------------<argument><bold>*"
+
 resourcepack:
   loaded: "Successfully loaded the resource-pack."
   rejected: "You have rejected the resource-pack. You will therefore not hear any nature ambiance whilst roaming the world."
   downloading: "Loading the resource-pack... This might take a moment."
+
 reloading: "Reloading <argument>{0}<primary>..."
 reloaded: "Successfully reloaded <argument>{0}<primary>!"
+
 generating: "Generating a new resource-pack..."
 generated: "Successfully generated a resource-pack!"
 send-pack-again: "Your players will need to rejoin the server to receive the updated pack!"
+
+join:
+  can-send-question: "<primary>Can we send you a resource-pack?"
+  what-does-it-do: "<primary>It will allow you to hear various nature sounds!"
+  yes: "Yes, go ahead!"
+  click-to-accept: "Click this message to accept the resource-pack!"
+  no: "No, thanks!"
+  click-to-reject: "Click this message to reject the resource-pack"
+
 error:
   no-reload-type: "<error>Error: Choose what to reload: <argument>Language<error>, <argument>Sounds<error> or <argument>Resource-pack<error>."

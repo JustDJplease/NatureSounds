@@ -57,10 +57,10 @@ public class PlayerListener implements Listener {
             Player player = event.getPlayer();
             player.sendMessage(Lang.format("header"));
             player.sendMessage(" ");
-            UtilText.sendCenteredMessage(player, "§7Can we send you a resource-pack?");
-            UtilText.sendCenteredMessage(player, "§7It will allow you to hear various nature sounds!");
+            UtilText.sendCenteredMessage(player, Lang.format("join.can-send-question"));
+            UtilText.sendCenteredMessage(player, Lang.format("join.what-does-it-do"));
             player.sendMessage(" ");
-            BaseComponent[] confirm = new ComponentBuilder("                 ").reset().append("Yes, go ahead!").color(ChatColor.GREEN).bold(true).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click this message to accept the resource-pack!").color(ChatColor.GREEN).create())).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack accept")).append("   ").reset().append("No, thanks!").color(ChatColor.RED).bold(true).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click this message to reject the resource-pack").color(ChatColor.RED).create())).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack reject")).create();
+            BaseComponent[] confirm = new ComponentBuilder("                 ").reset().append(Lang.format("join.yes")).color(ChatColor.GREEN).bold(true).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Lang.format("join.click-to-accept")).color(ChatColor.GREEN).create())).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack accept")).append("   ").reset().append(Lang.format("join.no")).color(ChatColor.RED).bold(true).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Lang.format("join.click-to-reject")).color(ChatColor.RED).create())).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack reject")).create();
             player.spigot().sendMessage(confirm);
             player.sendMessage(" ");
             player.sendMessage(Lang.format("header"));
