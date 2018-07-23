@@ -49,7 +49,6 @@ public class NatureSounds extends JavaPlugin {
 
     Random random;
 
-    private int errorCounter;
     private Logger logger;
 
     // -------------------------------------------- //
@@ -58,7 +57,6 @@ public class NatureSounds extends JavaPlugin {
     @Override
     public void onEnable() {
         logger = getLogger();
-        errorCounter = 0;
         random = new Random();
         createFiles();
         registerLanguage();
@@ -68,7 +66,7 @@ public class NatureSounds extends JavaPlugin {
         registerRunnables();
         utilResourcePack = new UtilResourcePack(this);
         registerWebServer();
-        showErrorsFound();
+        ErrorLogger.supportMessage();
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -124,8 +122,7 @@ public class NatureSounds extends JavaPlugin {
         try {
             interval = getConfig().getLong("interval");
         } catch (Exception ex) {
-            outputError("Invalid interval specified in the config.yml");
-            outputError("None of the sounds will start playing!");
+            ErrorLogger.errorInFile("Interval specified is invalid", "config.yml");
             return;
         }
         Bukkit.getScheduler().runTaskTimer(this, new SoundTask(this), 1L, 20L * interval);
@@ -140,7 +137,7 @@ public class NatureSounds extends JavaPlugin {
             try {
                 soundConfiguration.load(soundFile);
             } catch (IOException | InvalidConfigurationException ex) {
-                outputError("Unable to load soundconfiguration file " + soundFile.getName());
+                ErrorLogger.errorInFile("Unable to save & load configuration file", soundFile.getName());
                 ex.printStackTrace();
                 continue;
             }
@@ -154,28 +151,9 @@ public class NatureSounds extends JavaPlugin {
     // -------------------------------------------- //
     @Override
     public void onDisable() {
-        showErrorsFound();
+        ErrorLogger.supportMessage();
     }
 
-    // -------------------------------------------- //
-    // ERROR & LOGGING
-    // -------------------------------------------- //
-    public void outputError(String errorMessage) {
-        errorCounter++;
-        logger.severe("// -------------------------------------------- //");
-        logger.severe("// EXCEPTION OCCURRED IN NATURESOUNDS PLUGIN:");
-        logger.severe("// " + errorMessage);
-        logger.severe("// -------------------------------------------- //");
-    }
-
-    private void showErrorsFound() {
-        if (errorCounter == 0) return;
-        logger.severe("// -------------------------------------------- //");
-        logger.severe("// SO FAR, " + errorCounter + " ERRORS HAVE OCCURRED!");
-        logger.severe("// unsure how to fix these? Contact JustDJplease");
-        logger.severe("// on the spigot forums (Via discussion / PM)");
-        logger.severe("// -------------------------------------------- //");
-    }
 
     public void debug(String debugMessage) {
         if (getConfig().getBoolean("debug")) logger.info("[+] " + debugMessage);

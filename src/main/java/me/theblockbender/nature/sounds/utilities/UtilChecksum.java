@@ -15,6 +15,8 @@
 
 package me.theblockbender.nature.sounds.utilities;
 
+import me.theblockbender.nature.sounds.ErrorLogger;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -34,6 +36,7 @@ public class UtilChecksum {
             hash = md.digest(input);
             return hash;
         } catch (NoSuchAlgorithmException ex) {
+            ErrorLogger.error("Unable to find SHA-1 algorithm");
             ex.printStackTrace();
         }
         return null;
@@ -46,6 +49,7 @@ public class UtilChecksum {
         try {
             return Files.readAllBytes(Paths.get(path));
         } catch (IOException e) {
+            ErrorLogger.error("Unable to read bytes from file");
             e.printStackTrace();
         }
         return null;

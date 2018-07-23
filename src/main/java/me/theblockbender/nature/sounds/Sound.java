@@ -63,7 +63,7 @@ public class Sound {
         // FILENAME
         // -------------------------------------------- //
         if (fileName == null) {
-            main.outputError("File name cannot be null for sound files.");
+            ErrorLogger.error("Tried to load a file that had no name. Weird");
             return;
         }
         name = fileName;
@@ -71,7 +71,7 @@ public class Sound {
         // CONFIGURATION SECTION
         // -------------------------------------------- //
         if (soundConfiguration == null) {
-            main.outputError("Sound Configuration cannot be null");
+            ErrorLogger.error("Tried to load a configuration file that was not a configuration file");
             return;
         }
         // -------------------------------------------- //
@@ -80,7 +80,7 @@ public class Sound {
         try {
             soundNames = soundConfiguration.getStringList("sound.name");
         } catch (NullPointerException ex) {
-            main.outputError("Invalid sound name inside soundconfiguration file " + fileName);
+            ErrorLogger.errorInFile("No sound name(s) specified", fileName);
             return;
         }
         // -------------------------------------------- //
@@ -89,11 +89,11 @@ public class Sound {
         try {
             minVolume = Float.parseFloat("" + soundConfiguration.getDouble("sound.minVolume"));
             if (minVolume < 0) {
-                main.outputError("Invalid minVolume (< 0) inside soundconfiguration file " + fileName);
+                ErrorLogger.errorInFile("Min-volume cannot be negative", fileName);
                 return;
             }
         } catch (Exception ex) {
-            main.outputError("Invalid minVolume inside soundconfiguration file " + fileName);
+            ErrorLogger.errorInFile("Min-volume was not a number OR it was not specified", fileName);
             return;
         }
         // -------------------------------------------- //
@@ -102,11 +102,11 @@ public class Sound {
         try {
             maxVolume = Float.parseFloat("" + soundConfiguration.getDouble("sound.maxVolume"));
             if (maxVolume < 0 || maxVolume < minVolume) {
-                main.outputError("Invalid maxVolume (< 0 or < minVolume) inside soundconfiguration file " + fileName);
+                ErrorLogger.errorInFile("Max-volume cannot be negative OR smaller than Min-volume", fileName);
                 return;
             }
         } catch (Exception ex) {
-            main.outputError("Invalid maxVolume inside soundconfiguration file " + fileName);
+            ErrorLogger.errorInFile("Max-volume was not a number OR it was not specified", fileName);
             return;
         }
         // -------------------------------------------- //
@@ -115,11 +115,11 @@ public class Sound {
         try {
             pitch = Float.parseFloat("" + soundConfiguration.getDouble("sound.pitch"));
             if (pitch < 0 || pitch > 2) {
-                main.outputError("Invalid pitch (< 0 or > 2) inside soundconfiguration file " + fileName);
+                ErrorLogger.errorInFile("Pitch was not a number between 0 and 2", fileName);
                 return;
             }
         } catch (Exception ex) {
-            main.outputError("Invalid pitch inside soundconfiguration file " + fileName);
+            ErrorLogger.errorInFile("Pitch was not a number OR it was not specified", fileName);
             return;
         }
         // -------------------------------------------- //
@@ -128,7 +128,7 @@ public class Sound {
         try {
             subtitle = soundConfiguration.getString("sound.subtitle");
         } catch (Exception ex) {
-            main.outputError("Invalid subtitle inside soundconfiguration file " + fileName);
+            ErrorLogger.errorInFile("Subtitle was not specified", fileName);
             return;
         }
         // -------------------------------------------- //
@@ -137,11 +137,11 @@ public class Sound {
         try {
             chance = soundConfiguration.getDouble("chance");
             if (chance < 0 || chance > 100) {
-                main.outputError("Invalid chance (< 0 or > 100) inside soundconfiguration file " + fileName);
+                ErrorLogger.errorInFile("Chance was not a number between 0 and 100", fileName);
                 return;
             }
         } catch (Exception ex) {
-            main.outputError("Invalid chance inside soundconfiguration file " + fileName);
+            ErrorLogger.errorInFile("Chance was not a number OR it was not specified", fileName);
             return;
         }
         // -------------------------------------------- //
@@ -153,13 +153,13 @@ public class Sound {
                 if (!weatherTypes.isEmpty()) {
                     weatherCondition = new WeatherCondition(weatherTypes);
                     if (!weatherCondition.parse()) {
-                        main.outputError("Invalid weatherCondition (unknown weather type) inside soundconfiguration file " + fileName);
+                        ErrorLogger.errorInFile("The weather condition is invalid.", fileName);
                         return;
                     }
                 }
             }
         } catch (Exception ex) {
-            main.outputError("Invalid weatherCondition inside soundconfiguration file " + fileName);
+            ErrorLogger.errorInFile("The weather condition was not formatted correctly", fileName);
             return;
         }
         // -------------------------------------------- //
@@ -173,13 +173,13 @@ public class Sound {
                 if (!(below == 0 && above == 0)) {
                     altitudeCondition = new AltitudeCondition(below, above);
                     if (!altitudeCondition.parse()) {
-                        main.outputError("Invalid altitudeCondition (< 0 or > 256 or above > below) inside soundconfiguration file " + fileName);
+                        ErrorLogger.errorInFile("The altitude condition is invalid", fileName);
                         return;
                     }
                 }
             }
         } catch (Exception ex) {
-            main.outputError("Invalid altitudeCondition inside soundconfiguration file " + fileName);
+            ErrorLogger.errorInFile("The altitude condition was not formatted correctly", fileName);
             return;
         }
         // -------------------------------------------- //
@@ -191,13 +191,13 @@ public class Sound {
                 if (!biomes.isEmpty()) {
                     biomeCondition = new BiomeCondition(biomes);
                     if (!biomeCondition.parse()) {
-                        main.outputError("Invalid biomeCondition (unknown biome type) inside soundconfiguration file " + fileName);
+                        ErrorLogger.errorInFile("The biome condition is invalid", fileName);
                         return;
                     }
                 }
             }
         } catch (Exception ex) {
-            main.outputError("Invalid biomeCondition inside soundconfiguration file " + fileName);
+            ErrorLogger.errorInFile("The biome condition was not formatted correctly", fileName);
             return;
         }
         // -------------------------------------------- //
@@ -211,13 +211,13 @@ public class Sound {
                 if (!(before == 0 && after == 0)) {
                     timeCondition = new TimeCondition(before, after);
                     if (!timeCondition.parse()) {
-                        main.outputError("Invalid timeCondition (< 0 or > 24000 or after > before) inside soundconfiguration file " + fileName);
+                        ErrorLogger.errorInFile("The time condition is invalid", fileName);
                         return;
                     }
                 }
             }
         } catch (Exception ex) {
-            main.outputError("Invalid timeCondition inside soundconfiguration file " + fileName);
+            ErrorLogger.errorInFile("The time condition was not formatted correctly", fileName);
             return;
         }
         // -------------------------------------------- //
@@ -229,13 +229,13 @@ public class Sound {
                 if (!worlds.isEmpty()) {
                     worldCondition = new WorldCondition(worlds);
                     if (!worldCondition.parse()) {
-                        main.outputError("Invalid worldCondition (unknown world) inside soundconfiguration file " + fileName);
+                        ErrorLogger.errorInFile("The world condition is invalid", fileName);
                         return;
                     }
                 }
             }
         } catch (Exception ex) {
-            main.outputError("Invalid worldCondition inside soundconfiguration file " + fileName);
+            ErrorLogger.errorInFile("The world condition was not formatted correctly", fileName);
             return;
         }
         // -------------------------------------------- //
@@ -246,12 +246,12 @@ public class Sound {
                 Long cooldown = soundConfiguration.getLong("condition.cooldown");
                 cooldownCondition = new CooldownCondition(cooldown);
                 if (!cooldownCondition.parse()) {
-                    main.outputError("Invalid cooldownCondition (< 0) inside soundconfiguration file " + fileName);
+                    ErrorLogger.errorInFile("The cooldown condition is invalid", fileName);
                     return;
                 }
             }
         } catch (Exception ex) {
-            main.outputError("Invalid cooldownCondition inside soundconfiguration file " + fileName);
+            ErrorLogger.errorInFile("The cooldown condition was not formatted correctly", fileName);
             return;
         }
         // -------------------------------------------- //
@@ -280,7 +280,11 @@ public class Sound {
     }
 
     private String getRandomSoundName() {
-        return soundNames.get(main.random.nextInt(soundNames.size()));
+        try {
+            return soundNames.get(main.random.nextInt(soundNames.size()));
+        } catch (IllegalArgumentException ex) {
+            return soundNames.get(0);
+        }
     }
 
     public String getSubtitle() {

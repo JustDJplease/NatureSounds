@@ -15,6 +15,8 @@
 
 package me.theblockbender.nature.sounds.utilities;
 
+import me.theblockbender.nature.sounds.ErrorLogger;
+
 import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -36,6 +38,7 @@ class UtilZip {
             zipOut.close();
             fos.close();
         } catch (IOException e) {
+            ErrorLogger.error("Failed to zip a folder");
             e.printStackTrace();
         }
     }
@@ -99,6 +102,7 @@ class UtilZip {
                     zipfile.close();
                 }
             } catch (IOException ex) {
+                ErrorLogger.error("Failed to validate a zip folder");
                 ex.printStackTrace();
             }
         }

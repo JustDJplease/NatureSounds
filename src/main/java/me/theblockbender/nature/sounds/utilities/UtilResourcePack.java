@@ -17,6 +17,7 @@ package me.theblockbender.nature.sounds.utilities;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.theblockbender.nature.sounds.ErrorLogger;
 import me.theblockbender.nature.sounds.NatureSounds;
 import me.theblockbender.nature.sounds.Sound;
 import org.apache.commons.io.FileUtils;
@@ -60,7 +61,7 @@ public class UtilResourcePack {
                 zipFolder();
                 main.debug("| - Zipped folder");
             } catch (Exception e) {
-                main.outputError("Unable to zip the resource pack!");
+                ErrorLogger.error("Unable to zip the resource pack!");
                 e.printStackTrace();
             }
             deleteDir(main.utilWebServer.getUnzippedFileLocation());
@@ -96,7 +97,7 @@ public class UtilResourcePack {
         try {
             FileUtils.forceDelete(file);
         } catch (IOException e) {
-            main.outputError("Could not delete folder " + path);
+            ErrorLogger.error("Could not delete folder " + path);
             e.printStackTrace();
         }
     }
@@ -105,7 +106,7 @@ public class UtilResourcePack {
         try {
             UtilZip.zipFolder(main.utilWebServer.getUnzippedFileLocation(), main.utilWebServer.getFileLocation());
         } catch (Exception e) {
-            main.outputError("Failed to zip files!");
+            ErrorLogger.error("Failed to zip files!");
             e.printStackTrace();
         }
     }
@@ -126,14 +127,14 @@ public class UtilResourcePack {
                 out.close();
                 in.close();
             } catch (IOException ex) {
-                main.outputError("Could not save template pack!");
+                ErrorLogger.error("Could not save template pack!");
                 ex.printStackTrace();
             }
         }
         try {
             UtilZip.unzip(templateZip, main.utilWebServer.getUnzippedFileLocation());
         } catch (IOException e) {
-            main.outputError("Unable to unzip template pack!");
+            ErrorLogger.error("Unable to unzip template pack!");
             e.printStackTrace();
         }
         templateZip.delete();
@@ -144,7 +145,7 @@ public class UtilResourcePack {
         for (String soundName : sound.getSoundNames()) {
             File file = new File(main.getDataFolder() + File.separator + "sounds" + File.separator + soundName + ".ogg");
             if (!file.exists()) {
-                main.outputError("Could not find associated " + file.getName() + " sound file!");
+                ErrorLogger.error("Could not find associated " + file.getName() + " sound file!");
             } else {
                 addSoundToJson(soundName, sound.getSubtitle());
                 copySoundIntoPack(file);
@@ -171,7 +172,7 @@ public class UtilResourcePack {
                 out.close();
                 in.close();
             } catch (IOException ex) {
-                main.outputError("Unable to save " + file.getName() + " into the resource pack!");
+                ErrorLogger.error("Unable to save " + file.getName() + " into the resource pack!");
                 ex.printStackTrace();
             }
         }
@@ -181,13 +182,14 @@ public class UtilResourcePack {
     private void addSoundToJson(String soundName, String subtitle) {
         File soundsJSON = new File(main.utilWebServer.getUnzippedFileLocation() + File.separator + "assets" + File.separator + "minecraft" + File.separator, "sounds.json");
         if (!soundsJSON.exists()) {
-            main.outputError("File sounds.json did not exist in template pack!");
+            ErrorLogger.error("File sounds.json did not exist in template pack!");
             return;
         }
         InputStream is = null;
         try {
             is = new FileInputStream(soundsJSON);
         } catch (FileNotFoundException e) {
+            ErrorLogger.error("Unable to read sounds.json");
             e.printStackTrace();
         }
         String rawJson = null;
@@ -196,6 +198,7 @@ public class UtilResourcePack {
             rawJson = IOUtils.toString(is, "UTF-8");
             is.close();
         } catch (IOException e) {
+            ErrorLogger.error("Unable to load JSON from sounds.json");
             e.printStackTrace();
         }
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -223,7 +226,7 @@ public class UtilResourcePack {
             bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(json);
         } catch (IOException e) {
-            main.outputError("Failed to save sounds.json!");
+            ErrorLogger.error("Failed to save sounds.json!");
             e.printStackTrace();
         } finally {
             try {

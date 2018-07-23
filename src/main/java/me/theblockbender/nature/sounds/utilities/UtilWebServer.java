@@ -17,6 +17,7 @@ package me.theblockbender.nature.sounds.utilities;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
+import me.theblockbender.nature.sounds.ErrorLogger;
 import me.theblockbender.nature.sounds.NatureSounds;
 import org.bukkit.Bukkit;
 
@@ -24,14 +25,13 @@ import java.io.File;
 
 public class UtilWebServer {
 
+    private final NatureSounds main;
     // -------------------------------------------- //
     // INSTANCES & VARIABLES
     // -------------------------------------------- //
     public int port;
     public String ip;
-
     private HttpServer httpServer;
-    private final NatureSounds main;
 
     // -------------------------------------------- //
     // CONSTRUCTOR
@@ -50,7 +50,7 @@ public class UtilWebServer {
         try {
             port = main.getConfig().getInt("port");
         } catch (Exception ex) {
-            main.outputError("Invalid port configured in the config.yml");
+            ErrorLogger.errorInFile("Invalid port specified", "config.yml");
             return;
         }
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
@@ -90,7 +90,7 @@ public class UtilWebServer {
                 httpServer.listen(port);
                 main.debug("| Started internal webserver");
             } catch (Exception ex) {
-                main.outputError("Unable to bind to port. Please assign the plugin to a different port!");
+                ErrorLogger.error("Unable to bind to port " + port + ". Please assign the plugin to a different port!");
                 ex.printStackTrace();
             }
         });

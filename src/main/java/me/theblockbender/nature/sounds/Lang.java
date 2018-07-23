@@ -26,6 +26,7 @@ public class Lang {
     // MESSAGE FORMATTERS
     // -------------------------------------------- //
     @SuppressWarnings("ResultOfMethodCallIgnored")
+    // TODO Why is colour not working?
     public static String format(String key) {
         if (!languageFile.contains(key)) return "§cError! Message §e" + key + "§c was not found!";
         String message = languageFile.getString(key);
