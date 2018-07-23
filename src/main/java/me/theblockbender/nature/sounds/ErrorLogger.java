@@ -22,14 +22,10 @@ import java.util.logging.Logger;
 public class ErrorLogger {
 
     private static int errors = 0;
-    private static Logger log;
-
-    public ErrorLogger() {
-        log = Bukkit.getLogger();
-    }
 
     public static void error(String error) {
         errors++;
+        Logger log = Bukkit.getLogger();
         log.severe("|--------------------------------------------");
         log.severe("| An error occurred in the NatureSound plugin!");
         log.severe("| ");
@@ -42,6 +38,7 @@ public class ErrorLogger {
 
     public static void errorInFile(String error, String path) {
         errors++;
+        Logger log = Bukkit.getLogger();
         log.severe("|--------------------------------------------");
         log.severe("| NatureSounds ran into an error whilst loading a file!");
         log.severe("| ");
@@ -56,6 +53,8 @@ public class ErrorLogger {
     }
 
     static void supportMessage() {
+        if (errors == 0) return;
+        Logger log = Bukkit.getLogger();
         log.severe("|--------------------------------------------");
         log.severe("| A bunch of errors occurred in NatureSounds so far!");
         log.severe("| ");

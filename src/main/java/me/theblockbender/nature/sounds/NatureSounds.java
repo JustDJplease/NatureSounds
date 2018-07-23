@@ -26,7 +26,6 @@ import me.theblockbender.nature.sounds.utilities.SoundTask;
 import me.theblockbender.nature.sounds.utilities.UtilResourcePack;
 import me.theblockbender.nature.sounds.utilities.UtilWebServer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -102,9 +101,9 @@ public class NatureSounds extends JavaPlugin {
     private void registerCommands() {
         BukkitCommandManager commandManager = new BukkitCommandManager(this);
         commandManager.enableUnstableAPI("help");
-        commandManager.setFormat(MessageType.HELP, ChatColor.GRAY, ChatColor.GOLD, ChatColor.YELLOW);
-        commandManager.setFormat(MessageType.INFO, ChatColor.GRAY, ChatColor.GOLD, ChatColor.YELLOW);
-        commandManager.setFormat(MessageType.SYNTAX, ChatColor.GRAY, ChatColor.GOLD, ChatColor.YELLOW);
+        commandManager.setFormat(MessageType.HELP, Lang.getColor("primary"), Lang.getColor("secondary"), Lang.getColor("argument"));
+        commandManager.setFormat(MessageType.INFO, Lang.getColor("primary"), Lang.getColor("secondary"), Lang.getColor("argument"));
+        commandManager.setFormat(MessageType.SYNTAX, Lang.getColor("primary"), Lang.getColor("secondary"), Lang.getColor("argument"));
         commandManager.getCommandCompletions().registerCompletion("reload", c -> ImmutableList.of("language", "sounds", "resource-pack"));
         commandManager.registerCommand(new ResourcePackCommand(this));
         commandManager.registerCommand(new NatureCommand(this));

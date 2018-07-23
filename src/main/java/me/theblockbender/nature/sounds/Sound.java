@@ -28,7 +28,6 @@ public class Sound {
     // -------------------------------------------- //
     // IDENTIFIER & MAIN
     // -------------------------------------------- //
-    private String name;
     private NatureSounds main;
     private boolean loaded;
 
@@ -60,14 +59,6 @@ public class Sound {
         assert main != null;
         this.main = main;
         // -------------------------------------------- //
-        // FILENAME
-        // -------------------------------------------- //
-        if (fileName == null) {
-            ErrorLogger.error("Tried to load a file that had no name. Weird");
-            return;
-        }
-        name = fileName;
-        // -------------------------------------------- //
         // CONFIGURATION SECTION
         // -------------------------------------------- //
         if (soundConfiguration == null) {
@@ -78,7 +69,7 @@ public class Sound {
         // SOUND NAME
         // -------------------------------------------- //
         try {
-            soundNames = soundConfiguration.getStringList("sound.name");
+            soundNames = soundConfiguration.getStringList("sound.names");
         } catch (NullPointerException ex) {
             ErrorLogger.errorInFile("No sound name(s) specified", fileName);
             return;
@@ -265,10 +256,6 @@ public class Sound {
     // -------------------------------------------- //
     private boolean isLoaded() {
         return loaded;
-    }
-
-    public String getFileName() {
-        return name;
     }
 
     private Float getVolumeBetween(Float minVolume, Float maxVolume) {

@@ -30,11 +30,11 @@ public class Lang {
         if (!languageFile.contains(key)) return "§cError! Message §e" + key + "§c was not found!";
         String message = languageFile.getString(key);
         message = ChatColor.translateAlternateColorCodes('&', message);
-        message.replace("<error>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.error")));
-        message.replace("<argument>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.argument")));
-        message.replace("<primary>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.primary")));
-        message.replace("<secondary>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.secondary")));
-        message.replace("<bold>", "" + ChatColor.BOLD);
+        message = message.replace("<error>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.error")));
+        message = message.replace("<argument>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.argument")));
+        message = message.replace("<primary>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.primary")));
+        message = message.replace("<secondary>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.secondary")));
+        message = message.replace("<bold>", "" + ChatColor.BOLD);
         return message;
     }
 
@@ -44,11 +44,19 @@ public class Lang {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static String color(String message) {
-        message.replace("<error>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.error")));
-        message.replace("<argument>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.argument")));
-        message.replace("<primary>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.primary")));
-        message.replace("<secondary>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.secondary")));
-        message.replace("<bold>", "" + ChatColor.BOLD);
+        message = message.replace("<error>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.error")));
+        message = message.replace("<argument>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.argument")));
+        message = message.replace("<primary>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.primary")));
+        message = message.replace("<secondary>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.secondary")));
+        message = message.replace("<bold>", "" + ChatColor.BOLD);
         return message;
+    }
+
+    static ChatColor getColor(String subkey) {
+        try {
+            return ChatColor.valueOf(languageFile.getString("color." + subkey + "-word").toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            return ChatColor.DARK_RED;
+        }
     }
 }
