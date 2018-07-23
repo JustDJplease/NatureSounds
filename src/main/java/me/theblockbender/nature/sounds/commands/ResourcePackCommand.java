@@ -69,7 +69,6 @@ public class ResourcePackCommand extends BaseCommand {
         if (main.playersWithRP.contains(player.getUniqueId())) {
             player.sendMessage(Lang.formatWithPrefix("resourcepack.already-accepted"));
         } else {
-            player.sendMessage(Lang.formatWithPrefix("resourcepack.downloading"));
             String url = "http://" + main.utilWebServer.ip + ":" + main.utilWebServer.port + "/" + UtilToken.getToken(player.getUniqueId());
             player.setResourcePack(url, UtilChecksum.getChecksum(UtilChecksum.fileToByteArray(main.utilWebServer.getFileLocation())));
         }
