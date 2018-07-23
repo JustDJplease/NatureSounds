@@ -62,19 +62,19 @@ public class NatureCommand extends BaseCommand {
         }
         switch (args[0].toLowerCase()) {
             case "language":
-                sender.sendMessage(Lang.formatWithPrefix("reloading").replace("%0%", "Language"));
+                sender.sendMessage(Lang.formatWithPrefix("reloading").replace("{0}", "Language"));
                 main.registerLanguage();
-                sender.sendMessage(Lang.formatWithPrefix("reloaded").replace("%0%", "Language"));
+                sender.sendMessage(Lang.formatWithPrefix("reloaded").replace("{0}", "Language"));
                 break;
             case "sounds":
-                sender.sendMessage(Lang.formatWithPrefix("reloading").replace("%0%", "Sounds"));
+                sender.sendMessage(Lang.formatWithPrefix("reloading").replace("{0}", "Sounds"));
                 main.registerSounds();
-                sender.sendMessage(Lang.formatWithPrefix("reloaded").replace("%0%", "Sounds"));
+                sender.sendMessage(Lang.formatWithPrefix("reloaded").replace("{0}", "Sounds"));
                 break;
             case "resource-pack":
-                sender.sendMessage(Lang.formatWithPrefix("reloading").replace("%0%", "Resource-pack"));
+                sender.sendMessage(Lang.formatWithPrefix("reloading").replace("{0}", "Resource-pack"));
                 main.utilResourcePack.addAllFilesToPack();
-                sender.sendMessage(Lang.formatWithPrefix("reloaded").replace("%0%", "Resource-pack"));
+                sender.sendMessage(Lang.formatWithPrefix("reloaded").replace("{0}", "Resource-pack"));
                 sender.sendMessage(Lang.formatWithPrefix("send-pack-again"));
                 break;
             default:
