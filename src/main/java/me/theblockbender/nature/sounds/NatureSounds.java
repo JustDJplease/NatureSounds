@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableList;
 import me.theblockbender.nature.sounds.commands.NatureCommand;
 import me.theblockbender.nature.sounds.commands.ResourcePackCommand;
 import me.theblockbender.nature.sounds.listeners.PlayerListener;
+import me.theblockbender.nature.sounds.listeners.ReloadListener;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
 import me.theblockbender.nature.sounds.utilities.SoundTask;
 import me.theblockbender.nature.sounds.utilities.UtilResourcePack;
@@ -115,7 +116,7 @@ public class NatureSounds extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new ResourcePackListener(this), this);
         pluginManager.registerEvents(new PlayerListener(this), this);
-
+        pluginManager.registerEvents(new ReloadListener(), this);
     }
 
     private void registerRunnables() {
@@ -153,15 +154,16 @@ public class NatureSounds extends JavaPlugin {
     @Override
     public void onDisable() {
         ErrorLogger.supportMessage();
-        getLogger().info("This plugin does not support a server reload (/reload) or a plugman reload (/plugman reload)");
-        getLogger().info("If this is a reload, consider rebooting.");
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(Lang.format("header"));
-            player.sendMessage(" ");
-            UtilText.sendCenteredMessage(player, Lang.color("<primary>This plugin was reloaded!"));
-            UtilText.sendCenteredMessage(player, Lang.color("<primary>You will no longer hear any sounds."));
-            player.sendMessage(" ");
-            player.sendMessage(Lang.format("header"));
+        for (UUID uuid : playersWithRP) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                player.sendMessage(Lang.format("header"));
+                player.sendMessage(" ");
+                UtilText.sendCenteredMessage(player, Lang.color("<primary>This plugin was disabled."));
+                UtilText.sendCenteredMessage(player, Lang.color("<primary>You will no longer hear any sounds."));
+                player.sendMessage(" ");
+                player.sendMessage(Lang.format("header"));
+            }
         }
     }
 
