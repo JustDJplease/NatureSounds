@@ -1,6 +1,6 @@
-name: ${name}
-version: ${version}
-description: ${description}
+name: ${project.name}
+version: ${project.version}
+description: ${project.description}
 
 authors: [TheBlockBender, JustDJplease]
 main: me.theblockbender.nature.sounds.NatureSounds
