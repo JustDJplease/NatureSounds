@@ -54,7 +54,7 @@ public class ResourcePackCommand extends BaseCommand {
     }
 
     @Subcommand("generate")
-    @Description("Stops the web server")
+    @Description("Regenerates the resource pack")
     @CommandPermission("nature.admin.generate")
     public void commandGenerate(CommandSender sender) {
         sender.sendMessage(Lang.formatWithPrefix("generating"));

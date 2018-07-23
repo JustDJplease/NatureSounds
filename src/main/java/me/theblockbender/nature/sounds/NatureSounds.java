@@ -24,10 +24,12 @@ import me.theblockbender.nature.sounds.listeners.PlayerListener;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
 import me.theblockbender.nature.sounds.utilities.SoundTask;
 import me.theblockbender.nature.sounds.utilities.UtilResourcePack;
+import me.theblockbender.nature.sounds.utilities.UtilText;
 import me.theblockbender.nature.sounds.utilities.UtilWebServer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -151,6 +153,16 @@ public class NatureSounds extends JavaPlugin {
     @Override
     public void onDisable() {
         ErrorLogger.supportMessage();
+        getLogger().info("This plugin does not support a server reload (/reload) or a plugman reload (/plugman reload)");
+        getLogger().info("If this is a reload, consider rebooting.");
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(Lang.format("header"));
+            player.sendMessage(" ");
+            UtilText.sendCenteredMessage(player, Lang.color("<primary>This plugin was reloaded!"));
+            UtilText.sendCenteredMessage(player, Lang.color("<primary>You will no longer hear any sounds."));
+            player.sendMessage(" ");
+            player.sendMessage(Lang.format("header"));
+        }
     }
 
 
@@ -165,9 +177,10 @@ public class NatureSounds extends JavaPlugin {
         return new ArrayList<>(sounds.values());
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private File[] getSoundFiles() {
         File folder = new File(getDataFolder().getPath() + File.separator + "sounds");
-        if (!folder.exists()) //noinspection ResultOfMethodCallIgnored
+        if (!folder.exists())
             folder.mkdirs();
         return folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
     }
