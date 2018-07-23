@@ -116,9 +116,15 @@ public class SoundCommand extends BaseCommand {
             sender.sendMessage(Lang.format("error.no-filename"));
             return;
         }
+        Sound sound = main.getSound(fileName);
+        if (sound == null) {
+            sender.sendMessage(Lang.format("error.file-not-found").replace("{0}", fileName));
+            return;
+        }
         sender.sendMessage(Lang.format("header"));
         sender.sendMessage(" ");
         sender.sendMessage(Lang.color("<secondary>Showing details of: <argument>" + fileName));
+        // TODO print details
         sender.sendMessage(" ");
         sender.sendMessage(Lang.format("header"));
     }

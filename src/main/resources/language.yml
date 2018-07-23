@@ -44,3 +44,4 @@ error:
   no-reload-type: "<error>Error: Choose what to reload: <argument>Language<error>, <argument>Sounds<error> or <argument>Resource-pack<error>."
   no-number: "<error>Error: <argument>{0}<error> is not a number."
   no-filename: "<error>Error: No filename specified."
+  file-not-found: "<error>Error: Could not find the file <argument>{0}<error>."

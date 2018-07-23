@@ -108,7 +108,8 @@ public class NatureSounds extends JavaPlugin {
         commandManager.setFormat(MessageType.INFO, Lang.getBukkitColor("primary"), Lang.getBukkitColor("secondary"), Lang.getBukkitColor("argument"));
         commandManager.setFormat(MessageType.SYNTAX, Lang.getBukkitColor("primary"), Lang.getBukkitColor("secondary"), Lang.getBukkitColor("argument"));
         commandManager.getCommandCompletions().registerCompletion("reload", c -> ImmutableList.of("language", "sounds", "resource-pack"));
-        commandManager.getCommandCompletions().registerCompletion("sounds", c -> ImmutableList.copyOf(getSounds().toArray(Collection.class)));
+        commandManager.getCommandCompletions().registerCompletion("sounds", c -> ImmutableList.of(sounds.keySet()));
+        // TODO fix this
         commandManager.registerCommand(new ResourcePackCommand(this));
         commandManager.registerCommand(new NatureCommand(this));
     }
@@ -186,5 +187,9 @@ public class NatureSounds extends JavaPlugin {
         if (!folder.exists())
             folder.mkdirs();
         return folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
+    }
+
+    public Sound getSound(String fileName) {
+        return sounds.get(fileName);
     }
 }
