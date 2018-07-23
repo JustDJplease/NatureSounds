@@ -15,7 +15,7 @@
 
 package me.theblockbender.nature.sounds;
 
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Lang {
@@ -52,11 +52,19 @@ public class Lang {
         return message;
     }
 
-    static ChatColor getColor(String subkey) {
+    public static ChatColor getColor(String subkey) {
         try {
             return ChatColor.valueOf(languageFile.getString("color." + subkey + "-word").toUpperCase());
         } catch (IllegalArgumentException ex) {
             return ChatColor.DARK_RED;
+        }
+    }
+
+    static org.bukkit.ChatColor getBukkitColor(String subkey) {
+        try {
+            return org.bukkit.ChatColor.valueOf(languageFile.getString("color." + subkey + "-word").toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            return org.bukkit.ChatColor.DARK_RED;
         }
     }
 }

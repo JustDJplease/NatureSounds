@@ -63,8 +63,8 @@ public class NatureSounds extends JavaPlugin {
         createFiles();
         registerLanguage();
         registerEvents();
-        registerCommands();
         registerSounds();
+        registerCommands();
         registerRunnables();
         utilResourcePack = new UtilResourcePack(this);
         registerWebServer();
@@ -104,10 +104,11 @@ public class NatureSounds extends JavaPlugin {
     private void registerCommands() {
         BukkitCommandManager commandManager = new BukkitCommandManager(this);
         commandManager.enableUnstableAPI("help");
-        commandManager.setFormat(MessageType.HELP, Lang.getColor("primary"), Lang.getColor("secondary"), Lang.getColor("argument"));
-        commandManager.setFormat(MessageType.INFO, Lang.getColor("primary"), Lang.getColor("secondary"), Lang.getColor("argument"));
-        commandManager.setFormat(MessageType.SYNTAX, Lang.getColor("primary"), Lang.getColor("secondary"), Lang.getColor("argument"));
+        commandManager.setFormat(MessageType.HELP, Lang.getBukkitColor("primary"), Lang.getBukkitColor("secondary"), Lang.getBukkitColor("argument"));
+        commandManager.setFormat(MessageType.INFO, Lang.getBukkitColor("primary"), Lang.getBukkitColor("secondary"), Lang.getBukkitColor("argument"));
+        commandManager.setFormat(MessageType.SYNTAX, Lang.getBukkitColor("primary"), Lang.getBukkitColor("secondary"), Lang.getBukkitColor("argument"));
         commandManager.getCommandCompletions().registerCompletion("reload", c -> ImmutableList.of("language", "sounds", "resource-pack"));
+        commandManager.getCommandCompletions().registerCompletion("sounds", c -> ImmutableList.copyOf(getSounds().toArray(Collection.class)));
         commandManager.registerCommand(new ResourcePackCommand(this));
         commandManager.registerCommand(new NatureCommand(this));
     }

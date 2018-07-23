@@ -60,7 +60,13 @@ public class PlayerListener implements Listener {
             UtilText.sendCenteredMessage(player, Lang.format("join.can-send-question"));
             UtilText.sendCenteredMessage(player, Lang.format("join.what-does-it-do"));
             player.sendMessage(" ");
-            BaseComponent[] confirm = new ComponentBuilder("                 ").reset().append(Lang.format("join.yes-go-ahead")).color(ChatColor.GREEN).bold(true).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Lang.format("join.click-to-accept")).color(ChatColor.GREEN).create())).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack accept")).append("   ").reset().append(Lang.format("join.no-thanks")).color(ChatColor.RED).bold(true).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Lang.format("join.click-to-reject")).color(ChatColor.RED).create())).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack reject")).create();
+            BaseComponent[] confirm = new ComponentBuilder("                 ").reset()
+                    .append(Lang.format("join.yes-go-ahead")).color(ChatColor.GREEN).bold(true)
+                    .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Lang.format("join.click-to-accept")).color(ChatColor.GREEN).create()))
+                    .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack accept")).append("   ").reset()
+                    .append(Lang.format("join.no-thanks")).color(ChatColor.RED).bold(true)
+                    .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Lang.format("join.click-to-reject")).color(ChatColor.RED).create()))
+                    .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack reject")).create();
             player.spigot().sendMessage(confirm);
             player.sendMessage(" ");
             player.sendMessage(Lang.format("header"));

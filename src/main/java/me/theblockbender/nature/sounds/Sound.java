@@ -30,6 +30,7 @@ public class Sound {
     // -------------------------------------------- //
     private NatureSounds main;
     private boolean loaded;
+    private String fileName;
 
     // -------------------------------------------- //
     // CONDITIONS
@@ -58,6 +59,15 @@ public class Sound {
         loaded = false;
         assert main != null;
         this.main = main;
+        // -------------------------------------------- //
+        //  FILE NAME
+        // -------------------------------------------- //
+        if (fileName == null || fileName.equalsIgnoreCase("")) {
+            ErrorLogger.error("Tried to load a file with no name. How is that even possible?");
+            return;
+        } else {
+            this.fileName = fileName;
+        }
         // -------------------------------------------- //
         // CONFIGURATION SECTION
         // -------------------------------------------- //
@@ -272,6 +282,10 @@ public class Sound {
         } catch (IllegalArgumentException ex) {
             return soundNames.get(0);
         }
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 
     public String getSubtitle() {

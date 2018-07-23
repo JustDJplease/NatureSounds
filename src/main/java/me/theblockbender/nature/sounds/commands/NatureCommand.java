@@ -55,6 +55,7 @@ public class NatureCommand extends BaseCommand {
     @Description("Reloads the plugin")
     @CommandPermission("nature.admin.reload")
     @CommandCompletion("@reload")
+    @Syntax("/nature reload <reload-type>")
     public void commandReload(CommandSender sender, String[] args) {
         if (args.length < 1) {
             sender.sendMessage(Lang.format("error.no-reload-type"));
