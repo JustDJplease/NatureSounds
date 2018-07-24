@@ -45,7 +45,7 @@ public class NatureSounds extends JavaPlugin {
     // -------------------------------------------- //
     // INSTANCES & VARIABLES
     // -------------------------------------------- //
-    public final List<UUID> playersWithRP = new ArrayList<>();
+    public final Set<UUID> playersWithRP = new HashSet<>();
     private final Map<String, Sound> sounds = new HashMap<>();
     public UtilWebServer utilWebServer;
     public UtilResourcePack utilResourcePack;
