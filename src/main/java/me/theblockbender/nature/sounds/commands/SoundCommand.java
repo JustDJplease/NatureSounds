@@ -21,7 +21,6 @@ import co.aikar.commands.annotation.*;
 import me.theblockbender.nature.sounds.Lang;
 import me.theblockbender.nature.sounds.NatureSounds;
 import me.theblockbender.nature.sounds.Sound;
-import me.theblockbender.nature.sounds.utilities.UtilText;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.command.CommandSender;
@@ -123,11 +122,7 @@ public class SoundCommand extends BaseCommand {
             player.sendMessage(Lang.format("error.file-not-found").replace("{0}", fileName));
             return;
         }
-        player.sendMessage(Lang.format("header"));
-        player.sendMessage(" ");
-        UtilText.sendCenteredMessage(player, Lang.format("playing-sound").replace("{0}", fileName));
-        player.sendMessage(" ");
-        player.sendMessage(Lang.format("header"));
+        player.sendMessage(Lang.formatWithPrefix("playing-sound").replace("{0}", fileName));
         sound.forceRun(player);
     }
 
@@ -160,9 +155,8 @@ public class SoundCommand extends BaseCommand {
                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(getSoundNamesHover(sound.getSoundNames(), Lang.getColor("primary"), Lang.getColor("argument"))).color(ChatColor.GRAY).create()))
                 .create();
         sender.spigot().sendMessage(entry);
-        BaseComponent[] play = new ComponentBuilder("")
-                .append(TextComponent.fromLegacyText(Lang.format("prefix")))
-                .append("Play this sound").color(Lang.getColor("secondary")).bold(true)
+        sender.sendMessage(" ");
+        BaseComponent[] play = new ComponentBuilder("Play this sound").color(Lang.getColor("secondary")).bold(true)
                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Lang.format("click-to-play")).color(ChatColor.GRAY).create()))
                 .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/sound play " + sound.getFileName()))
                 .create();
@@ -176,6 +170,18 @@ public class SoundCommand extends BaseCommand {
         for (String name : soundNames) {
             hover.append(c1).append("- ").append(c2).append(name).append("\n");
         }
-        return hover.toString();
+        return replaceLast(hover.toString(), "\n", "");
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private String replaceLast(String string, String toReplace, String replacement) {
+        int pos = string.lastIndexOf(toReplace);
+        if (pos > -1) {
+            return string.substring(0, pos)
+                    + replacement
+                    + string.substring(pos + toReplace.length(), string.length());
+        } else {
+            return string;
+        }
     }
 }
