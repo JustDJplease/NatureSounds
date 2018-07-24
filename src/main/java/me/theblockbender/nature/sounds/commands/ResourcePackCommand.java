@@ -47,7 +47,7 @@ public class ResourcePackCommand extends BaseCommand {
     @Default
     @HelpCommand
     @Description("View information on commands")
-    @CommandPermission("nature.help")
+    @CommandPermission("ns.resourcepack.help")
     public void commandHelp(CommandSender sender, CommandHelp help) {
         sender.sendMessage(Lang.format("header"));
         help.showHelp();
@@ -55,7 +55,7 @@ public class ResourcePackCommand extends BaseCommand {
 
     @Subcommand("generate")
     @Description("Regenerates the resource pack")
-    @CommandPermission("nature.admin.generate")
+    @CommandPermission("ns.resourcepack.generate")
     public void commandGenerate(CommandSender sender) {
         sender.sendMessage(Lang.formatWithPrefix("generating"));
         main.utilResourcePack.addAllFilesToPack();
@@ -64,7 +64,7 @@ public class ResourcePackCommand extends BaseCommand {
 
     @Subcommand("accept")
     @Description("Sends the resource pack to the player")
-    @CommandPermission("nature.download")
+    @CommandPermission("ns.resourcepack.download")
     public void commandAccept(Player player) {
         if (main.playersWithRP.contains(player.getUniqueId())) {
             player.sendMessage(Lang.formatWithPrefix("resourcepack.already-accepted"));
@@ -76,7 +76,7 @@ public class ResourcePackCommand extends BaseCommand {
 
     @Subcommand("reject")
     @Description("Sends a rejected message to the player")
-    @CommandPermission("nature.download")
+    @CommandPermission("ns.resourcepack.download")
     public void commandReject(Player player) {
         if (main.playersWithRP.contains(player.getUniqueId())) {
             player.sendMessage(Lang.formatWithPrefix("resourcepack.already-accepted"));

@@ -51,7 +51,7 @@ public class SoundCommand extends BaseCommand {
     @Default
     @HelpCommand
     @Description("View information on commands")
-    @CommandPermission("nature.help")
+    @CommandPermission("ns.sound.help")
     public void commandHelp(CommandSender sender, CommandHelp help) {
         sender.sendMessage(Lang.format("header"));
         help.showHelp();
@@ -59,7 +59,7 @@ public class SoundCommand extends BaseCommand {
 
     @Subcommand("list")
     @Description("Display loaded sounds")
-    @CommandPermission("nature.list")
+    @CommandPermission("ns.sound.list")
     @Syntax("[page]")
     public void commandList(CommandSender sender, String[] args) {
         int page;
@@ -106,7 +106,7 @@ public class SoundCommand extends BaseCommand {
 
     @Subcommand("play")
     @Description("Plays the given sounds")
-    @CommandPermission("nature.play")
+    @CommandPermission("ns.sound.play")
     @CommandCompletion("@sounds")
     @Syntax("<sound>")
     public void commandPlay(Player player, String[] args) {
@@ -128,7 +128,7 @@ public class SoundCommand extends BaseCommand {
 
     @Subcommand("info")
     @Description("Display details of sounds")
-    @CommandPermission("nature.info")
+    @CommandPermission("ns.sound.info")
     @CommandCompletion("@sounds")
     @Syntax("<sound>")
     public void commandInfo(CommandSender sender, String[] args) {

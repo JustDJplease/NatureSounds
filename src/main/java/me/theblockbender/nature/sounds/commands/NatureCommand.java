@@ -45,7 +45,7 @@ public class NatureCommand extends BaseCommand {
     @Default
     @HelpCommand
     @Description("View information on commands")
-    @CommandPermission("nature.help")
+    @CommandPermission("ns.nature.help")
     public void commandHelp(CommandSender sender, CommandHelp help) {
         sender.sendMessage(Lang.format("header"));
         help.showHelp();
@@ -53,7 +53,7 @@ public class NatureCommand extends BaseCommand {
 
     @Subcommand("reload")
     @Description("Reloads the plugin")
-    @CommandPermission("nature.admin.reload")
+    @CommandPermission("ns.nature.reload")
     @CommandCompletion("@reload")
     @Syntax("<reload-type>")
     public void commandReload(CommandSender sender, String[] args) {
