@@ -25,8 +25,8 @@ public class EntityNearCondition {
     // -------------------------------------------- //
     // DATA
     // -------------------------------------------- //
-    private List<String> entityTypes;
-    private Double range;
+    private final List<String> entityTypes;
+    private final Double range;
 
     // -------------------------------------------- //
     // CONSTRUCTOR
