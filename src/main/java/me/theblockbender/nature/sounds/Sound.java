@@ -41,6 +41,7 @@ public class Sound {
     private WeatherCondition weatherCondition;
     private WorldCondition worldCondition;
     private CooldownCondition cooldownCondition;
+    private EntityNearCondition entityNearCondition;
     private Double chance;
 
     // -------------------------------------------- //
@@ -201,6 +202,25 @@ public class Sound {
             ErrorLogger.errorInFile("The biome condition was not formatted correctly", fileName);
             return;
         }
+
+        // -------------------------------------------- //
+        // ENTITY NEAR CONDITION
+        // -------------------------------------------- //
+        try {
+            if (soundConfiguration.contains("condition.entityNear.type") && soundConfiguration.contains("condition.entityNear.range")) {
+                List<String> types = soundConfiguration.getStringList("condition.entityNear.type");
+                if (!types.isEmpty()) {
+                    entityNearCondition = new EntityNearCondition(types, soundConfiguration.getDouble("condition.entityNear.range"));
+                    if (!entityNearCondition.parse()) {
+                        ErrorLogger.errorInFile("The entity condition is invalid", fileName);
+                        return;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ErrorLogger.errorInFile("The entity condition was not formatted correctly", fileName);
+            return;
+        }
         // -------------------------------------------- //
         // TIME CONDITION
         // -------------------------------------------- //
@@ -310,8 +330,11 @@ public class Sound {
         if (altitudeCondition != null) {
             if (!altitudeCondition.isTrue(location)) return;
         }
-        if (weatherCondition != null) {
+        if (worldCondition != null) {
             if (!worldCondition.isTrue(world)) return;
+        }
+        if (entityNearCondition != null) {
+            if (entityNearCondition.isTrue(location)) return;
         }
         if (cooldownCondition != null) {
             if (cooldownCondition.isOnCooldown(player)) return;

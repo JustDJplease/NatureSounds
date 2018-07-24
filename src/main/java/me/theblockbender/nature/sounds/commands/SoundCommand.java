@@ -18,6 +18,7 @@ package me.theblockbender.nature.sounds.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
+import me.theblockbender.nature.sounds.ErrorLogger;
 import me.theblockbender.nature.sounds.Lang;
 import me.theblockbender.nature.sounds.NatureSounds;
 import me.theblockbender.nature.sounds.Sound;
@@ -26,6 +27,7 @@ import net.md_5.bungee.api.chat.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,6 +126,52 @@ public class SoundCommand extends BaseCommand {
         }
         player.sendMessage(Lang.formatWithPrefix("playing-sound").replace("{0}", fileName));
         sound.forceRun(player);
+    }
+
+    // TODO add to wiki + update language yml in Configuration
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @Subcommand("create")
+    @Description("Generates a template sound configuration file")
+    @CommandPermission("ns.sound.create")
+    @Syntax("<name>")
+    public void commandCreateFile(Player player, String[] args) {
+        String fileName;
+        try {
+            fileName = args[0].replace(".", "").replace(" ", "_") + ".yml";
+        } catch (IndexOutOfBoundsException ex) {
+            player.sendMessage(Lang.format("error.no-filename"));
+            return;
+        }
+        Sound sound = main.getSound(fileName);
+        if (sound != null) {
+            player.sendMessage(Lang.format("error.file-name-taken").replace("{0}", fileName));
+            return;
+        }
+        player.sendMessage(Lang.formatWithPrefix("generating-file").replace("{0}", fileName));
+        File soundFile = new File(main.getDataFolder() + File.separator + "sounds", fileName);
+        if (!soundFile.exists()) {
+            soundFile.getParentFile().mkdirs();
+            try {
+                OutputStream out = new FileOutputStream(soundFile);
+                InputStream in = main.getResource("sound_template.yml");
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                out.close();
+                in.close();
+            } catch (IOException ex) {
+                ErrorLogger.error("Could not save sound template!");
+                ex.printStackTrace();
+                player.sendMessage(Lang.format("error.horrible-error"));
+                return;
+            }
+        } else {
+            player.sendMessage(Lang.format("error.file-already-exists"));
+            return;
+        }
+        player.sendMessage(Lang.formatWithPrefix("generated-file").replace("{0}", fileName));
     }
 
     @Subcommand("info")

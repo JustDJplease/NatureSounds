@@ -35,6 +35,9 @@ send-pack-again: "Your players will need to rejoin the server to receive the upd
 playing-sound: "<primary>Playing sound <argument>{0}<primary>."
 click-to-play: "Click this message to play this sound"
 
+generating-file: "<primary>Generating the file <argument>{0}<primary> in the folder <argument>plugins/NatureSounds/sounds<primary>..."
+generated-file: "<primary>Generated the file <argument>{0}<primary>."
+
 join:
   can-send-question: "<primary>Can we send you a resource-pack?"
   what-does-it-do: "<primary>It will allow you to hear various nature sounds!"
@@ -44,7 +47,13 @@ join:
   click-to-reject: "Click this message to reject the resource-pack"
 
 error:
+  horrible-error: "<error>Error: Aww snap! Something serious broke. Better check the console for details."
   no-reload-type: "<error>Error: Choose what to reload: <argument>Language<error>, <argument>Sounds<error> or <argument>Resource-pack<error>."
   no-number: "<error>Error: <argument>{0}<error> is not a number."
   no-filename: "<error>Error: No filename specified."
   file-not-found: "<error>Error: Could not find the file <argument>{0}<error>."
+  file-name-taken: "<error>Error: The file name <argument>{0}<error> is already taken."
+  file-already-exists: "<error>Error: This file already exists."
+
+# Do not edit:
+file-version: 1

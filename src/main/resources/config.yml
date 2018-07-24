@@ -16,3 +16,6 @@ port: 8080
 # There is no need to enable this, unless you're struggling to get the plugin to work and need help.
 # If you send me a PM on the Spigot Forums, I will often ask you to enable this.
 debug: false
+
+# Do not edit:
+file-version: 1
