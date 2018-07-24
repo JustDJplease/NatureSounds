@@ -326,4 +326,8 @@ public class Sound {
         cooldownCondition.setCooldown(player);
         player.playSound(location, soundName, getVolumeBetween(minVolume, maxVolume), pitch);
     }
+
+    public void forceRun(Player player) {
+        player.playSound(player.getLocation(), getRandomSoundName(), getVolumeBetween(minVolume, maxVolume), pitch);
+    }
 }

@@ -32,6 +32,9 @@ generating: "Generating a new resource-pack..."
 generated: "Successfully generated a resource-pack!"
 send-pack-again: "Your players will need to rejoin the server to receive the updated pack!"
 
+playing-sound: "<primary>Playing sound <argument>{0}<primary>."
+click-to-play: "Click this message to play this sound"
+
 join:
   can-send-question: "<primary>Can we send you a resource-pack?"
   what-does-it-do: "<primary>It will allow you to hear various nature sounds!"

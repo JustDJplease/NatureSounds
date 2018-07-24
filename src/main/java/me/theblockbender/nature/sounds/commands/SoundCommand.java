@@ -21,9 +21,11 @@ import co.aikar.commands.annotation.*;
 import me.theblockbender.nature.sounds.Lang;
 import me.theblockbender.nature.sounds.NatureSounds;
 import me.theblockbender.nature.sounds.Sound;
+import me.theblockbender.nature.sounds.utilities.UtilText;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +61,7 @@ public class SoundCommand extends BaseCommand {
     @Subcommand("list")
     @Description("Display loaded sounds")
     @CommandPermission("nature.list")
-    @Syntax("/sound list [page]")
+    @Syntax("[page]")
     public void commandList(CommandSender sender, String[] args) {
         int page;
         try {
@@ -103,11 +105,37 @@ public class SoundCommand extends BaseCommand {
         return selection;
     }
 
+    @Subcommand("play")
+    @Description("Plays the given sounds")
+    @CommandPermission("nature.play")
+    @CommandCompletion("@sounds")
+    @Syntax("<sound>")
+    public void commandPlay(Player player, String[] args) {
+        String fileName;
+        try {
+            fileName = args[0];
+        } catch (IndexOutOfBoundsException ex) {
+            player.sendMessage(Lang.format("error.no-filename"));
+            return;
+        }
+        Sound sound = main.getSound(fileName);
+        if (sound == null) {
+            player.sendMessage(Lang.format("error.file-not-found").replace("{0}", fileName));
+            return;
+        }
+        player.sendMessage(Lang.format("header"));
+        player.sendMessage(" ");
+        UtilText.sendCenteredMessage(player, Lang.format("playing-sound").replace("{0}", fileName));
+        player.sendMessage(" ");
+        player.sendMessage(Lang.format("header"));
+        sound.forceRun(player);
+    }
+
     @Subcommand("info")
     @Description("Display details of sounds")
     @CommandPermission("nature.info")
     @CommandCompletion("@sounds")
-    @Syntax("/sound info <sound>")
+    @Syntax("<sound>")
     public void commandInfo(CommandSender sender, String[] args) {
         String fileName;
         try {
@@ -124,8 +152,30 @@ public class SoundCommand extends BaseCommand {
         sender.sendMessage(Lang.format("header"));
         sender.sendMessage(" ");
         sender.sendMessage(Lang.color("<secondary>Showing details of: <argument>" + fileName));
-        // TODO print details
+        BaseComponent[] entry = new ComponentBuilder("")
+                .append(TextComponent.fromLegacyText(Lang.format("prefix")))
+                .append("Sound files: ").color(Lang.getColor("primary"))
+                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(getSoundNamesHover(sound.getSoundNames(), Lang.getColor("primary"), Lang.getColor("argument"))).color(ChatColor.GRAY).create()))
+                .append(sound.getSoundNames().size() + " ").color(Lang.getColor("argument"))
+                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(getSoundNamesHover(sound.getSoundNames(), Lang.getColor("primary"), Lang.getColor("argument"))).color(ChatColor.GRAY).create()))
+                .create();
+        sender.spigot().sendMessage(entry);
+        BaseComponent[] play = new ComponentBuilder("")
+                .append(TextComponent.fromLegacyText(Lang.format("prefix")))
+                .append("Play this sound").color(Lang.getColor("secondary")).bold(true)
+                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Lang.format("click-to-play")).color(ChatColor.GRAY).create()))
+                .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/sound play " + sound.getFileName()))
+                .create();
+        sender.spigot().sendMessage(play);
         sender.sendMessage(" ");
         sender.sendMessage(Lang.format("header"));
+    }
+
+    private String getSoundNamesHover(List<String> soundNames, ChatColor c1, ChatColor c2) {
+        StringBuilder hover = new StringBuilder();
+        for (String name : soundNames) {
+            hover.append(c1).append("- ").append(c2).append(name).append("\n");
+        }
+        return hover.toString();
     }
 }

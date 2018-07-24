@@ -20,6 +20,7 @@ import co.aikar.commands.MessageType;
 import com.google.common.collect.ImmutableList;
 import me.theblockbender.nature.sounds.commands.NatureCommand;
 import me.theblockbender.nature.sounds.commands.ResourcePackCommand;
+import me.theblockbender.nature.sounds.commands.SoundCommand;
 import me.theblockbender.nature.sounds.listeners.PlayerListener;
 import me.theblockbender.nature.sounds.listeners.ReloadListener;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
@@ -108,10 +109,10 @@ public class NatureSounds extends JavaPlugin {
         commandManager.setFormat(MessageType.INFO, Lang.getBukkitColor("primary"), Lang.getBukkitColor("secondary"), Lang.getBukkitColor("argument"));
         commandManager.setFormat(MessageType.SYNTAX, Lang.getBukkitColor("primary"), Lang.getBukkitColor("secondary"), Lang.getBukkitColor("argument"));
         commandManager.getCommandCompletions().registerCompletion("reload", c -> ImmutableList.of("language", "sounds", "resource-pack"));
-        commandManager.getCommandCompletions().registerCompletion("sounds", c -> ImmutableList.of(sounds.keySet()));
-        // TODO fix this
+        commandManager.getCommandCompletions().registerCompletion("sounds", c -> Collections.unmodifiableCollection(sounds.keySet()));
         commandManager.registerCommand(new ResourcePackCommand(this));
         commandManager.registerCommand(new NatureCommand(this));
+        commandManager.registerCommand(new SoundCommand(this));
     }
 
     private void registerEvents() {
