@@ -15,7 +15,9 @@
 
 package me.theblockbender.nature.sounds.conditions;
 
+import me.theblockbender.nature.sounds.ErrorLogger;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
@@ -25,29 +27,46 @@ public class EntityNearCondition {
     // -------------------------------------------- //
     // DATA
     // -------------------------------------------- //
-    private final List<String> entityTypes;
-    private final Double range;
+    private List<String> entityTypes;
+    private double range;
+    private boolean isEnabled;
 
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public EntityNearCondition(List<String> entityTypes, Double range) {
-        this.entityTypes = entityTypes;
-        this.range = range;
+    public EntityNearCondition(YamlConfiguration config, String fileName) {
+        try {
+            if (config.contains("condition.entityNear.type") && config.contains("condition.entityNear.range")) {
+                entityTypes = config.getStringList("condition.entityNear.type");
+                range = config.getDouble("condition.entityNear.range");
+                if (parse(fileName)) {
+                    isEnabled = true;
+                    return;
+                }
+            }
+        } catch (Exception ex) {
+            ErrorLogger.errorInFile("The entity condition was not formatted correctly", fileName);
+        }
+        isEnabled = false;
     }
 
     // -------------------------------------------- //
     // PARSING DATA
     // -------------------------------------------- //
-    public boolean parse() {
+    private boolean parse(String fileName) {
         for (String string : entityTypes) {
             try {
                 EntityType.valueOf(string);
             } catch (IllegalArgumentException ex) {
+                ErrorLogger.errorInFile("The entity condition is invalid. No entity of the type '" + string + "' exists.", fileName);
                 return false;
             }
         }
-        return range >= 0;
+        if (range >= 0) {
+            return true;
+        }
+        ErrorLogger.errorInFile("The entity condition is invalid. The range should be '0' or larger.", fileName);
+        return false;
     }
 
     // -------------------------------------------- //
@@ -58,5 +77,9 @@ public class EntityNearCondition {
             if (entityTypes.contains(entity.getType().name())) return true;
         }
         return false;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
     }
 }

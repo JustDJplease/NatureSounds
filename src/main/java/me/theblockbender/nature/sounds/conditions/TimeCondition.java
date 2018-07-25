@@ -15,35 +15,57 @@
 
 package me.theblockbender.nature.sounds.conditions;
 
+import me.theblockbender.nature.sounds.ErrorLogger;
 import org.bukkit.World;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class TimeCondition {
     // -------------------------------------------- //
     // DATA
     // -------------------------------------------- //
-    private final Long before;
-    private final Long after;
+    private long before;
+    private long after;
+    private boolean isEnabled;
 
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public TimeCondition(Long before, Long after) {
-        this.before = before;
-        this.after = after;
+    public TimeCondition(YamlConfiguration config, String fileName) {
+        try {
+            if (config.contains("condition.time")) {
+                before = config.getLong("condition.time.before");
+                after = config.getLong("condition.time.after");
+                if (parse(fileName)) {
+                    isEnabled = true;
+                    return;
+                }
+            }
+        } catch (Exception ex) {
+            ErrorLogger.errorInFile("The time condition was not formatted correctly", fileName);
+        }
+        isEnabled = false;
     }
 
     // -------------------------------------------- //
     // PARSING DATA
     // -------------------------------------------- //
-    public boolean parse() {
-        return after <= before && before >= 0 && before <= 24000 && after >= 0 && after <= 24000;
+    private boolean parse(String fileName) {
+        if (after <= before && before >= 0 && before <= 24000 && after >= 0) {
+            return true;
+        }
+        ErrorLogger.errorInFile("The time condition is invalid", fileName);
+        return false;
     }
 
     // -------------------------------------------- //
     // CONDITION VALIDATOR
     // -------------------------------------------- //
     public boolean isTrue(World world) {
-        Long time = world.getTime();
+        long time = world.getTime();
         return time <= before && time >= after;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
     }
 }

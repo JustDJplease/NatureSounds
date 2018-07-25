@@ -128,7 +128,6 @@ public class SoundCommand extends BaseCommand {
         sound.forceRun(player);
     }
 
-    // TODO add to wiki + update language yml in Configuration
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Subcommand("create")
     @Description("Generates a template sound configuration file")
@@ -227,7 +226,7 @@ public class SoundCommand extends BaseCommand {
         if (pos > -1) {
             return string.substring(0, pos)
                     + replacement
-                    + string.substring(pos + toReplace.length(), string.length());
+                    + string.substring(pos + toReplace.length());
         } else {
             return string;
         }

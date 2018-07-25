@@ -15,8 +15,10 @@
 
 package me.theblockbender.nature.sounds.conditions;
 
+import me.theblockbender.nature.sounds.ErrorLogger;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.List;
 
@@ -24,23 +26,36 @@ public class BiomeCondition {
     // -------------------------------------------- //
     // DATA
     // -------------------------------------------- //
-    private final List<String> biomes;
+    private List<String> biomes;
+    private boolean isEnabled;
 
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public BiomeCondition(List<String> biomes) {
-        this.biomes = biomes;
+    public BiomeCondition(YamlConfiguration soundConfiguration, String fileName) {
+        try {
+            if (soundConfiguration.contains("condition.biome")) {
+                biomes = soundConfiguration.getStringList("condition.biome");
+                if (parse(fileName)) {
+                    isEnabled = true;
+                    return;
+                }
+            }
+        } catch (Exception ex) {
+            ErrorLogger.errorInFile("The biome condition was not formatted correctly", fileName);
+        }
+        isEnabled = false;
     }
 
     // -------------------------------------------- //
     // PARSING DATA
     // -------------------------------------------- //
-    public boolean parse() {
+    private boolean parse(String fileName) {
         for (String string : biomes) {
             try {
                 Biome.valueOf(string);
             } catch (IllegalArgumentException ex) {
+                ErrorLogger.errorInFile("The biome condition is invalid. No biome of the type '" + string + "' exists.", fileName);
                 return false;
             }
         }
@@ -53,5 +68,9 @@ public class BiomeCondition {
     public boolean isTrue(Location location) {
         Biome biome = location.getWorld().getBiome(location.getBlockX(), location.getBlockZ());
         return biomes.contains(biome.name());
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
     }
 }

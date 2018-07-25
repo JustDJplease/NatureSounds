@@ -48,9 +48,9 @@ public class Sound {
     // SOUND PROPERTIES
     // -------------------------------------------- //
     private List<String> soundNames = new ArrayList<>();
-    private Float minVolume;
-    private Float maxVolume;
-    private Float pitch;
+    private float minVolume;
+    private float maxVolume;
+    private float pitch;
     private String subtitle;
 
     // -------------------------------------------- //
@@ -146,138 +146,13 @@ public class Sound {
             ErrorLogger.errorInFile("Chance was not a number OR it was not specified", fileName);
             return;
         }
-        // -------------------------------------------- //
-        // WEATHER CONDITION
-        // -------------------------------------------- //
-        try {
-            if (soundConfiguration.contains("condition.weather")) {
-                List<String> weatherTypes = soundConfiguration.getStringList("condition.weather");
-                if (!weatherTypes.isEmpty()) {
-                    weatherCondition = new WeatherCondition(weatherTypes);
-                    if (!weatherCondition.parse()) {
-                        ErrorLogger.errorInFile("The weather condition is invalid.", fileName);
-                        return;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ErrorLogger.errorInFile("The weather condition was not formatted correctly", fileName);
-            return;
-        }
-        // -------------------------------------------- //
-        // ALTITUDE CONDITION
-        // -------------------------------------------- //
-        try {
-            if (soundConfiguration.contains("condition.altitude")) {
-                Double below = soundConfiguration.getDouble("condition.altitude.below");
-                Double above = soundConfiguration.getDouble("condition.altitude.above");
-
-                if (!(below == 0 && above == 0)) {
-                    altitudeCondition = new AltitudeCondition(below, above);
-                    if (!altitudeCondition.parse()) {
-                        ErrorLogger.errorInFile("The altitude condition is invalid", fileName);
-                        return;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ErrorLogger.errorInFile("The altitude condition was not formatted correctly", fileName);
-            return;
-        }
-        // -------------------------------------------- //
-        // BIOME CONDITION
-        // -------------------------------------------- //
-        try {
-            if (soundConfiguration.contains("condition.biome")) {
-                List<String> biomes = soundConfiguration.getStringList("condition.biome");
-                if (!biomes.isEmpty()) {
-                    biomeCondition = new BiomeCondition(biomes);
-                    if (!biomeCondition.parse()) {
-                        ErrorLogger.errorInFile("The biome condition is invalid", fileName);
-                        return;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ErrorLogger.errorInFile("The biome condition was not formatted correctly", fileName);
-            return;
-        }
-
-        // -------------------------------------------- //
-        // ENTITY NEAR CONDITION
-        // -------------------------------------------- //
-        try {
-            if (soundConfiguration.contains("condition.entityNear.type") && soundConfiguration.contains("condition.entityNear.range")) {
-                List<String> types = soundConfiguration.getStringList("condition.entityNear.type");
-                if (!types.isEmpty()) {
-                    entityNearCondition = new EntityNearCondition(types, soundConfiguration.getDouble("condition.entityNear.range"));
-                    if (!entityNearCondition.parse()) {
-                        ErrorLogger.errorInFile("The entity condition is invalid", fileName);
-                        return;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ErrorLogger.errorInFile("The entity condition was not formatted correctly", fileName);
-            return;
-        }
-        // -------------------------------------------- //
-        // TIME CONDITION
-        // -------------------------------------------- //
-        try {
-            if (soundConfiguration.contains("condition.time")) {
-                Long before = soundConfiguration.getLong("condition.time.before");
-                Long after = soundConfiguration.getLong("condition.time.after");
-
-                if (!(before == 0 && after == 0)) {
-                    timeCondition = new TimeCondition(before, after);
-                    if (!timeCondition.parse()) {
-                        ErrorLogger.errorInFile("The time condition is invalid", fileName);
-                        return;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ErrorLogger.errorInFile("The time condition was not formatted correctly", fileName);
-            return;
-        }
-        // -------------------------------------------- //
-        // WORLD CONDITION
-        // -------------------------------------------- //
-        try {
-            if (soundConfiguration.contains("condition.world")) {
-                List<String> worlds = soundConfiguration.getStringList("condition.world");
-                if (!worlds.isEmpty()) {
-                    worldCondition = new WorldCondition(worlds);
-                    if (!worldCondition.parse()) {
-                        ErrorLogger.errorInFile("The world condition is invalid", fileName);
-                        return;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ErrorLogger.errorInFile("The world condition was not formatted correctly", fileName);
-            return;
-        }
-        // -------------------------------------------- //
-        // COOLDOWN CONDITION
-        // -------------------------------------------- //
-        try {
-            if (soundConfiguration.contains("condition.cooldown")) {
-                Long cooldown = soundConfiguration.getLong("condition.cooldown");
-                cooldownCondition = new CooldownCondition(cooldown);
-                if (!cooldownCondition.parse()) {
-                    ErrorLogger.errorInFile("The cooldown condition is invalid", fileName);
-                    return;
-                }
-            }
-        } catch (Exception ex) {
-            ErrorLogger.errorInFile("The cooldown condition was not formatted correctly", fileName);
-            return;
-        }
-        // -------------------------------------------- //
-        // PARSED COMPLETELY
-        // -------------------------------------------- //
+        weatherCondition = new WeatherCondition(soundConfiguration, fileName);
+        altitudeCondition = new AltitudeCondition(soundConfiguration, fileName);
+        biomeCondition = new BiomeCondition(soundConfiguration, fileName);
+        entityNearCondition = new EntityNearCondition(soundConfiguration, fileName);
+        timeCondition = new TimeCondition(soundConfiguration, fileName);
+        worldCondition = new WorldCondition(soundConfiguration, fileName);
+        cooldownCondition = new CooldownCondition(soundConfiguration, fileName);
         loaded = true;
     }
 
@@ -318,25 +193,25 @@ public class Sound {
     public void run(Player player, Location location) {
         if (!isLoaded()) return;
         World world = location.getWorld();
-        if (weatherCondition != null) {
+        if (weatherCondition != null && weatherCondition.isEnabled()) {
             if (!weatherCondition.isTrue(world)) return;
         }
-        if (timeCondition != null) {
+        if (timeCondition != null && timeCondition.isEnabled()) {
             if (!timeCondition.isTrue(world)) return;
         }
-        if (biomeCondition != null) {
+        if (biomeCondition != null && biomeCondition.isEnabled()) {
             if (!biomeCondition.isTrue(location)) return;
         }
-        if (altitudeCondition != null) {
+        if (altitudeCondition != null && altitudeCondition.isEnabled()) {
             if (!altitudeCondition.isTrue(location)) return;
         }
-        if (worldCondition != null) {
+        if (worldCondition != null && worldCondition.isEnabled()) {
             if (!worldCondition.isTrue(world)) return;
         }
-        if (entityNearCondition != null) {
+        if (entityNearCondition != null && entityNearCondition.isEnabled()) {
             if (entityNearCondition.isTrue(location)) return;
         }
-        if (cooldownCondition != null) {
+        if (cooldownCondition != null && cooldownCondition.isEnabled()) {
             if (cooldownCondition.isOnCooldown(player)) return;
         }
         double random = 100 * main.random.nextDouble();

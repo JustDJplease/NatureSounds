@@ -15,8 +15,10 @@
 
 package me.theblockbender.nature.sounds.conditions;
 
+import me.theblockbender.nature.sounds.ErrorLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.List;
 
@@ -24,21 +26,38 @@ public class WorldCondition {
     // -------------------------------------------- //
     // DATA
     // -------------------------------------------- //
-    private final List<String> worlds;
+    private List<String> worlds;
+    private boolean isEnabled;
 
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public WorldCondition(List<String> worlds) {
-        this.worlds = worlds;
+    public WorldCondition(YamlConfiguration config, String fileName) {
+        try {
+            if (config.contains("condition.world")) {
+                worlds = config.getStringList("condition.world");
+                if (!worlds.isEmpty()) {
+                    if (parse(fileName)) {
+                        isEnabled = true;
+                        return;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ErrorLogger.errorInFile("The world condition was not formatted correctly", fileName);
+        }
+        isEnabled = false;
     }
 
     // -------------------------------------------- //
     // PARSING DATA
     // -------------------------------------------- //
-    public boolean parse() {
+    private boolean parse(String fileName) {
         for (String string : worlds) {
-            if (Bukkit.getWorld(string) == null) return false;
+            if (Bukkit.getWorld(string) == null) {
+                ErrorLogger.errorInFile("The world condition is invalid. The world '" + string + "' does not exist.", fileName);
+                return false;
+            }
         }
         return true;
     }
@@ -48,5 +67,9 @@ public class WorldCondition {
     // -------------------------------------------- //
     public boolean isTrue(World world) {
         return worlds.contains(world.getName());
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
     }
 }

@@ -15,35 +15,61 @@
 
 package me.theblockbender.nature.sounds.conditions;
 
+import me.theblockbender.nature.sounds.ErrorLogger;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class AltitudeCondition {
     // -------------------------------------------- //
     // DATA
     // -------------------------------------------- //
-    private final Double below;
-    private final Double above;
+    private double below;
+    private double above;
+    private boolean isEnabled;
 
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public AltitudeCondition(Double below, Double above) {
-        this.below = below;
-        this.above = above;
+    public AltitudeCondition(YamlConfiguration soundConfiguration, String fileName) {
+        try {
+            if (soundConfiguration.contains("condition.altitude")) {
+                below = soundConfiguration.getDouble("condition.altitude.below");
+                above = soundConfiguration.getDouble("condition.altitude.above");
+
+                if (!(below == 0 && above == 0)) {
+                    if (parse(fileName)) {
+                        isEnabled = true;
+                        return;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ErrorLogger.errorInFile("The altitude condition was not formatted correctly", fileName);
+        }
+        isEnabled = false;
     }
 
     // -------------------------------------------- //
     // PARSING DATA
     // -------------------------------------------- //
-    public boolean parse() {
-        return below >= 0 && below <= 256 && above >= 0 && above <= 256 && below >= above;
+    private boolean parse(String fileName) {
+        if (below >= 0 && below <= 256 && above >= 0 && above <= 256 && below >= above) {
+            return true;
+        } else {
+            ErrorLogger.errorInFile("The altitude condition is invalid", fileName);
+            return false;
+        }
     }
 
     // -------------------------------------------- //
     // CONDITION VALIDATOR
     // -------------------------------------------- //
     public boolean isTrue(Location location) {
-        Double y = location.getY();
+        double y = location.getY();
         return y <= below && y >= above;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
     }
 }

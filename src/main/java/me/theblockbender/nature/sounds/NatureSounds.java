@@ -123,7 +123,7 @@ public class NatureSounds extends JavaPlugin {
     }
 
     private void registerRunnables() {
-        Long interval;
+        long interval;
         try {
             interval = getConfig().getLong("interval");
         } catch (Exception ex) {

@@ -71,7 +71,7 @@ public class UtilResourcePack {
             } else {
                 main.debug("| Checked pack: invalid");
             }
-            Long timeTaken = System.currentTimeMillis() - timeStart;
+            long timeTaken = System.currentTimeMillis() - timeStart;
             main.debug("| Time taken: " + timeTaken + " ms.");
         });
     }

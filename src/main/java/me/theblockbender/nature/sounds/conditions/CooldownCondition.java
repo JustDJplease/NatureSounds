@@ -15,6 +15,8 @@
 
 package me.theblockbender.nature.sounds.conditions;
 
+import me.theblockbender.nature.sounds.ErrorLogger;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -24,20 +26,37 @@ public class CooldownCondition {
     // DATA
     // -------------------------------------------- //
     private final Map<UUID, Long> onCooldown = new HashMap<>();
-    private final Long cooldown;
+    private long cooldown;
+    private boolean isEnabled;
 
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public CooldownCondition(Long cooldown) {
-        this.cooldown = cooldown;
+
+    public CooldownCondition(YamlConfiguration soundConfiguration, String fileName) {
+        try {
+            if (soundConfiguration.contains("condition.cooldown")) {
+                cooldown = soundConfiguration.getLong("condition.cooldown");
+                if (parse(fileName)) {
+                    isEnabled = true;
+                    return;
+                }
+            }
+        } catch (Exception ex) {
+            ErrorLogger.errorInFile("The cooldown condition was not formatted correctly", fileName);
+        }
+        isEnabled = false;
     }
 
     // -------------------------------------------- //
     // PARSING DATA
     // -------------------------------------------- //
-    public boolean parse() {
-        return cooldown >= 0L;
+    private boolean parse(String fileName) {
+        if (cooldown >= 0L) {
+            return true;
+        }
+        ErrorLogger.errorInFile("The cooldown condition is invalid. The cooldown should be '0' or larger.", fileName);
+        return false;
     }
 
     // -------------------------------------------- //
@@ -53,6 +72,10 @@ public class CooldownCondition {
     public boolean isOnCooldown(Player player) {
         cleanUpMap();
         return onCooldown.containsKey(player.getUniqueId());
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
     }
 
     private void cleanUpMap() {
