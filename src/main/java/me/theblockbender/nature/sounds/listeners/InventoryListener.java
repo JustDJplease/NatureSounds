@@ -20,6 +20,7 @@ import me.theblockbender.nature.sounds.gui.MenuButton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
 public class InventoryListener implements Listener {
 
@@ -34,6 +35,14 @@ public class InventoryListener implements Listener {
             if (button != null && button.getHandler() != null) {
                 button.getHandler().onClick(event);
             }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        //noinspection StatementWithEmptyBody // TODO remove <---
+        if (event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof Menu) {
+            // TODO save player progress async.
         }
     }
 }

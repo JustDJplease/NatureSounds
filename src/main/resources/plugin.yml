@@ -5,25 +5,6 @@ description: ${project.description}
 authors: [TheBlockBender, JustDJplease]
 main: me.theblockbender.nature.sounds.NatureSounds
 website: https://github.com/JustDJplease/NatureSounds
-database: false
-softdepend: [Multiverse-Core]
+softdepend: [Multiverse-Core, WorldGuard]
+
 api-version: 1.13
-
-commands:
- web:
-   description: Website testing feature
-   aliases: [website, webtest]
-   permission: nature.admin.web
-
-permissions:
-   nature.*:
-     description: Access all nature features
-     children:
-       nature.admin.*: true
-   nature.admin.*:
-     description: Access all nature administrator features
-     children:
-       nature.admin.web: true
-   nature.admin.web:
-     description: Use the web testing commands
-     default: op

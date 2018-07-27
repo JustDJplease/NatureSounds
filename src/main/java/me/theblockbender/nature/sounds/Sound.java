@@ -42,6 +42,7 @@ public class Sound {
     private WorldCondition worldCondition;
     private CooldownCondition cooldownCondition;
     private EntityNearCondition entityNearCondition;
+    private RegionCondition regionCondition;
     private Double chance;
 
     // -------------------------------------------- //
@@ -153,6 +154,7 @@ public class Sound {
         timeCondition = new TimeCondition(soundConfiguration, fileName);
         worldCondition = new WorldCondition(soundConfiguration, fileName);
         cooldownCondition = new CooldownCondition(soundConfiguration, fileName);
+        regionCondition = new RegionCondition(soundConfiguration, fileName, main.hasWorldGuard);
         loaded = true;
     }
 
@@ -209,10 +211,13 @@ public class Sound {
             if (!worldCondition.isTrue(world)) return;
         }
         if (entityNearCondition != null && entityNearCondition.isEnabled()) {
-            if (entityNearCondition.isTrue(location)) return;
+            if (!entityNearCondition.isTrue(location)) return;
         }
         if (cooldownCondition != null && cooldownCondition.isEnabled()) {
             if (cooldownCondition.isOnCooldown(player)) return;
+        }
+        if (regionCondition != null && regionCondition.isEnabled()) {
+            if (!regionCondition.isTrue(location)) return;
         }
         double random = 100 * main.random.nextDouble();
         if (random <= chance) {

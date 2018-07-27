@@ -33,6 +33,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -50,6 +51,7 @@ public class NatureSounds extends JavaPlugin {
     private final Map<String, Sound> sounds = new HashMap<>();
     public UtilWebServer utilWebServer;
     public UtilResourcePack utilResourcePack;
+    public boolean hasWorldGuard = false;
 
     Random random;
 
@@ -60,9 +62,11 @@ public class NatureSounds extends JavaPlugin {
     // -------------------------------------------- //
     @Override
     public void onEnable() {
+
         logger = getLogger();
         random = new Random();
         createFiles();
+        hookWorldGuard();
         registerLanguage();
         registerEvents();
         registerSounds();
@@ -71,6 +75,14 @@ public class NatureSounds extends JavaPlugin {
         utilResourcePack = new UtilResourcePack(this);
         registerWebServer();
         ErrorLogger.supportMessage();
+    }
+
+    private void hookWorldGuard() {
+        Plugin wg = getServer().getPluginManager().getPlugin("WorldGuard");
+        if (wg != null) {
+            hasWorldGuard = true;
+            debug(" | Found WorldGuard");
+        }
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -174,7 +186,7 @@ public class NatureSounds extends JavaPlugin {
 
 
     public void debug(String debugMessage) {
-        if (getConfig().getBoolean("debug")) logger.info("[+] " + debugMessage);
+        if (getConfig().getBoolean("debug")) logger.warning("[+] " + debugMessage);
     }
 
     // -------------------------------------------- //

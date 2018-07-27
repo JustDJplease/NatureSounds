@@ -1,17 +1,5 @@
 # Sound Configuration file for NatureSounds plugin.
 # This is the default file that contains all options.
-# CHANGES ARE APPLIED IMMEDIATELY ON /nature reload sounds
-# BE AWARE - IF YOU MODIFIED SOUND FILES, YOU'LL NEED TO MANUALLY RELOAD THE RESOURCE PACK USING /nature reload resource-pack
-
-# ----------------------------------------------------------------- #
-# SOUND OPTIONS
-# name: Names of the sounds to be played. Without the .ogg extension. (Should contain at least 1 entry)
-# If you place multiple entries in this list, a random one will be chosen every time.
-# minVolume: The minimum volume this sound should be played at. (Should not be negative)
-# maxVolume: The maximum volume this sound should be played at. (Should not be negative)
-# pitch: The pitch this sound should be played at. (Should be between 0 and 2)
-# subtitle: The message to appear on screen if players enabled subtitles. (Should not be to long)
-# ----------------------------------------------------------------- #
 sound:
   names:
   - "sound1"
@@ -22,26 +10,7 @@ sound:
   maxVolume: 1.0
   pitch: 1.0
   subtitle: "A mysterious sound played!"
-
-# ----------------------------------------------------------------- #
-# CHANCE
-# chance: How likely this sound is to be played. (0 = never, 100 = always)
-# ----------------------------------------------------------------- #
 chance: 50
-
-# ----------------------------------------------------------------- #
-# CONDITIONS
-# You can disable a condition by removing the condition's section. (eg. removing 'weather' and the 3 items listed underneath)
-# You can see conditions like so: In order for the sound to be played, the weather condition should be either THUNDER, RAIN or CLEAR.
-#
-# weather: A list of weather types that this sound will play in. (All types: THUNDER, RAIN, CLEAR)
-# altitude: 'above' - The player should be above this Y level. 'below' - The player should be below this Y level. (Y ranges from 0 to 256)
-# biome: A list of biomes that this sound will play in. (All types: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html)
-# time: 'after' - The time should be later than this. 'before' - The time should be earlier than this. (Time ranges from 0 to 24000)
-# world: A list of world names that this sound will play in. (Worlds should exist)
-# cooldown: How much time should pass before the player can hear this sound again. (In milliseconds)
-# entityNear: An entity type that needs to be present within the given range. (All types: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html)
-# ----------------------------------------------------------------- #
 condition:
   weather:
   - THUNDER
@@ -65,3 +34,6 @@ condition:
     type:
     - SHEEP
     range: 20.0
+  region:
+  - "__global__"
+  - "spawn"
