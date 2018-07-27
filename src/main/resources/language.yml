@@ -55,5 +55,8 @@ error:
   file-name-taken: "<error>Error: The file name <argument>{0}<error> is already taken."
   file-already-exists: "<error>Error: This file already exists."
 
+gui:
+  exit: "<error><bold>Exit"
+
 # Do not edit:
 file-version: 1

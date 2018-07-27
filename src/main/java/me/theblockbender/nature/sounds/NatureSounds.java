@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableList;
 import me.theblockbender.nature.sounds.commands.NatureCommand;
 import me.theblockbender.nature.sounds.commands.ResourcePackCommand;
 import me.theblockbender.nature.sounds.commands.SoundCommand;
+import me.theblockbender.nature.sounds.gui.Menu;
 import me.theblockbender.nature.sounds.listeners.PlayerListener;
 import me.theblockbender.nature.sounds.listeners.ReloadListener;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
@@ -120,6 +121,7 @@ public class NatureSounds extends JavaPlugin {
         pluginManager.registerEvents(new ResourcePackListener(this), this);
         pluginManager.registerEvents(new PlayerListener(this), this);
         pluginManager.registerEvents(new ReloadListener(), this);
+        Menu.registerListeners(this);
     }
 
     private void registerRunnables() {

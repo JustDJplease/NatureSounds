@@ -96,10 +96,6 @@ public class UtilWebServer {
         });
     }
 
-    public void stop() {
-        Bukkit.getServer().getScheduler().runTaskAsynchronously(main, () -> httpServer.close());
-    }
-
     // -------------------------------------------- //
     // GETTERS
     // -------------------------------------------- //
