@@ -22,7 +22,7 @@ public class MenuButton {
     private ButtonHandler handler;
     private ItemStack item;
 
-    MenuButton(ItemStack item) {
+    public MenuButton(ItemStack item) {
         this.item = item;
     }
 
@@ -30,11 +30,11 @@ public class MenuButton {
         return handler;
     }
 
-    void setHandler(ButtonHandler handler) {
+    public void setHandler(ButtonHandler handler) {
         this.handler = handler;
     }
 
-    ItemStack getItemStack() {
+    public ItemStack getItemStack() {
         return item;
     }
 }

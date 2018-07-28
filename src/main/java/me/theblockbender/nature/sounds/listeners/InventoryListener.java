@@ -17,6 +17,7 @@ package me.theblockbender.nature.sounds.listeners;
 
 import me.theblockbender.nature.sounds.gui.Menu;
 import me.theblockbender.nature.sounds.gui.MenuButton;
+import me.theblockbender.nature.sounds.gui.PaginatedMenu;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -36,12 +37,23 @@ public class InventoryListener implements Listener {
                 button.getHandler().onClick(event);
             }
         }
+        if (event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof PaginatedMenu) {
+            PaginatedMenu menu = (PaginatedMenu) event.getInventory().getHolder();
+            MenuButton button = menu.getButton(event.getSlot());
+            if (button != null && button.getHandler() != null) {
+                button.getHandler().onClick(event);
+            }
+        }
     }
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         //noinspection StatementWithEmptyBody // TODO remove <---
         if (event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof Menu) {
+            // TODO save player progress async.
+        }
+        //noinspection StatementWithEmptyBody // TODO remove <---
+        if (event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof PaginatedMenu) {
             // TODO save player progress async.
         }
     }

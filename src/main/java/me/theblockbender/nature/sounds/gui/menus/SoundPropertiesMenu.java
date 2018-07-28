@@ -15,7 +15,15 @@
 
 package me.theblockbender.nature.sounds.gui.menus;
 
+import me.theblockbender.nature.sounds.Sound;
+import org.bukkit.entity.HumanEntity;
+
 public class SoundPropertiesMenu {
+    public void show(HumanEntity whoClicked) {
+    }
+
+    public void show(Sound sound, HumanEntity whoClicked) {
+    }
     // Allows to configure basic sound properties
     // has overview of advanced settings per sound.
     //

@@ -22,6 +22,7 @@ import me.theblockbender.nature.sounds.commands.NatureCommand;
 import me.theblockbender.nature.sounds.commands.ResourcePackCommand;
 import me.theblockbender.nature.sounds.commands.SoundCommand;
 import me.theblockbender.nature.sounds.gui.Menu;
+import me.theblockbender.nature.sounds.gui.Menus;
 import me.theblockbender.nature.sounds.listeners.PlayerListener;
 import me.theblockbender.nature.sounds.listeners.ReloadListener;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
@@ -51,7 +52,8 @@ public class NatureSounds extends JavaPlugin {
     private final Map<String, Sound> sounds = new HashMap<>();
     public UtilWebServer utilWebServer;
     public UtilResourcePack utilResourcePack;
-    public boolean hasWorldGuard = false;
+    public Menus menus;
+    boolean hasWorldGuard = false;
 
     Random random;
 
@@ -73,6 +75,7 @@ public class NatureSounds extends JavaPlugin {
         registerCommands();
         registerRunnables();
         utilResourcePack = new UtilResourcePack(this);
+        menus = new Menus(this);
         registerWebServer();
         ErrorLogger.supportMessage();
     }

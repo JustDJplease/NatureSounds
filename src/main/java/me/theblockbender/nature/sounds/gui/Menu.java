@@ -16,7 +16,6 @@
 package me.theblockbender.nature.sounds.gui;
 
 
-import me.theblockbender.nature.sounds.Lang;
 import me.theblockbender.nature.sounds.NatureSounds;
 import me.theblockbender.nature.sounds.listeners.InventoryListener;
 import me.theblockbender.nature.sounds.utilities.UtilItem;
@@ -33,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused")
 public class Menu implements InventoryHolder {
 
     private static NatureSounds main;
@@ -80,41 +78,15 @@ public class Menu implements InventoryHolder {
         }
     }
 
-    public String getDisplayName() {
-        return name;
-    }
-
-    public void setDisplayName(String name) {
-        this.name = ChatColor.translateAlternateColorCodes('&', name);
-    }
-
-    public void addButton(MenuButton button) {
-        int slot = 0;
-        for (int nextSlot : items.keySet()) {
-            if (nextSlot > slot) {
-                slot = nextSlot;
-            }
-        }
-        if (!items.isEmpty()) {
-            slot++;
-        }
-        items.put(slot, button);
-    }
-
     public void setButton(int slot, MenuButton button) {
         items.put(slot, button);
-    }
-
-    public void removeButton(int slot) {
-        items.remove(slot);
     }
 
     public MenuButton getButton(int slot) {
         if (slot < 54) {
             return items.get(slot);
-        } else {
-            return null;
         }
+        return null;
     }
 
     public void refreshInventory(HumanEntity holder) {
@@ -130,11 +102,14 @@ public class Menu implements InventoryHolder {
 
         for (int slot : frameSlots) {
             inventory.setItem(slot, frame.getItemStack());
+            items.put(slot, frame);
         }
 
-        MenuButton exit = new MenuButton(new UtilItem(Material.SIGN).setName(Lang.format("gui.exit")).hideFlags().create());
+        MenuButton exit = new MenuButton(new UtilItem(Material.SIGN).setName("§c§lExit").hideFlags().create());
         frame.setHandler(event -> Bukkit.getScheduler().runTask(main, () -> event.getWhoClicked().closeInventory()));
         inventory.setItem(52, exit.getItemStack());
+        items.put(52, exit);
+
 
         for (Map.Entry<Integer, MenuButton> entry : items.entrySet()) {
             int slot = entry.getKey();

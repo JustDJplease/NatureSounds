@@ -15,12 +15,52 @@
 
 package me.theblockbender.nature.sounds.gui.menus;
 
+import me.theblockbender.nature.sounds.NatureSounds;
+import me.theblockbender.nature.sounds.Sound;
+import me.theblockbender.nature.sounds.gui.MenuButton;
+import me.theblockbender.nature.sounds.gui.PaginatedMenu;
+import me.theblockbender.nature.sounds.utilities.UtilItem;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
+
 public class SoundsMenu {
-    // list of all sounds
-    // onClick to sound properties
+    // * list of all sounds
+    // * onClick to sound properties
     //
-    // refresh button
-    // add sounds button
-    // exit button
-    // paginated
+    // * refresh button
+    // * add sounds button
+    // * exit button
+    // * paginated
+
+    private PaginatedMenu menu;
+
+
+    public SoundsMenu(NatureSounds main) {
+        menu = new PaginatedMenu("§7Sounds §6»§7 List");
+        MenuButton refresh = new MenuButton(new UtilItem(Material.ANVIL).setName("§a§lRefresh").hideFlags().create());
+        refresh.setHandler(event -> Bukkit.getScheduler().runTask(main, () -> {
+            menu.refreshInventory(event.getWhoClicked());
+        }));
+        MenuButton create = new MenuButton(new UtilItem(Material.KNOWLEDGE_BOOK).setName("§e§lAdd Sound").hideFlags().create());
+        create.setHandler(event -> Bukkit.getScheduler().runTask(main, () -> {
+            event.getWhoClicked().closeInventory();
+            main.menus.soundPropertiesMenu.show(event.getWhoClicked());
+        }));
+        menu.setEveryPageItem(46, refresh);
+        menu.setEveryPageItem(48, create);
+        for (Sound sound : main.getSounds()) {
+            // TODO fancy item.
+            MenuButton button = new MenuButton(new UtilItem(Material.WRITTEN_BOOK).setName("§e§l" + sound.getFileName()).hideFlags().create());
+            button.setHandler(event -> Bukkit.getScheduler().runTask(main, () -> {
+                event.getWhoClicked().closeInventory();
+                main.menus.soundPropertiesMenu.show(sound, event.getWhoClicked());
+            }));
+            menu.addContentItem(button);
+        }
+    }
+
+    public void show(HumanEntity player) {
+        player.openInventory(menu.getInventory());
+    }
 }
