@@ -22,7 +22,6 @@ import me.theblockbender.nature.sounds.utilities.UtilItem;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -73,7 +72,7 @@ public class Menu implements InventoryHolder {
     public static void registerListeners(JavaPlugin plugin) {
         main = (NatureSounds) plugin;
         if (inventoryListener == null) {
-            inventoryListener = new InventoryListener();
+            inventoryListener = new InventoryListener(main);
             plugin.getServer().getPluginManager().registerEvents(inventoryListener, plugin);
         }
     }
@@ -84,14 +83,13 @@ public class Menu implements InventoryHolder {
 
     public MenuButton getButton(int slot) {
         if (slot < 54) {
-            return items.get(slot);
+            try {
+                return items.get(slot);
+            } catch (IndexOutOfBoundsException ex) {
+                return null;
+            }
         }
         return null;
-    }
-
-    public void refreshInventory(HumanEntity holder) {
-        holder.closeInventory();
-        holder.openInventory(getInventory());
     }
 
     @Override
@@ -108,10 +106,10 @@ public class Menu implements InventoryHolder {
         }
 
         MenuButton exit = new MenuButton(new UtilItem(Material.FIRE_CORAL)
-                .setName("§cExit")
-                .setLore("§8Quit, leave", "", "§7Close the menu you are currently", "§7viewing and return to the game.", "", "§a➡ Click to close this menu")
+                .setName("§c§lExit")
+                .setLore("§8leave this menu", "", "§7Close the menu you are currently", "§7viewing and return to the game.", "", "§b➜ Click to close this menu")
                 .hideFlags().create());
-        frame.setHandler(event -> {
+        exit.setHandler(event -> {
             event.setCancelled(true);
             Bukkit.getScheduler().runTask(main, () -> event.getWhoClicked().closeInventory());
         });

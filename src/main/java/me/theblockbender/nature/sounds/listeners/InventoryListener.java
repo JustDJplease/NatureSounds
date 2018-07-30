@@ -15,6 +15,7 @@
 
 package me.theblockbender.nature.sounds.listeners;
 
+import me.theblockbender.nature.sounds.NatureSounds;
 import me.theblockbender.nature.sounds.gui.Menu;
 import me.theblockbender.nature.sounds.gui.MenuButton;
 import me.theblockbender.nature.sounds.gui.PaginatedMenu;
@@ -24,6 +25,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
 public class InventoryListener implements Listener {
+
+    private NatureSounds main;
+
+    public InventoryListener(NatureSounds main) {
+        this.main = main;
+    }
 
     // -------------------------------------------- //
     // EVENT
@@ -56,6 +63,8 @@ public class InventoryListener implements Listener {
         if (event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof PaginatedMenu) {
             // TODO save player progress async.
         }
+        // TODO LAST STEP!
+        main.menus.currentlyModifying.remove(event.getPlayer().getUniqueId());
     }
 }
 

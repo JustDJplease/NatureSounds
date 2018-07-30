@@ -75,7 +75,7 @@ public class SoundPropertiesMenu {
                 event.setCancelled(true);
                 Bukkit.getScheduler().runTask(main, () -> {
                     event.getWhoClicked().closeInventory();
-                    main.menus.oggFilesMenu.show(event.getWhoClicked());
+                    main.menus.conditionsMenu.show(event.getWhoClicked());
                 });
             });
             menu.setButton(11, conditions);

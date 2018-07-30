@@ -43,12 +43,31 @@ public class OggFilesMenu {
     public OggFilesMenu(NatureSounds main) {
         this.main = main;
         menu = new PaginatedMenu("§7Sounds §a»§7 Ogg Files");
-        MenuButton refresh = new MenuButton(new UtilItem(Material.ANVIL).setName("§a§lRefresh").hideFlags().create());
+        MenuButton refresh = new MenuButton(new UtilItem(Material.BUBBLE_CORAL)
+                .setName("§5§lRefresh")
+                .setLore("§8Reload this page", "", "§7Refresh the menu you are currently", "§7viewing and read all files again.", "", "§b➜ Click to refresh this menu")
+                .hideFlags().create());
         refresh.setHandler(event -> {
             event.setCancelled(true);
-            Bukkit.getScheduler().runTask(main, () -> menu.refreshInventory(event.getWhoClicked()));
+            Bukkit.getScheduler().runTask(main, () -> {
+                event.getWhoClicked().closeInventory();
+                show(event.getWhoClicked());
+            });
         });
         menu.setEveryPageItem(46, refresh);
+
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private File[] getOggFiles() {
+        File folder = new File(main.getDataFolder() + File.separator + "sounds");
+        if (!folder.exists())
+            folder.mkdirs();
+        return folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".ogg"));
+    }
+
+    public void show(HumanEntity player) {
+        menu.clearContentSlots();
         for (File file : getOggFiles()) {
             // TODO fancy item.
             MenuButton button = new MenuButton(new UtilItem(Material.WRITTEN_BOOK).setName("§e§l" + file.getName()).hideFlags().create());
@@ -62,17 +81,6 @@ public class OggFilesMenu {
             });
             menu.addContentItem(button);
         }
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private File[] getOggFiles() {
-        File folder = new File(main.getDataFolder() + File.separator + "sounds");
-        if (!folder.exists())
-            folder.mkdirs();
-        return folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".ogg"));
-    }
-
-    public void show(HumanEntity player) {
         player.openInventory(menu.getInventory());
     }
 

@@ -110,8 +110,12 @@ public class PaginatedMenu implements InventoryHolder {
 
     public MenuButton getButton(int slot) {
         if (contentSlots.containsKey(slot)) {
-            int id = page * contentSlots.get(slot);
-            return contentItems.get(id);
+            int id = (page + 1) * contentSlots.get(slot);
+            try {
+                return contentItems.get(id);
+            } catch (IndexOutOfBoundsException ex) {
+                return null;
+            }
         } else {
             return everyPageItems.get(slot);
         }
@@ -157,8 +161,8 @@ public class PaginatedMenu implements InventoryHolder {
             everyPageItems.put(slot, frame);
         }
         MenuButton exit = new MenuButton(new UtilItem(Material.FIRE_CORAL)
-                .setName("§cExit")
-                .setLore("§8Quit, leave", "", "§7Close the menu you are currently", "§7viewing and return to the game.", "", "§a➡ Click to close this menu")
+                .setName("§c§lExit")
+                .setLore("§8Exit this menu", "", "§7Close the menu you are currently", "§7viewing and return to the game.", "", "§b➜ Click to close this menu")
                 .hideFlags().create());
         exit.setHandler(event -> {
             event.setCancelled(true);
@@ -167,12 +171,16 @@ public class PaginatedMenu implements InventoryHolder {
         inventory.setItem(52, exit.getItemStack());
         everyPageItems.put(52, exit);
 
+        // We're doing this 21 times.
         for (int i = 0; i < 21; i++) {
+            // We get the ID of the next menu button on the list:
             int index = (21 * page) + i;
+            // If there are no buttons with that ID, cancel.
             if (contentItems.size() - 1 < index) break;
+            // Else, we get the button with that ID.
             MenuButton button = contentItems.get(index);
             int slot = 10 + i;
-            while (!contentSlots.containsKey(slot)) {
+            while (!contentSlots.containsKey(slot) || (inventory.getItem(slot) != null && inventory.getItem(slot).getType() != Material.AIR)) {
                 slot++;
             }
             inventory.setItem(slot, button.getItemStack());
@@ -184,9 +192,9 @@ public class PaginatedMenu implements InventoryHolder {
             inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
         }
         MenuButton next = new MenuButton(new UtilItem(Material.PLAYER_HEAD)
-                .setName("§2Next Page")
-                .setLore("§8Next, more", "", "§7Continue viewing the remaining entries", "§7on this list on the next page.", "", "§a➡ Click to continue")
                 .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19")
+                .setName("§e§lNext")
+                .setLore("§8View Next page", "", "§7Continue viewing the remaining entries", "§7on this list on the next page.", "", "§b➜ Click to continue")
                 .hideFlags().create());
         next.setHandler(event -> {
             event.setCancelled(true);
@@ -199,9 +207,9 @@ public class PaginatedMenu implements InventoryHolder {
         inventory.setItem(44, next.getItemStack());
         everyPageItems.put(44, next);
         MenuButton prev = new MenuButton(new UtilItem(Material.PLAYER_HEAD)
-                .setName("§2Previous Page")
-                .setLore("§8Previous, less", "", "§7Go back to viewing the earlier entries", "§7from this list on the previous page.", "", "§a➡ Click to continue")
                 .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ==")
+                .setName("§e§lPrevious")
+                .setLore("§8View previous page", "", "§7Go back to viewing the earlier entries", "§7from this list on the previous page.", "", "§b➜ Click to continue")
                 .hideFlags().create());
         prev.setHandler(event -> {
             event.setCancelled(true);
@@ -216,5 +224,8 @@ public class PaginatedMenu implements InventoryHolder {
         return inventory;
     }
 
+    public void clearContentSlots() {
+        contentItems.clear();
+    }
 }
 
