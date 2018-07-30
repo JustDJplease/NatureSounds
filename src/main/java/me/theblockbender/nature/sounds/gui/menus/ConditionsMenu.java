@@ -15,9 +15,24 @@
 
 package me.theblockbender.nature.sounds.gui.menus;
 
+import me.theblockbender.nature.sounds.NatureSounds;
+import me.theblockbender.nature.sounds.gui.Menu;
+import org.bukkit.entity.HumanEntity;
+
 public class ConditionsMenu {
     // toggleable conditions
     // upon condition click. open from condition class.
     //
     // back to sound properties button
+    private Menu menu;
+
+
+    public ConditionsMenu(NatureSounds main) {
+        menu = new Menu("§7Sounds §6»§7 Conditions");
+        // TODO add conditions.
+    }
+
+    public void show(HumanEntity player) {
+        player.openInventory(menu.getInventory());
+    }
 }

@@ -148,29 +148,24 @@ public class PaginatedMenu implements InventoryHolder {
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 54, name);
-        MenuButton frame = new MenuButton(new UtilItem(Material.GRAY_STAINED_GLASS_PANE).setName("").hideFlags().create());
+        MenuButton frame = new MenuButton(new UtilItem(Material.GRAY_STAINED_GLASS_PANE).setName("§7").hideFlags().create());
         frame.setHandler(event -> event.setCancelled(true));
-
         for (int slot : frameSlots) {
             inventory.setItem(slot, frame.getItemStack());
             everyPageItems.put(slot, frame);
         }
-
-        MenuButton exit = new MenuButton(new UtilItem(Material.SIGN).setName("§c§lExit").hideFlags().create());
-        exit.setHandler(event -> Bukkit.getScheduler().runTask(main, () -> event.getWhoClicked().closeInventory()));
+        MenuButton exit = new MenuButton(new UtilItem(Material.OAK_DOOR).setName("§cExit").setLore("§7CLICK to leave this menu").hideFlags().create());
+        exit.setHandler(event -> {
+            event.setCancelled(true);
+            Bukkit.getScheduler().runTask(main, () -> event.getWhoClicked().closeInventory());
+        });
         inventory.setItem(52, exit.getItemStack());
         everyPageItems.put(52, exit);
 
-
-        // Content slots 10 till 34
-        // & while frame.contains(int), int++;
         for (int i = 0; i < 21; i++) {
-            int index = (21 * page) + i - 1;
-            // don't do anything if there are no more content items.
+            int index = (21 * page) + i;
             if (contentItems.size() - 1 < index) break;
-            // we get the next menu button item.
             MenuButton button = contentItems.get(index);
-            // we get the next free slot
             int slot = 10 + i;
             while (!contentSlots.containsKey(slot)) {
                 slot++;
@@ -184,27 +179,30 @@ public class PaginatedMenu implements InventoryHolder {
             inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
         }
 
-        MenuButton next = new MenuButton(new UtilItem(Material.PLAYER_HEAD).setName("§e§lNext Page").hideFlags().create());
+        MenuButton next = new MenuButton(new UtilItem(Material.PLAYER_HEAD).setName("§2Next Page").setLore("§7CLICK to view the next page").texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19").hideFlags().create());
         next.setHandler(event -> {
+            event.setCancelled(true);
             if (!nextPage()) {
                 event.getWhoClicked().sendMessage(Lang.color("<error>This is the last page."));
             } else {
                 Bukkit.getScheduler().runTask(main, () -> refreshInventory(event.getWhoClicked()));
             }
         });
-        inventory.setItem(36, next.getItemStack());
-        everyPageItems.put(36, next);
+        inventory.setItem(44, next.getItemStack());
+        everyPageItems.put(44, next);
 
-        MenuButton prev = new MenuButton(new UtilItem(Material.PLAYER_HEAD).setName("§e§lPrevious Page").hideFlags().create());
+        //TODO https://pm1.narvii.com/6573/65b120354a7b9f754134bd2f582d19c37f543ed9_hq.jpg
+        MenuButton prev = new MenuButton(new UtilItem(Material.PLAYER_HEAD).setName("§2Previous Page").setLore("§7CLICK to view the previous page").texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ==").hideFlags().create());
         prev.setHandler(event -> {
+            event.setCancelled(true);
             if (!previousPage()) {
                 event.getWhoClicked().sendMessage(Lang.color("<error>This is the first page."));
             } else {
                 Bukkit.getScheduler().runTask(main, () -> refreshInventory(event.getWhoClicked()));
             }
         });
-        inventory.setItem(45, prev.getItemStack());
-        everyPageItems.put(45, prev);
+        inventory.setItem(36, prev.getItemStack());
+        everyPageItems.put(36, prev);
         return inventory;
     }
 

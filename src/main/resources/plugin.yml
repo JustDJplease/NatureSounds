@@ -5,6 +5,6 @@ description: ${project.description}
 authors: [TheBlockBender, JustDJplease]
 main: me.theblockbender.nature.sounds.NatureSounds
 website: https://github.com/JustDJplease/NatureSounds
-softdepend: [Multiverse-Core, WorldGuard]
+softdepend: [Multiverse-Core, WorldGuard, WorldEdit]
 
 api-version: 1.13

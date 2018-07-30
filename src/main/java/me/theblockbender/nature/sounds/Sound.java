@@ -233,4 +233,14 @@ public class Sound {
     public void forceRun(Player player) {
         player.playSound(player.getLocation(), getRandomSoundName(), getVolumeBetween(minVolume, maxVolume), pitch);
     }
+
+    public List<String> getLore() {
+        List<String> lore = new ArrayList<>();
+        lore.add("§7Configuration file: §" + fileName);
+        lore.add("§7Music files: §" + soundNames.size());
+        lore.add("§7Description: §a" + subtitle);
+        lore.add(" ");
+        lore.add("§eCLICK to modify");
+        return lore;
+    }
 }

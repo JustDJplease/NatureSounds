@@ -18,11 +18,13 @@ package me.theblockbender.nature.sounds;
 import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.MessageType;
 import com.google.common.collect.ImmutableList;
+import me.theblockbender.nature.sounds.commands.GUICommand;
 import me.theblockbender.nature.sounds.commands.NatureCommand;
 import me.theblockbender.nature.sounds.commands.ResourcePackCommand;
 import me.theblockbender.nature.sounds.commands.SoundCommand;
 import me.theblockbender.nature.sounds.gui.Menu;
 import me.theblockbender.nature.sounds.gui.Menus;
+import me.theblockbender.nature.sounds.gui.PaginatedMenu;
 import me.theblockbender.nature.sounds.listeners.PlayerListener;
 import me.theblockbender.nature.sounds.listeners.ReloadListener;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
@@ -64,7 +66,6 @@ public class NatureSounds extends JavaPlugin {
     // -------------------------------------------- //
     @Override
     public void onEnable() {
-
         logger = getLogger();
         random = new Random();
         createFiles();
@@ -129,6 +130,7 @@ public class NatureSounds extends JavaPlugin {
         commandManager.registerCommand(new ResourcePackCommand(this));
         commandManager.registerCommand(new NatureCommand(this));
         commandManager.registerCommand(new SoundCommand(this));
+        commandManager.registerCommand(new GUICommand(this));
     }
 
     private void registerEvents() {
@@ -137,6 +139,7 @@ public class NatureSounds extends JavaPlugin {
         pluginManager.registerEvents(new PlayerListener(this), this);
         pluginManager.registerEvents(new ReloadListener(), this);
         Menu.registerListeners(this);
+        PaginatedMenu.register(this);
     }
 
     private void registerRunnables() {

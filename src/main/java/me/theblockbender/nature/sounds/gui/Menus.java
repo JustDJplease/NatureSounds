@@ -16,10 +16,15 @@
 package me.theblockbender.nature.sounds.gui;
 
 import me.theblockbender.nature.sounds.NatureSounds;
+import me.theblockbender.nature.sounds.Sound;
 import me.theblockbender.nature.sounds.gui.menus.ConditionsMenu;
 import me.theblockbender.nature.sounds.gui.menus.OggFilesMenu;
 import me.theblockbender.nature.sounds.gui.menus.SoundPropertiesMenu;
 import me.theblockbender.nature.sounds.gui.menus.SoundsMenu;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class Menus {
 
@@ -27,10 +32,10 @@ public class Menus {
     public OggFilesMenu oggFilesMenu;
     public SoundPropertiesMenu soundPropertiesMenu;
     public SoundsMenu soundsMenu;
-    private NatureSounds main;
+
+    public Map<UUID, Sound> currentlyModifying = new HashMap<>();
 
     public Menus(NatureSounds main) {
-        this.main = main;
         conditionsMenu = new ConditionsMenu(main);
         oggFilesMenu = new OggFilesMenu(main);
         soundPropertiesMenu = new SoundPropertiesMenu(main);

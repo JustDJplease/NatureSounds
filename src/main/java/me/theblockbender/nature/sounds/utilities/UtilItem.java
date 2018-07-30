@@ -15,6 +15,7 @@
 
 package me.theblockbender.nature.sounds.utilities;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -22,6 +23,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class UtilItem {
@@ -71,8 +74,21 @@ public class UtilItem {
         return this;
     }
 
+    public UtilItem setLore(List<String> lore) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return this;
+    }
+
     public ItemStack create() {
         return itemStack;
+    }
+
+    public UtilItem texture(String value) {
+        UUID hashAsId = new UUID(value.hashCode(), value.hashCode());
+        itemStack = Bukkit.getUnsafe().modifyItemStack(itemStack, "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + value + "\"}]}}}");
+        return this;
     }
 }
 

@@ -38,24 +38,40 @@ public class SoundsMenu {
 
     public SoundsMenu(NatureSounds main) {
         menu = new PaginatedMenu("§7Sounds §6»§7 List");
-        MenuButton refresh = new MenuButton(new UtilItem(Material.ANVIL).setName("§a§lRefresh").hideFlags().create());
-        refresh.setHandler(event -> Bukkit.getScheduler().runTask(main, () -> {
-            menu.refreshInventory(event.getWhoClicked());
-        }));
-        MenuButton create = new MenuButton(new UtilItem(Material.KNOWLEDGE_BOOK).setName("§e§lAdd Sound").hideFlags().create());
-        create.setHandler(event -> Bukkit.getScheduler().runTask(main, () -> {
-            event.getWhoClicked().closeInventory();
-            main.menus.soundPropertiesMenu.show(event.getWhoClicked());
-        }));
+        MenuButton refresh = new MenuButton(new UtilItem(Material.CLOCK)
+                .setName("§aRefresh List")
+                .setLore("§7Click to refresh this list")
+                .hideFlags().create());
+        refresh.setHandler(event -> {
+            event.setCancelled(true);
+            Bukkit.getScheduler().runTask(main, () -> menu.refreshInventory(event.getWhoClicked()));
+        });
+        MenuButton create = new MenuButton(new UtilItem(Material.WRITABLE_BOOK)
+                .setName("§dCreate New Sound")
+                .setLore("§7Click to create a new sound")
+                .hideFlags().create());
+        create.setHandler(event -> {
+            event.setCancelled(true);
+            Bukkit.getScheduler().runTask(main, () -> {
+                event.getWhoClicked().closeInventory();
+                main.menus.soundPropertiesMenu.show(event.getWhoClicked());
+            });
+        });
         menu.setEveryPageItem(46, refresh);
         menu.setEveryPageItem(48, create);
         for (Sound sound : main.getSounds()) {
-            // TODO fancy item.
-            MenuButton button = new MenuButton(new UtilItem(Material.WRITTEN_BOOK).setName("§e§l" + sound.getFileName()).hideFlags().create());
-            button.setHandler(event -> Bukkit.getScheduler().runTask(main, () -> {
-                event.getWhoClicked().closeInventory();
-                main.menus.soundPropertiesMenu.show(sound, event.getWhoClicked());
-            }));
+            MenuButton button = new MenuButton(new UtilItem(Material.SLIME_BALL)
+                    .setName("§6Sound: §e" + sound.getFileName().replace(".yml", ""))
+                    .setLore(sound.getLore())
+                    .hideFlags().create());
+            button.setHandler(event -> {
+                event.setCancelled(true);
+                Bukkit.getScheduler().runTask(main, () -> {
+                    event.getWhoClicked().closeInventory();
+                    main.menus.currentlyModifying.put(event.getWhoClicked().getUniqueId(), sound);
+                    main.menus.soundPropertiesMenu.show(event.getWhoClicked());
+                });
+            });
             menu.addContentItem(button);
         }
     }

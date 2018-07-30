@@ -71,6 +71,5 @@ public class PlayerListener implements Listener {
             player.sendMessage(" ");
             player.sendMessage(Lang.format("header"));
         }, 2 * 20L);
-
     }
 }

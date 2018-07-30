@@ -106,7 +106,10 @@ public class Menu implements InventoryHolder {
         }
 
         MenuButton exit = new MenuButton(new UtilItem(Material.SIGN).setName("§c§lExit").hideFlags().create());
-        frame.setHandler(event -> Bukkit.getScheduler().runTask(main, () -> event.getWhoClicked().closeInventory()));
+        frame.setHandler(event -> {
+            event.setCancelled(true);
+            Bukkit.getScheduler().runTask(main, () -> event.getWhoClicked().closeInventory());
+        });
         inventory.setItem(52, exit.getItemStack());
         items.put(52, exit);
 
