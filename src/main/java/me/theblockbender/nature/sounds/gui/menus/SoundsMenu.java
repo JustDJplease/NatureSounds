@@ -39,7 +39,7 @@ public class SoundsMenu {
     public SoundsMenu(NatureSounds main) {
         menu = new PaginatedMenu("§7Sounds §6»§7 List");
         MenuButton refresh = new MenuButton(new UtilItem(Material.CLOCK)
-                .setName("§aRefresh List")
+                .setName("§2Refresh List")
                 .setLore("§7Click to refresh this list")
                 .hideFlags().create());
         refresh.setHandler(event -> {

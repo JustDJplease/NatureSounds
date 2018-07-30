@@ -148,13 +148,18 @@ public class PaginatedMenu implements InventoryHolder {
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 54, name);
-        MenuButton frame = new MenuButton(new UtilItem(Material.GRAY_STAINED_GLASS_PANE).setName("§7").hideFlags().create());
+        MenuButton frame = new MenuButton(new UtilItem(Material.GRAY_STAINED_GLASS_PANE)
+                .setName("§7")
+                .hideFlags().create());
         frame.setHandler(event -> event.setCancelled(true));
         for (int slot : frameSlots) {
             inventory.setItem(slot, frame.getItemStack());
             everyPageItems.put(slot, frame);
         }
-        MenuButton exit = new MenuButton(new UtilItem(Material.OAK_DOOR).setName("§cExit").setLore("§7CLICK to leave this menu").hideFlags().create());
+        MenuButton exit = new MenuButton(new UtilItem(Material.OAK_DOOR)
+                .setName("§cExit")
+                .setLore("§8Quit, leave", "", "§7Close the menu you are currently", "§7viewing and return to the game.", "", "§a➡ Click to close this menu")
+                .hideFlags().create());
         exit.setHandler(event -> {
             event.setCancelled(true);
             Bukkit.getScheduler().runTask(main, () -> event.getWhoClicked().closeInventory());
@@ -178,8 +183,11 @@ public class PaginatedMenu implements InventoryHolder {
             if (slot < 0 || slot > 53) continue;
             inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
         }
-
-        MenuButton next = new MenuButton(new UtilItem(Material.PLAYER_HEAD).setName("§2Next Page").setLore("§7CLICK to view the next page").texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19").hideFlags().create());
+        MenuButton next = new MenuButton(new UtilItem(Material.PLAYER_HEAD)
+                .setName("§2Next Page")
+                .setLore("§8Next, more", "", "§7Continue viewing the remaining entries", "§7on this list on the next page.", "", "§a➡ Click to continue")
+                .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19")
+                .hideFlags().create());
         next.setHandler(event -> {
             event.setCancelled(true);
             if (!nextPage()) {
@@ -190,9 +198,11 @@ public class PaginatedMenu implements InventoryHolder {
         });
         inventory.setItem(44, next.getItemStack());
         everyPageItems.put(44, next);
-
-        //TODO https://pm1.narvii.com/6573/65b120354a7b9f754134bd2f582d19c37f543ed9_hq.jpg
-        MenuButton prev = new MenuButton(new UtilItem(Material.PLAYER_HEAD).setName("§2Previous Page").setLore("§7CLICK to view the previous page").texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ==").hideFlags().create());
+        MenuButton prev = new MenuButton(new UtilItem(Material.PLAYER_HEAD)
+                .setName("§2Previous Page")
+                .setLore("§8Previous, less", "", "§7Go back to viewing the earlier entries", "§7from this list on the previous page.", "", "§a➡ Click to continue")
+                .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ==")
+                .hideFlags().create());
         prev.setHandler(event -> {
             event.setCancelled(true);
             if (!previousPage()) {

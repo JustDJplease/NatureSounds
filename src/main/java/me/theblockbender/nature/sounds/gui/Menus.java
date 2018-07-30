@@ -41,6 +41,4 @@ public class Menus {
         soundPropertiesMenu = new SoundPropertiesMenu(main);
         soundsMenu = new SoundsMenu(main);
     }
-
-
 }
