@@ -13,30 +13,39 @@
  *
  */
 
-package me.theblockbender.nature.sounds.gui.menus;
+package me.theblockbender.nature.sounds.utilities;
 
 import me.theblockbender.nature.sounds.NatureSounds;
-import me.theblockbender.nature.sounds.gui.Menu;
-import org.bukkit.entity.HumanEntity;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class ConditionsMenu {
+import java.util.function.Consumer;
 
-    // -------------------------------------------- //
-    // INSTANCES
-    // -------------------------------------------- //
-    private final Menu menu;
+public class UtilTask {
 
     // -------------------------------------------- //
-    // CONSTRUCTOR
+    // SYNC
     // -------------------------------------------- //
-    public ConditionsMenu(NatureSounds main) {
-        menu = new Menu("§7Sounds §b»§7 Condition");
+    public static void sync(final Consumer<BukkitRunnable> block) {
+        final BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                block.accept(this);
+            }
+        };
+        runnable.runTask(NatureSounds.inst());
     }
 
     // -------------------------------------------- //
-    // GUI
+    // ASYNC
     // -------------------------------------------- //
-    void show(HumanEntity player) {
-        player.openInventory(menu.getInventory());
-    }
+    // public static BukkitRunnable async(final Consumer<BukkitRunnable> block) {
+    //     final BukkitRunnable runnable = new BukkitRunnable() {
+    //         @Override
+    //         public void run() {
+    //             block.accept(this);
+    //         }
+    //     };
+    //     runnable.runTaskAsynchronously(NatureSounds.inst());
+    //     return runnable;
+    // }
 }

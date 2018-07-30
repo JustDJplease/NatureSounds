@@ -25,6 +25,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ReloadListener implements Listener {
+    // -------------------------------------------- //
+    // INSTANCES
+    // -------------------------------------------- //
     private final Set<String> blacklist = new HashSet<>();
 
     {
@@ -38,6 +41,9 @@ public class ReloadListener implements Listener {
         blacklist.add("bukkit:rl confirm");
     }
 
+    // -------------------------------------------- //
+    // EVENT
+    // -------------------------------------------- //
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
         String command = event.getMessage().toLowerCase();

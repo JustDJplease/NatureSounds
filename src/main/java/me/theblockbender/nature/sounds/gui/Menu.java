@@ -16,15 +16,12 @@
 package me.theblockbender.nature.sounds.gui;
 
 
-import me.theblockbender.nature.sounds.NatureSounds;
-import me.theblockbender.nature.sounds.listeners.InventoryListener;
 import me.theblockbender.nature.sounds.utilities.UtilItem;
-import net.md_5.bungee.api.ChatColor;
+import me.theblockbender.nature.sounds.utilities.UtilTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,97 +30,104 @@ import java.util.Map;
 
 public class Menu implements InventoryHolder {
 
-    private static NatureSounds main;
-    private static InventoryListener inventoryListener;
-    private Map<Integer, MenuButton> items;
-    private String name;
-    private List<Integer> frameSlots = new ArrayList<Integer>() {{
-        add(0);
-        add(1);
-        add(2);
-        add(3);
-        add(4);
-        add(5);
-        add(6);
-        add(7);
-        add(8);
-        add(9);
-        add(17);
-        add(18);
-        add(26);
-        add(27);
-        add(35);
-        add(36);
-        add(37);
-        add(38);
-        add(39);
-        add(40);
-        add(41);
-        add(42);
-        add(43);
-        add(44);
-    }};
+    // -------------------------------------------- //
+    // INSTANCES
+    // -------------------------------------------- //
+    private final String name;
+    private final List<Integer> frame_slots = new ArrayList<>();
+    private final Map<Integer, MenuButton> all_items = new HashMap<>();
 
+    {
+        frame_slots.add(0);
+        frame_slots.add(1);
+        frame_slots.add(2);
+        frame_slots.add(3);
+        frame_slots.add(4);
+        frame_slots.add(5);
+        frame_slots.add(6);
+        frame_slots.add(7);
+        frame_slots.add(8);
+        frame_slots.add(9);
+        frame_slots.add(17);
+        frame_slots.add(18);
+        frame_slots.add(26);
+        frame_slots.add(27);
+        frame_slots.add(35);
+        frame_slots.add(36);
+        frame_slots.add(37);
+        frame_slots.add(38);
+        frame_slots.add(39);
+        frame_slots.add(40);
+        frame_slots.add(41);
+        frame_slots.add(42);
+        frame_slots.add(43);
+        frame_slots.add(44);
+    }
+
+    // -------------------------------------------- //
+    // CONSTRUCTOR
+    // -------------------------------------------- //
     public Menu(String name) {
-        items = new HashMap<>();
-        this.name = ChatColor.translateAlternateColorCodes('&', name);
+        this.name = name;
     }
 
-    public static void registerListeners(JavaPlugin plugin) {
-        main = (NatureSounds) plugin;
-        if (inventoryListener == null) {
-            inventoryListener = new InventoryListener(main);
-            plugin.getServer().getPluginManager().registerEvents(inventoryListener, plugin);
-        }
-    }
-
+    // -------------------------------------------- //
+    // SETTERS & GETTERS
+    // -------------------------------------------- //
     public void setButton(int slot, MenuButton button) {
-        items.put(slot, button);
+        all_items.put(slot, button);
     }
 
     public MenuButton getButton(int slot) {
-        if (slot < 54) {
-            try {
-                return items.get(slot);
-            } catch (IndexOutOfBoundsException ex) {
-                return null;
-            }
-        }
-        return null;
+        if (slot < 0 || slot > 53) return null;
+        if ((all_items.size() - 1) < slot) return null;
+        return all_items.get(slot);
     }
 
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 54, name);
+
+        MenuButton frame = getFrameButton();
+        for (int slot : frame_slots) {
+            inventory.setItem(slot, frame.getItemStack());
+            all_items.put(slot, frame);
+        }
+
+        MenuButton exit = getExitButton();
+        inventory.setItem(52, exit.getItemStack());
+        all_items.put(52, exit);
+
+        for (Map.Entry<Integer, MenuButton> entry : all_items.entrySet()) {
+            int slot = entry.getKey();
+            if (slot < 0 || slot > 53) continue;
+            inventory.setItem(slot, entry.getValue().getItemStack());
+        }
+
+        return inventory;
+    }
+
+    // -------------------------------------------- //
+    // MENU BUTTONS
+    // -------------------------------------------- //
+    private MenuButton getFrameButton() {
         MenuButton frame = new MenuButton(new UtilItem(Material.BLACK_STAINED_GLASS_PANE)
                 .setName("§7")
                 .hideFlags().create());
         frame.setHandler(event -> event.setCancelled(true));
+        return frame;
+    }
 
-        for (int slot : frameSlots) {
-            inventory.setItem(slot, frame.getItemStack());
-            items.put(slot, frame);
-        }
-
+    private MenuButton getExitButton() {
         MenuButton exit = new MenuButton(new UtilItem(Material.FIRE_CORAL)
                 .setName("§c§lExit")
                 .setLore("§8leave this menu", "", "§7Close the menu you are currently", "§7viewing and return to the game.", "", "§b➜ Click to close this menu")
                 .hideFlags().create());
         exit.setHandler(event -> {
             event.setCancelled(true);
-            Bukkit.getScheduler().runTask(main, () -> event.getWhoClicked().closeInventory());
+            UtilTask.sync(task -> event.getWhoClicked().closeInventory());
         });
-        inventory.setItem(52, exit.getItemStack());
-        items.put(52, exit);
-
-
-        for (Map.Entry<Integer, MenuButton> entry : items.entrySet()) {
-            int slot = entry.getKey();
-            if (slot < 0 || slot > 53) continue;
-            inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
-        }
-        return inventory;
+        return exit;
     }
-
 }
 

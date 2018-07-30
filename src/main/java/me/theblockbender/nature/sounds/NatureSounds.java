@@ -22,9 +22,8 @@ import me.theblockbender.nature.sounds.commands.GUICommand;
 import me.theblockbender.nature.sounds.commands.NatureCommand;
 import me.theblockbender.nature.sounds.commands.ResourcePackCommand;
 import me.theblockbender.nature.sounds.commands.SoundCommand;
-import me.theblockbender.nature.sounds.gui.Menu;
 import me.theblockbender.nature.sounds.gui.Menus;
-import me.theblockbender.nature.sounds.gui.PaginatedMenu;
+import me.theblockbender.nature.sounds.listeners.InventoryListener;
 import me.theblockbender.nature.sounds.listeners.PlayerListener;
 import me.theblockbender.nature.sounds.listeners.ReloadListener;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
@@ -50,6 +49,7 @@ public class NatureSounds extends JavaPlugin {
     // -------------------------------------------- //
     // INSTANCES & VARIABLES
     // -------------------------------------------- //
+    private static NatureSounds instance;
     public final Set<UUID> playersWithRP = new HashSet<>();
     private final Map<String, Sound> sounds = new HashMap<>();
     public UtilWebServer utilWebServer;
@@ -61,11 +61,16 @@ public class NatureSounds extends JavaPlugin {
 
     private Logger logger;
 
+    public static NatureSounds inst() {
+        return instance;
+    }
+
     // -------------------------------------------- //
     // ENABLING
     // -------------------------------------------- //
     @Override
     public void onEnable() {
+        instance = this;
         logger = getLogger();
         random = new Random();
         createFiles();
@@ -138,8 +143,7 @@ public class NatureSounds extends JavaPlugin {
         pluginManager.registerEvents(new ResourcePackListener(this), this);
         pluginManager.registerEvents(new PlayerListener(this), this);
         pluginManager.registerEvents(new ReloadListener(), this);
-        Menu.registerListeners(this);
-        PaginatedMenu.register(this);
+        pluginManager.registerEvents(new InventoryListener(this), this);
     }
 
     private void registerRunnables() {
@@ -189,7 +193,6 @@ public class NatureSounds extends JavaPlugin {
             }
         }
     }
-
 
     public void debug(String debugMessage) {
         if (getConfig().getBoolean("debug")) logger.warning("[+] " + debugMessage);

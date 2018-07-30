@@ -28,13 +28,18 @@ import java.util.UUID;
 
 public class Menus {
 
-    public ConditionsMenu conditionsMenu;
-    public OggFilesMenu oggFilesMenu;
-    public SoundPropertiesMenu soundPropertiesMenu;
-    public SoundsMenu soundsMenu;
+    // -------------------------------------------- //
+    // INSTANCES
+    // -------------------------------------------- //
+    public final ConditionsMenu conditionsMenu;
+    public final OggFilesMenu oggFilesMenu;
+    public final SoundPropertiesMenu soundPropertiesMenu;
+    public final SoundsMenu soundsMenu;
+    public final Map<UUID, Sound> currentlyModifying = new HashMap<>();
 
-    public Map<UUID, Sound> currentlyModifying = new HashMap<>();
-
+    // -------------------------------------------- //
+    // CONSTRUCTOR
+    // -------------------------------------------- //
     public Menus(NatureSounds main) {
         conditionsMenu = new ConditionsMenu(main);
         oggFilesMenu = new OggFilesMenu(main);

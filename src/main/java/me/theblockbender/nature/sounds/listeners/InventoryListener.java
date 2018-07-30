@@ -26,7 +26,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 
 public class InventoryListener implements Listener {
 
-    private NatureSounds main;
+    private final NatureSounds main;
 
     public InventoryListener(NatureSounds main) {
         this.main = main;
