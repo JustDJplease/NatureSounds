@@ -42,7 +42,7 @@ public class OggFilesMenu {
 
     public OggFilesMenu(NatureSounds main) {
         this.main = main;
-        menu = new PaginatedMenu("§7Sounds §6»§7 Ogg Files");
+        menu = new PaginatedMenu("§7Sounds §a»§7 Ogg Files");
         MenuButton refresh = new MenuButton(new UtilItem(Material.ANVIL).setName("§a§lRefresh").hideFlags().create());
         refresh.setHandler(event -> {
             event.setCancelled(true);

@@ -33,7 +33,7 @@ public class SoundPropertiesMenu {
 
     public SoundPropertiesMenu(NatureSounds main) {
         this.main = main;
-        menu = new Menu("§7Sounds §6»§7 Sound");
+        menu = new Menu("§7Sounds §a»§7 Sound");
     }
 
     void show(HumanEntity whoClicked) {

@@ -97,7 +97,7 @@ public class Menu implements InventoryHolder {
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 54, name);
-        MenuButton frame = new MenuButton(new UtilItem(Material.GRAY_STAINED_GLASS_PANE)
+        MenuButton frame = new MenuButton(new UtilItem(Material.BLACK_STAINED_GLASS_PANE)
                 .setName("§7")
                 .hideFlags().create());
         frame.setHandler(event -> event.setCancelled(true));
@@ -107,7 +107,7 @@ public class Menu implements InventoryHolder {
             items.put(slot, frame);
         }
 
-        MenuButton exit = new MenuButton(new UtilItem(Material.OAK_DOOR)
+        MenuButton exit = new MenuButton(new UtilItem(Material.FIRE_CORAL)
                 .setName("§cExit")
                 .setLore("§8Quit, leave", "", "§7Close the menu you are currently", "§7viewing and return to the game.", "", "§a➡ Click to close this menu")
                 .hideFlags().create());

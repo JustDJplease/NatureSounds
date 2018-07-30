@@ -236,11 +236,12 @@ public class Sound {
 
     public List<String> getLore() {
         List<String> lore = new ArrayList<>();
-        lore.add("§7Configuration file: §" + fileName);
-        lore.add("§7Music files: §" + soundNames.size());
+        lore.add(" ");
+        lore.add("§7YML File: §a" + fileName);
+        lore.add("§7Ogg files: §a" + soundNames.size());
         lore.add("§7Description: §a" + subtitle);
         lore.add(" ");
-        lore.add("§eCLICK to modify");
+        lore.add("§a➡ Click to modify this sound");
         return lore;
     }
 }

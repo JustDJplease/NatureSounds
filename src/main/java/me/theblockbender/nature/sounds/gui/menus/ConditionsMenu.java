@@ -28,7 +28,7 @@ public class ConditionsMenu {
 
 
     public ConditionsMenu(NatureSounds main) {
-        menu = new Menu("§7Sounds §6»§7 Conditions");
+        menu = new Menu("§7Sounds §a»§7 Conditions");
         // TODO add conditions.
     }
 
