@@ -21,9 +21,13 @@ import me.theblockbender.nature.sounds.gui.MenuButton;
 import me.theblockbender.nature.sounds.gui.PaginatedMenu;
 import me.theblockbender.nature.sounds.utilities.UtilItem;
 import me.theblockbender.nature.sounds.utilities.UtilTask;
+import net.wesjd.anvilgui.AnvilGUI;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
+
+import java.io.File;
 
 public class SoundsMenu {
 
@@ -40,15 +44,15 @@ public class SoundsMenu {
         this.main = main;
         menu = new PaginatedMenu("§7Sounds §b»§7 List");
         MenuButton refresh = getRefreshButton();
-        MenuButton create = getCreateButton();
         menu.setEveryPageItem(46, refresh);
-        menu.setEveryPageItem(48, create);
     }
 
     // -------------------------------------------- //
     // GUI
     // -------------------------------------------- //
     public void show(HumanEntity player) {
+        MenuButton create = getCreateButton((Player) player);
+        menu.setEveryPageItem(48, create);
         menu.clearContentSlots();
         for (Sound sound : main.getSounds()) {
             MenuButton button = new MenuButton(new UtilItem(Material.DROWNED_SPAWN_EGG)
@@ -80,14 +84,20 @@ public class SoundsMenu {
         return refresh;
     }
 
-    private MenuButton getCreateButton() {
+    private MenuButton getCreateButton(Player myPlayer) {
         MenuButton create = new MenuButton(new UtilItem(Material.HORN_CORAL)
                 .setName("§6§lCreate")
                 .setLore("§8Create new sound", "", "§7Add a new sound configuration", "§7and modify its settings.", "", "§b➜ Click to continue")
                 .hideFlags().create());
         create.setHandler(event -> UtilTask.sync(task -> {
             event.getWhoClicked().closeInventory();
-            main.menus.soundPropertiesMenu.show(event.getWhoClicked());
+            new AnvilGUI(main, myPlayer, "What should the sound be named?", (player, reply) -> {
+                File file = new File(main.getDataFolder() + File.separator + "sounds" + File.separator + reply + ".ogg");
+                if (file.exists()) return "This file already exists!";
+                //TODO create new sound file.
+                UtilTask.sync(task1 -> main.menus.soundPropertiesMenu.show(event.getWhoClicked()));
+                return null;
+            });
         }));
         return create;
     }
