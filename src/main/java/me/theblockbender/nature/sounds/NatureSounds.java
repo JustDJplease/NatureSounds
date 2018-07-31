@@ -27,10 +27,7 @@ import me.theblockbender.nature.sounds.listeners.InventoryListener;
 import me.theblockbender.nature.sounds.listeners.PlayerListener;
 import me.theblockbender.nature.sounds.listeners.ReloadListener;
 import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
-import me.theblockbender.nature.sounds.utilities.SoundTask;
-import me.theblockbender.nature.sounds.utilities.UtilResourcePack;
-import me.theblockbender.nature.sounds.utilities.UtilText;
-import me.theblockbender.nature.sounds.utilities.UtilWebServer;
+import me.theblockbender.nature.sounds.utilities.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -154,7 +151,7 @@ public class NatureSounds extends JavaPlugin {
             ErrorLogger.errorInFile("Interval specified is invalid", "config.yml");
             return;
         }
-        Bukkit.getScheduler().runTaskTimer(this, new SoundTask(this), 1L, 20L * interval);
+        UtilTask.syncRepeat(task -> new SoundTask(this), 20L * interval);
     }
 
     public void registerSounds() {

@@ -21,7 +21,6 @@ import me.theblockbender.nature.sounds.gui.MenuButton;
 import me.theblockbender.nature.sounds.gui.PaginatedMenu;
 import me.theblockbender.nature.sounds.utilities.UtilItem;
 import me.theblockbender.nature.sounds.utilities.UtilTask;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.HumanEntity;
@@ -74,7 +73,7 @@ public class OggFilesMenu {
                         .hideFlags().create());
                 button.setHandler(event -> {
                     // TODO REMOVE SOUND FROM FILE.
-                    Bukkit.getScheduler().runTask(main, () -> {
+                    UtilTask.sync(task -> {
                         event.getWhoClicked().closeInventory();
                         show(event.getWhoClicked());
                     });
@@ -85,7 +84,7 @@ public class OggFilesMenu {
                         .hideFlags().create());
                 button.setHandler(event -> {
                     // TODO ADD SOUND TO FILE.
-                    Bukkit.getScheduler().runTask(main, () -> {
+                    UtilTask.sync(task -> {
                         event.getWhoClicked().closeInventory();
                         show(event.getWhoClicked());
                     });

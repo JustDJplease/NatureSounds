@@ -22,7 +22,6 @@ import me.theblockbender.nature.sounds.NatureSounds;
 import me.theblockbender.nature.sounds.Sound;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.bukkit.Bukkit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -45,7 +44,7 @@ public class UtilResourcePack {
     // MAIN METHOD
     // -------------------------------------------- //
     public void addAllFilesToPack() {
-        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+        UtilTask.async(task -> {
             long timeStart = System.currentTimeMillis();
             main.debug("| Generating Resource Pack:");
             deleteOldFolders();

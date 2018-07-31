@@ -19,7 +19,6 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import me.theblockbender.nature.sounds.ErrorLogger;
 import me.theblockbender.nature.sounds.NatureSounds;
-import org.bukkit.Bukkit;
 
 import java.io.File;
 
@@ -53,7 +52,7 @@ public class UtilWebServer {
             ErrorLogger.errorInFile("Invalid port specified", "config.yml");
             return;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+        UtilTask.async(task -> {
             try {
                 httpServer = Vertx.vertx().createHttpServer();
                 httpServer.requestHandler(httpServerRequest -> {

@@ -35,17 +35,36 @@ public class UtilTask {
         runnable.runTask(NatureSounds.inst());
     }
 
+    public static void syncLater(final Consumer<BukkitRunnable> block, long delay) {
+        final BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                block.accept(this);
+            }
+        };
+        runnable.runTaskLater(NatureSounds.inst(), delay);
+    }
+
+    public static void syncRepeat(final Consumer<BukkitRunnable> block, long interval) {
+        final BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                block.accept(this);
+            }
+        };
+        runnable.runTaskTimer(NatureSounds.inst(), 0L, interval);
+    }
+
     // -------------------------------------------- //
     // ASYNC
     // -------------------------------------------- //
-    // public static BukkitRunnable async(final Consumer<BukkitRunnable> block) {
-    //     final BukkitRunnable runnable = new BukkitRunnable() {
-    //         @Override
-    //         public void run() {
-    //             block.accept(this);
-    //         }
-    //     };
-    //     runnable.runTaskAsynchronously(NatureSounds.inst());
-    //     return runnable;
-    // }
+    public static void async(final Consumer<BukkitRunnable> block) {
+        final BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                block.accept(this);
+            }
+        };
+        runnable.runTaskAsynchronously(NatureSounds.inst());
+    }
 }
