@@ -17,6 +17,7 @@ package me.theblockbender.nature.sounds.listeners;
 
 import me.theblockbender.nature.sounds.Lang;
 import me.theblockbender.nature.sounds.NatureSounds;
+import me.theblockbender.nature.sounds.utilities.UtilTask;
 import me.theblockbender.nature.sounds.utilities.UtilText;
 import me.theblockbender.nature.sounds.utilities.UtilToken;
 import net.md_5.bungee.api.ChatColor;
@@ -24,7 +25,6 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -53,7 +53,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void PlayerJoin(PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTaskLater(main, () -> {
+        UtilTask.syncLater(task -> {
             Player player = event.getPlayer();
             player.sendMessage(Lang.format("header"));
             player.sendMessage(" ");

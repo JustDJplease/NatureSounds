@@ -20,19 +20,23 @@ import me.theblockbender.nature.sounds.gui.Menu;
 import org.bukkit.entity.HumanEntity;
 
 public class ConditionsMenu {
-    // toggleable conditions
-    // upon condition click. open from condition class.
-    //
-    // back to sound properties button
-    private Menu menu;
 
+    // -------------------------------------------- //
+    // INSTANCES
+    // -------------------------------------------- //
+    private final Menu menu;
 
+    // -------------------------------------------- //
+    // CONSTRUCTOR
+    // -------------------------------------------- //
     public ConditionsMenu(NatureSounds main) {
-        menu = new Menu("§7Sounds §a»§7 Conditions");
-        // TODO add conditions.
+        menu = new Menu("§7Sounds §b»§7 Condition");
     }
 
-    public void show(HumanEntity player) {
+    // -------------------------------------------- //
+    // GUI
+    // -------------------------------------------- //
+    void show(HumanEntity player) {
         player.openInventory(menu.getInventory());
     }
 }

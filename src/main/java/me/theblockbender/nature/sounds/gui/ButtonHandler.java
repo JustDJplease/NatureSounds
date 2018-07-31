@@ -17,6 +17,9 @@ package me.theblockbender.nature.sounds.gui;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+// -------------------------------------------- //
+// INTERFACE
+// -------------------------------------------- //
 public interface ButtonHandler {
     void onClick(InventoryClickEvent event);
 }

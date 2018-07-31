@@ -234,14 +234,29 @@ public class Sound {
         player.playSound(player.getLocation(), getRandomSoundName(), getVolumeBetween(minVolume, maxVolume), pitch);
     }
 
-    public List<String> getLore() {
+    public List<String> getDescriptiveLore() {
         List<String> lore = new ArrayList<>();
         lore.add(" ");
-        lore.add("§7YML File: §a" + fileName);
-        lore.add("§7Ogg files: §a" + soundNames.size());
-        lore.add("§7Description: §a" + subtitle);
+        lore.add("§7YML File: §b" + fileName);
+        lore.add("§7Ogg files: §b" + soundNames.size());
+        lore.add("§7Description: §b" + subtitle);
         lore.add(" ");
-        lore.add("§a➡ Click to modify this sound");
+        lore.add("§b➜ Click to modify this sound");
+        return lore;
+    }
+
+    private List<String> getSoundFilesLore() {
+        List<String> lore = new ArrayList<>();
+        lore.add("§7Music files:");
+        if (soundNames.size() < 1) {
+            lore.add("§8 • §bNone");
+        } else {
+            for (String name : soundNames) {
+                lore.add("§8 • §b" + name);
+            }
+        }
+        lore.add(" ");
+        lore.add("§b➜ Click to modify these sounds");
         return lore;
     }
 }

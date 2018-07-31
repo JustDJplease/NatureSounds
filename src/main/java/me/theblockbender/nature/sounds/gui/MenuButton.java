@@ -19,13 +19,22 @@ import org.bukkit.inventory.ItemStack;
 
 public class MenuButton {
 
+    private final ItemStack item;
+    // -------------------------------------------- //
+    // INSTANCES
+    // -------------------------------------------- //
     private ButtonHandler handler;
-    private ItemStack item;
 
+    // -------------------------------------------- //
+    // CONSTRUCTOR
+    // -------------------------------------------- //
     public MenuButton(ItemStack item) {
         this.item = item;
     }
 
+    // -------------------------------------------- //
+    // SETTERS & GETTERS
+    // -------------------------------------------- //
     public ButtonHandler getHandler() {
         return handler;
     }
@@ -34,7 +43,7 @@ public class MenuButton {
         this.handler = handler;
     }
 
-    public ItemStack getItemStack() {
+    ItemStack getItemStack() {
         return item;
     }
 }
