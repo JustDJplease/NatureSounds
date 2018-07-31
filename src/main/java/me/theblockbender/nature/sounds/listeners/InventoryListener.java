@@ -38,6 +38,7 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof Menu) {
+            event.setCancelled(true);
             Menu menu = (Menu) event.getInventory().getHolder();
             MenuButton button = menu.getButton(event.getSlot());
             if (button != null && button.getHandler() != null) {
@@ -45,6 +46,7 @@ public class InventoryListener implements Listener {
             }
         }
         if (event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof PaginatedMenu) {
+            event.setCancelled(true);
             PaginatedMenu menu = (PaginatedMenu) event.getInventory().getHolder();
             MenuButton button = menu.getButton(event.getSlot());
             if (button != null && button.getHandler() != null) {

@@ -74,7 +74,6 @@ public class OggFilesMenu {
                         .hideFlags().create());
                 button.setHandler(event -> {
                     // TODO REMOVE SOUND FROM FILE.
-                    event.setCancelled(true);
                     Bukkit.getScheduler().runTask(main, () -> {
                         event.getWhoClicked().closeInventory();
                         show(event.getWhoClicked());
@@ -86,7 +85,6 @@ public class OggFilesMenu {
                         .hideFlags().create());
                 button.setHandler(event -> {
                     // TODO ADD SOUND TO FILE.
-                    event.setCancelled(true);
                     Bukkit.getScheduler().runTask(main, () -> {
                         event.getWhoClicked().closeInventory();
                         show(event.getWhoClicked());
@@ -106,13 +104,10 @@ public class OggFilesMenu {
                 .setName("§5§lRefresh")
                 .setLore("§8Reload this page", "", "§7Refresh the menu you are currently", "§7viewing and read all files again.", "", "§b➜ Click to refresh this menu")
                 .hideFlags().create());
-        refresh.setHandler(event -> {
-            event.setCancelled(true);
-            UtilTask.sync(task -> {
-                event.getWhoClicked().closeInventory();
-                show(event.getWhoClicked());
-            });
-        });
+        refresh.setHandler(event -> UtilTask.sync(task -> {
+            event.getWhoClicked().closeInventory();
+            show(event.getWhoClicked());
+        }));
         return refresh;
     }
 }

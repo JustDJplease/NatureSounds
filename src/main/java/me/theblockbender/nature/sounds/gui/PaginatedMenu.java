@@ -190,11 +190,9 @@ public class PaginatedMenu implements InventoryHolder {
     // MENU BUTTONS
     // -------------------------------------------- //
     private MenuButton getFrameButton() {
-        MenuButton frame = new MenuButton(new UtilItem(Material.BLACK_STAINED_GLASS_PANE)
+        return new MenuButton(new UtilItem(Material.BLACK_STAINED_GLASS_PANE)
                 .setName("§7")
                 .hideFlags().create());
-        frame.setHandler(event -> event.setCancelled(true));
-        return frame;
     }
 
     private MenuButton getExitButton() {
@@ -202,10 +200,7 @@ public class PaginatedMenu implements InventoryHolder {
                 .setName("§c§lExit")
                 .setLore("§8leave this menu", "", "§7Close the menu you are currently", "§7viewing and return to the game.", "", "§b➜ Click to close this menu")
                 .hideFlags().create());
-        exit.setHandler(event -> {
-            event.setCancelled(true);
-            UtilTask.sync(task -> event.getWhoClicked().closeInventory());
-        });
+        exit.setHandler(event -> UtilTask.sync(task -> event.getWhoClicked().closeInventory()));
         return exit;
     }
 
@@ -216,7 +211,6 @@ public class PaginatedMenu implements InventoryHolder {
                 .setLore("§8View Next page", "", "§7Continue viewing the remaining entries", "§7on this list on the next page.", "", "§b➜ Click to continue")
                 .hideFlags().create());
         next.setHandler(event -> {
-            event.setCancelled(true);
             if (!hasNext()) {
                 event.getWhoClicked().sendMessage(Lang.color("<error>This is the last page."));
             } else {
@@ -233,7 +227,6 @@ public class PaginatedMenu implements InventoryHolder {
                 .setLore("§8View previous page", "", "§7Go back to viewing the earlier entries", "§7from this list on the previous page.", "", "§b➜ Click to continue")
                 .hideFlags().create());
         prev.setHandler(event -> {
-            event.setCancelled(true);
             if (!hasPrevious()) {
                 event.getWhoClicked().sendMessage(Lang.color("<error>This is the first page."));
             } else {

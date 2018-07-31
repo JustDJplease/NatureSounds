@@ -55,14 +55,11 @@ public class SoundsMenu {
                     .setName("§9§lSound: " + StringUtils.capitalize(sound.getFileName().replace(".yml", "").replace("_", " ")))
                     .setLore(sound.getDescriptiveLore())
                     .hideFlags().create());
-            button.setHandler(event -> {
-                event.setCancelled(true);
-                UtilTask.sync(task -> {
-                    event.getWhoClicked().closeInventory();
-                    main.menus.currentlyModifying.put(event.getWhoClicked().getUniqueId(), sound);
-                    main.menus.soundPropertiesMenu.show(event.getWhoClicked());
-                });
-            });
+            button.setHandler(event -> UtilTask.sync(task -> {
+                event.getWhoClicked().closeInventory();
+                main.menus.currentlyModifying.put(event.getWhoClicked().getUniqueId(), sound);
+                main.menus.soundPropertiesMenu.show(event.getWhoClicked());
+            }));
             menu.addContentItem(button);
         }
         player.openInventory(menu.getInventory());
@@ -76,13 +73,10 @@ public class SoundsMenu {
                 .setName("§5§lRefresh")
                 .setLore("§8Reload this page", "", "§7Refresh the menu you are currently", "§7viewing and read all files again.", "", "§b➜ Click to refresh this menu")
                 .hideFlags().create());
-        refresh.setHandler(event -> {
-            event.setCancelled(true);
-            UtilTask.sync(task -> {
-                event.getWhoClicked().closeInventory();
-                show(event.getWhoClicked());
-            });
-        });
+        refresh.setHandler(event -> UtilTask.sync(task -> {
+            event.getWhoClicked().closeInventory();
+            show(event.getWhoClicked());
+        }));
         return refresh;
     }
 
@@ -91,13 +85,10 @@ public class SoundsMenu {
                 .setName("§6§lCreate")
                 .setLore("§8Create new sound", "", "§7Add a new sound configuration", "§7and modify its settings.", "", "§b➜ Click to continue")
                 .hideFlags().create());
-        create.setHandler(event -> {
-            event.setCancelled(true);
-            UtilTask.sync(task -> {
-                event.getWhoClicked().closeInventory();
-                main.menus.soundPropertiesMenu.show(event.getWhoClicked());
-            });
-        });
+        create.setHandler(event -> UtilTask.sync(task -> {
+            event.getWhoClicked().closeInventory();
+            main.menus.soundPropertiesMenu.show(event.getWhoClicked());
+        }));
         return create;
     }
 }

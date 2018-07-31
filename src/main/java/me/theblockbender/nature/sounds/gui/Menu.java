@@ -111,11 +111,9 @@ public class Menu implements InventoryHolder {
     // MENU BUTTONS
     // -------------------------------------------- //
     private MenuButton getFrameButton() {
-        MenuButton frame = new MenuButton(new UtilItem(Material.BLACK_STAINED_GLASS_PANE)
+        return new MenuButton(new UtilItem(Material.BLACK_STAINED_GLASS_PANE)
                 .setName("§7")
                 .hideFlags().create());
-        frame.setHandler(event -> event.setCancelled(true));
-        return frame;
     }
 
     private MenuButton getExitButton() {
@@ -123,10 +121,7 @@ public class Menu implements InventoryHolder {
                 .setName("§c§lExit")
                 .setLore("§8leave this menu", "", "§7Close the menu you are currently", "§7viewing and return to the game.", "", "§b➜ Click to close this menu")
                 .hideFlags().create());
-        exit.setHandler(event -> {
-            event.setCancelled(true);
-            UtilTask.sync(task -> event.getWhoClicked().closeInventory());
-        });
+        exit.setHandler(event -> UtilTask.sync(task -> event.getWhoClicked().closeInventory()));
         return exit;
     }
 }
