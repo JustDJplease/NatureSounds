@@ -80,7 +80,7 @@ public class Menu implements InventoryHolder {
 
     public MenuButton getButton(int slot) {
         if (slot < 0 || slot > 53) return null;
-        if ((all_items.size() - 1) < slot) return null;
+        if (!all_items.containsKey(slot)) return null;
         return all_items.get(slot);
     }
 

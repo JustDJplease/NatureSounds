@@ -117,7 +117,7 @@ public class PaginatedMenu implements InventoryHolder {
             if (content_items.size() - 1 < id) return null;
             return content_items.get(id);
         } else {
-            if (every_page_items.size() - 1 < slot) return null;
+            if (!every_page_items.containsKey(slot)) return null;
             return every_page_items.get(slot);
         }
     }
