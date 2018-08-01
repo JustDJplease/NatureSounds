@@ -101,7 +101,10 @@ public class SoundsMenu {
             new AnvilGUI(main, player, "Enter a name", (executor, reply) -> {
                 reply = reply.replace(" ", "_");
                 File file = new File(main.getDataFolder() + File.separator + "sounds" + File.separator + reply + ".yml");
-                if (file.exists()) return "Already exists!";
+                if (file.exists()) {
+                    executor.sendMessage(Lang.color("<error>There is already a file named " + reply + ".yml!"));
+                    return "ERROR";
+                }
                 //TODO create new sound file.
                 executor.sendMessage(Lang.color("<error>You entered: " + reply + "."));
                 UtilTask.sync(task1 -> main.menus.soundPropertiesMenu.show(event.getWhoClicked()));
