@@ -15,6 +15,7 @@
 
 package me.theblockbender.nature.sounds.gui.menus;
 
+import me.theblockbender.nature.sounds.Lang;
 import me.theblockbender.nature.sounds.NatureSounds;
 import me.theblockbender.nature.sounds.Sound;
 import me.theblockbender.nature.sounds.gui.MenuButton;
@@ -45,14 +46,14 @@ public class SoundsMenu {
         menu = new PaginatedMenu("§7Sounds §b»§7 List");
         MenuButton refresh = getRefreshButton();
         menu.setEveryPageItem(46, refresh);
+        MenuButton create = getCreateButton();
+        menu.setEveryPageItem(48, create);
     }
 
     // -------------------------------------------- //
     // GUI
     // -------------------------------------------- //
     public void show(HumanEntity player) {
-        MenuButton create = getCreateButton((Player) player);
-        menu.setEveryPageItem(48, create);
         menu.clearContentSlots();
         for (Sound sound : main.getSounds()) {
             MenuButton button = new MenuButton(new UtilItem(Material.DROWNED_SPAWN_EGG)
@@ -84,21 +85,31 @@ public class SoundsMenu {
         return refresh;
     }
 
-    private MenuButton getCreateButton(Player myPlayer) {
+    private MenuButton getCreateButton() {
         MenuButton create = new MenuButton(new UtilItem(Material.HORN_CORAL)
                 .setName("§6§lCreate")
                 .setLore("§8Create new sound", "", "§7Add a new sound configuration", "§7and modify its settings.", "", "§b➜ Click to continue")
                 .hideFlags().create());
         create.setHandler(event -> UtilTask.sync(task -> {
-            event.getWhoClicked().closeInventory();
-            new AnvilGUI(main, myPlayer, "What should the sound be named?", (player, reply) -> {
-                File file = new File(main.getDataFolder() + File.separator + "sounds" + File.separator + reply + ".ogg");
-                if (file.exists()) return "This file already exists!";
+            HumanEntity clicker = event.getWhoClicked();
+            clicker.closeInventory();
+            if (!(clicker instanceof Player)) {
+                clicker.sendMessage(Lang.color("<error>Only players can create new sounds!"));
+                return;
+            }
+            Player player = (Player) clicker;
+            new AnvilGUI(main, player, "Enter a name", (executor, reply) -> {
+                reply = reply.replace(" ", "_");
+                File file = new File(main.getDataFolder() + File.separator + "sounds" + File.separator + reply + ".yml");
+                if (file.exists()) return "Already exists!";
                 //TODO create new sound file.
+                executor.sendMessage(Lang.color("<error>You entered: " + reply + "."));
                 UtilTask.sync(task1 -> main.menus.soundPropertiesMenu.show(event.getWhoClicked()));
                 return null;
             });
         }));
         return create;
     }
+
+
 }

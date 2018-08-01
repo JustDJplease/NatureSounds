@@ -119,7 +119,7 @@ public class Menu implements InventoryHolder {
     private MenuButton getExitButton() {
         MenuButton exit = new MenuButton(new UtilItem(Material.FIRE_CORAL)
                 .setName("§c§lExit")
-                .setLore("§8leave this menu", "", "§7Close the menu you are currently", "§7viewing and return to the game.", "", "§b➜ Click to close this menu")
+                .setLore("§8Leave this menu", "", "§7Close the menu you are currently", "§7viewing and return to the game.", "", "§b➜ Click to close this menu")
                 .hideFlags().create());
         exit.setHandler(event -> UtilTask.sync(task -> event.getWhoClicked().closeInventory()));
         return exit;
