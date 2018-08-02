@@ -16,6 +16,8 @@
 package me.theblockbender.nature.sounds.gui.menus;
 
 import me.theblockbender.nature.sounds.NatureSounds;
+import me.theblockbender.nature.sounds.Sound;
+import me.theblockbender.nature.sounds.conditions.ConditionType;
 import me.theblockbender.nature.sounds.gui.Menu;
 import org.bukkit.entity.HumanEntity;
 
@@ -36,7 +38,7 @@ public class ConditionsMenu {
     // -------------------------------------------- //
     // GUI
     // -------------------------------------------- //
-    void show(HumanEntity player) {
+    void show(HumanEntity player, Sound sound, ConditionType type) {
         player.openInventory(menu.getInventory());
     }
 }

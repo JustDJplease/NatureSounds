@@ -42,8 +42,6 @@ public class OggFilesMenu {
     public OggFilesMenu(NatureSounds main) {
         this.main = main;
         menu = new PaginatedMenu("§7Sounds §b»§7 Sound Files");
-        MenuButton refresh = getRefreshButton();
-        menu.setEveryPageItem(46, refresh);
     }
 
     // -------------------------------------------- //
@@ -61,9 +59,10 @@ public class OggFilesMenu {
     // -------------------------------------------- //
     @SuppressWarnings("WeakerAccess")
     // REMOVE <---
-    void show(HumanEntity player) {
+    void show(HumanEntity player, Sound sound) {
         menu.clearContentSlots();
-        Sound sound = main.menus.currentlyModifying.get(player.getUniqueId());
+        MenuButton refresh = getRefreshButton(sound);
+        menu.setEveryPageItem(46, refresh);
         for (File file : Objects.requireNonNull(getOggFiles())) {
             MenuButton button;
             if (sound.getSoundNames().contains(file.getName())) {
@@ -75,7 +74,7 @@ public class OggFilesMenu {
                     // TODO REMOVE SOUND FROM FILE.
                     UtilTask.sync(task -> {
                         event.getWhoClicked().closeInventory();
-                        show(event.getWhoClicked());
+                        show(event.getWhoClicked(), sound);
                     });
                 });
             } else {
@@ -86,7 +85,7 @@ public class OggFilesMenu {
                     // TODO ADD SOUND TO FILE.
                     UtilTask.sync(task -> {
                         event.getWhoClicked().closeInventory();
-                        show(event.getWhoClicked());
+                        show(event.getWhoClicked(), sound);
                     });
                 });
             }
@@ -98,14 +97,14 @@ public class OggFilesMenu {
     // -------------------------------------------- //
     // MENU BUTTONS
     // -------------------------------------------- //
-    private MenuButton getRefreshButton() {
+    private MenuButton getRefreshButton(Sound sound) {
         MenuButton refresh = new MenuButton(new UtilItem(Material.BUBBLE_CORAL)
                 .setName("§5§lRefresh")
                 .setLore("§8Reload this page", "", "§7Refresh the menu you are currently", "§7viewing and read all files again.", "", "§b➜ Click to refresh this menu")
                 .hideFlags().create());
         refresh.setHandler(event -> UtilTask.sync(task -> {
             event.getWhoClicked().closeInventory();
-            show(event.getWhoClicked());
+            show(event.getWhoClicked(), sound);
         }));
         return refresh;
     }

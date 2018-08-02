@@ -259,4 +259,12 @@ public class Sound {
         lore.add("§b➜ Click to modify these sounds");
         return lore;
     }
+
+    public Float getMinVolume() {
+        return minVolume;
+    }
+
+    public Float getMaxVolume() {
+        return maxVolume;
+    }
 }

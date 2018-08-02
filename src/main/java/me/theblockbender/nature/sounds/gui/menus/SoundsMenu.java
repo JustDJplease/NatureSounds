@@ -62,8 +62,7 @@ public class SoundsMenu {
                     .hideFlags().create());
             button.setHandler(event -> UtilTask.sync(task -> {
                 event.getWhoClicked().closeInventory();
-                main.menus.currentlyModifying.put(event.getWhoClicked().getUniqueId(), sound);
-                main.menus.soundPropertiesMenu.show(event.getWhoClicked());
+                main.menus.soundPropertiesMenu.show(event.getWhoClicked(), sound);
             }));
             menu.addContentItem(button);
         }
@@ -107,6 +106,7 @@ public class SoundsMenu {
                 }
                 //TODO create new sound file.
                 executor.sendMessage(Lang.color("<error>You entered: " + reply + "."));
+                // TODO link new sound down here.
                 UtilTask.sync(task1 -> main.menus.soundPropertiesMenu.show(event.getWhoClicked()));
                 return null;
             });
