@@ -125,7 +125,7 @@ public class SoundCommand extends BaseCommand {
             return;
         }
         player.sendMessage(Lang.formatWithPrefix("playing-sound").replace("{0}", fileName));
-        sound.forceRun(player);
+        sound.forcePlaySound(player);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

@@ -20,6 +20,7 @@ import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import me.theblockbender.nature.sounds.Lang;
 import me.theblockbender.nature.sounds.NatureSounds;
+import me.theblockbender.nature.sounds.utilities.UtilMain;
 import me.theblockbender.nature.sounds.utilities.UtilText;
 import org.bukkit.command.CommandSender;
 
@@ -64,17 +65,17 @@ public class NatureCommand extends BaseCommand {
         switch (args[0].toLowerCase()) {
             case "language":
                 sender.sendMessage(Lang.formatWithPrefix("reloading").replace("{0}", "Language"));
-                main.registerLanguage();
+                UtilMain.loadLanguage(main);
                 sender.sendMessage(Lang.formatWithPrefix("reloaded").replace("{0}", "Language"));
                 break;
             case "sounds":
                 sender.sendMessage(Lang.formatWithPrefix("reloading").replace("{0}", "Sounds"));
-                main.registerSounds();
+                UtilMain.loadSounds(main);
                 sender.sendMessage(Lang.formatWithPrefix("reloaded").replace("{0}", "Sounds"));
                 break;
             case "resource-pack":
                 sender.sendMessage(Lang.formatWithPrefix("reloading").replace("{0}", "Resource-pack"));
-                main.utilResourcePack.addAllFilesToPack();
+                main.getResourcePack().addAllFilesToPack();
                 sender.sendMessage(Lang.formatWithPrefix("reloaded").replace("{0}", "Resource-pack"));
                 sender.sendMessage(Lang.formatWithPrefix("send-pack-again"));
                 break;

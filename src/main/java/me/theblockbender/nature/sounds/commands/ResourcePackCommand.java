@@ -58,7 +58,7 @@ public class ResourcePackCommand extends BaseCommand {
     @CommandPermission("ns.resourcepack.generate")
     public void commandGenerate(CommandSender sender) {
         sender.sendMessage(Lang.formatWithPrefix("generating"));
-        main.utilResourcePack.addAllFilesToPack();
+        main.getResourcePack().addAllFilesToPack();
         sender.sendMessage(Lang.formatWithPrefix("generated"));
     }
 
@@ -69,8 +69,8 @@ public class ResourcePackCommand extends BaseCommand {
         if (main.playersWithRP.contains(player.getUniqueId())) {
             player.sendMessage(Lang.formatWithPrefix("resourcepack.already-accepted"));
         } else {
-            String url = "http://" + main.utilWebServer.ip + ":" + main.utilWebServer.port + "/" + UtilToken.getToken(player.getUniqueId());
-            player.setResourcePack(url, UtilChecksum.getChecksum(UtilChecksum.fileToByteArray(main.utilWebServer.getFileLocation())));
+            String url = "http://" + main.getWebServer().ip + ":" + main.getWebServer().port + "/" + UtilToken.getToken(player.getUniqueId());
+            player.setResourcePack(url, UtilChecksum.getChecksum(UtilChecksum.fileToByteArray(main.getWebServer().getFileLocation())));
         }
     }
 

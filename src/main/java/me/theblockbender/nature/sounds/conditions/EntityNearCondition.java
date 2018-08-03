@@ -17,7 +17,7 @@ package me.theblockbender.nature.sounds.conditions;
 
 import me.theblockbender.nature.sounds.ErrorLogger;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
@@ -34,7 +34,7 @@ public class EntityNearCondition {
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public EntityNearCondition(YamlConfiguration config, String fileName) {
+    public EntityNearCondition(FileConfiguration config, String fileName) {
         try {
             if (config.contains("condition.entityNear.type") && config.contains("condition.entityNear.range")) {
                 entityTypes = config.getStringList("condition.entityNear.type");

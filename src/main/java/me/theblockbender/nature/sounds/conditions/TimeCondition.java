@@ -17,7 +17,7 @@ package me.theblockbender.nature.sounds.conditions;
 
 import me.theblockbender.nature.sounds.ErrorLogger;
 import org.bukkit.World;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class TimeCondition {
     // -------------------------------------------- //
@@ -30,7 +30,7 @@ public class TimeCondition {
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public TimeCondition(YamlConfiguration config, String fileName) {
+    public TimeCondition(FileConfiguration config, String fileName) {
         try {
             if (config.contains("condition.time")) {
                 before = config.getLong("condition.time.before");

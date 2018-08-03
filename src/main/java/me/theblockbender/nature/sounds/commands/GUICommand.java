@@ -55,7 +55,7 @@ public class GUICommand extends BaseCommand {
     @Description("Opens sounds gui")
     @CommandPermission("ns.gui.sounds")
     public void commandGenerate(Player player) {
-        main.menus.soundsMenu.show(player);
+        main.getMenuInstances().soundsMenu.show(player);
     }
 
 }

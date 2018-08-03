@@ -17,7 +17,7 @@ package me.theblockbender.nature.sounds.conditions;
 
 import me.theblockbender.nature.sounds.ErrorLogger;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class AltitudeCondition {
     // -------------------------------------------- //
@@ -30,7 +30,7 @@ public class AltitudeCondition {
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public AltitudeCondition(YamlConfiguration soundConfiguration, String fileName) {
+    public AltitudeCondition(FileConfiguration soundConfiguration, String fileName) {
         try {
             if (soundConfiguration.contains("condition.altitude")) {
                 below = soundConfiguration.getDouble("condition.altitude.below");

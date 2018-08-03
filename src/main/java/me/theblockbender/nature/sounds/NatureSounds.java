@@ -15,161 +15,64 @@
 
 package me.theblockbender.nature.sounds;
 
-import co.aikar.commands.BukkitCommandManager;
-import co.aikar.commands.MessageType;
-import com.google.common.collect.ImmutableList;
-import me.theblockbender.nature.sounds.commands.GUICommand;
-import me.theblockbender.nature.sounds.commands.NatureCommand;
-import me.theblockbender.nature.sounds.commands.ResourcePackCommand;
-import me.theblockbender.nature.sounds.commands.SoundCommand;
+import lombok.Getter;
+import lombok.Setter;
+import me.theblockbender.nature.sounds.commands.CommandHandler;
 import me.theblockbender.nature.sounds.gui.Menus;
-import me.theblockbender.nature.sounds.listeners.InventoryListener;
-import me.theblockbender.nature.sounds.listeners.PlayerListener;
-import me.theblockbender.nature.sounds.listeners.ReloadListener;
-import me.theblockbender.nature.sounds.listeners.ResourcePackListener;
-import me.theblockbender.nature.sounds.utilities.*;
+import me.theblockbender.nature.sounds.listeners.EventHandler;
+import me.theblockbender.nature.sounds.utilities.UtilMain;
+import me.theblockbender.nature.sounds.utilities.UtilResourcePack;
+import me.theblockbender.nature.sounds.utilities.UtilText;
+import me.theblockbender.nature.sounds.utilities.UtilWebServer;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
 
 public class NatureSounds extends JavaPlugin {
 
     // -------------------------------------------- //
     // INSTANCES & VARIABLES
     // -------------------------------------------- //
-    private static NatureSounds instance;
+    @Getter @Setter public static NatureSounds inst;
+    public final Map<String, Sound> sounds = new HashMap<>();
+    @Getter @Setter public Random random;
+    @Getter @Setter public UtilWebServer webServer;
+    @Getter @Setter public UtilResourcePack resourcePack;
+    @Getter @Setter public Menus menuInstances;
+
     public final Set<UUID> playersWithRP = new HashSet<>();
-    private final Map<String, Sound> sounds = new HashMap<>();
-    public UtilWebServer utilWebServer;
-    public UtilResourcePack utilResourcePack;
-    public Menus menus;
-    boolean hasWorldGuard = false;
-
-    Random random;
-
-    private Logger logger;
-
-    public static NatureSounds inst() {
-        return instance;
-    }
+    @Getter @Setter boolean WorldGuardHooked = false;
 
     // -------------------------------------------- //
     // ENABLING
     // -------------------------------------------- //
     @Override
     public void onEnable() {
-        instance = this;
-        logger = getLogger();
-        random = new Random();
-        createFiles();
-        hookWorldGuard();
-        registerLanguage();
-        registerEvents();
-        registerSounds();
-        registerCommands();
-        registerRunnables();
-        utilResourcePack = new UtilResourcePack(this);
-        menus = new Menus(this);
+        setInst(this);
+        setRandom(new Random());
+
+        UtilMain.createFiles(this);
+        UtilMain.hookWorldGuard(this);
+        UtilMain.loadLanguage(this);
+        EventHandler.registerEvents(this);
+        UtilMain.loadSounds(this);
+        CommandHandler.registerCommands(this);
+        UtilMain.startRunnable(this);
+
+        setResourcePack(new UtilResourcePack(this));
+        setMenuInstances(new Menus(this));
+
         registerWebServer();
         ErrorLogger.supportMessage();
     }
 
-    private void hookWorldGuard() {
-        Plugin wg = getServer().getPluginManager().getPlugin("WorldGuard");
-        if (wg != null) {
-            hasWorldGuard = true;
-            debug(" | Found WorldGuard");
-        }
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void registerLanguage() {
-        File messagesFile = new File(getDataFolder(), "language.yml");
-        if (!messagesFile.exists()) {
-            messagesFile.getParentFile().mkdirs();
-            saveResource("language.yml", false);
-        }
-        YamlConfiguration messages = new YamlConfiguration();
-        try {
-            messages.load(messagesFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-        Lang.languageFile = messages;
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void createFiles() {
-        saveDefaultConfig();
-        File webDirectory = new File(getDataFolder().getPath() + File.separator + "web");
-        if (!webDirectory.exists()) webDirectory.mkdirs();
-    }
 
     private void registerWebServer() {
-        utilWebServer = new UtilWebServer(this);
-        utilResourcePack.addAllFilesToPack();
-        utilWebServer.start();
-    }
-
-    @SuppressWarnings("deprecation")
-    private void registerCommands() {
-        BukkitCommandManager commandManager = new BukkitCommandManager(this);
-        commandManager.enableUnstableAPI("help");
-        commandManager.setFormat(MessageType.HELP, Lang.getBukkitColor("primary"), Lang.getBukkitColor("secondary"), Lang.getBukkitColor("argument"));
-        commandManager.setFormat(MessageType.INFO, Lang.getBukkitColor("primary"), Lang.getBukkitColor("secondary"), Lang.getBukkitColor("argument"));
-        commandManager.setFormat(MessageType.SYNTAX, Lang.getBukkitColor("primary"), Lang.getBukkitColor("secondary"), Lang.getBukkitColor("argument"));
-        commandManager.getCommandCompletions().registerCompletion("reload", c -> ImmutableList.of("language", "sounds", "resource-pack"));
-        commandManager.getCommandCompletions().registerCompletion("sounds", c -> Collections.unmodifiableCollection(sounds.keySet()));
-        commandManager.registerCommand(new ResourcePackCommand(this));
-        commandManager.registerCommand(new NatureCommand(this));
-        commandManager.registerCommand(new SoundCommand(this));
-        commandManager.registerCommand(new GUICommand(this));
-    }
-
-    private void registerEvents() {
-        PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(new ResourcePackListener(this), this);
-        pluginManager.registerEvents(new PlayerListener(this), this);
-        pluginManager.registerEvents(new ReloadListener(), this);
-        pluginManager.registerEvents(new InventoryListener(this), this);
-    }
-
-    private void registerRunnables() {
-        long interval;
-        try {
-            interval = getConfig().getLong("interval");
-        } catch (Exception ex) {
-            ErrorLogger.errorInFile("Interval specified is invalid", "config.yml");
-            return;
-        }
-        UtilTask.syncRepeat(task -> new SoundTask(this), 20L * interval);
-    }
-
-    public void registerSounds() {
-        int counter = 0;
-        sounds.clear();
-        for (File soundFile : getSoundFiles()) {
-            counter++;
-            YamlConfiguration soundConfiguration = new YamlConfiguration();
-            try {
-                soundConfiguration.load(soundFile);
-            } catch (IOException | InvalidConfigurationException ex) {
-                ErrorLogger.errorInFile("Unable to save & load configuration file", soundFile.getName());
-                ex.printStackTrace();
-                continue;
-            }
-            sounds.put(soundFile.getName(), new Sound(this, soundFile.getName(), soundConfiguration));
-        }
-        logger.info(counter + " sound configuration files have been loaded.");
+        setWebServer(new UtilWebServer(this));
+        resourcePack.addAllFilesToPack();
+        webServer.start();
     }
 
     // -------------------------------------------- //
@@ -189,10 +92,11 @@ public class NatureSounds extends JavaPlugin {
                 player.sendMessage(Lang.format("header"));
             }
         }
+        inst = null;
     }
 
     public void debug(String debugMessage) {
-        if (getConfig().getBoolean("debug")) logger.warning("[+] " + debugMessage);
+        if (getConfig().getBoolean("debug")) getLogger().warning("[+] " + debugMessage);
     }
 
     // -------------------------------------------- //
@@ -200,14 +104,6 @@ public class NatureSounds extends JavaPlugin {
     // -------------------------------------------- //
     public List<Sound> getSounds() {
         return new ArrayList<>(sounds.values());
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private File[] getSoundFiles() {
-        File folder = new File(getDataFolder().getPath() + File.separator + "sounds");
-        if (!folder.exists())
-            folder.mkdirs();
-        return folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
     }
 
     public Sound getSound(String fileName) {

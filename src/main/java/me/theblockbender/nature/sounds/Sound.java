@@ -15,22 +15,28 @@
 
 package me.theblockbender.nature.sounds;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.theblockbender.nature.sounds.conditions.*;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Finished
+ */
 public class Sound {
+    @Getter @Setter public boolean loaded;
+    @Getter @Setter public String fileName;
     // -------------------------------------------- //
-    // IDENTIFIER & MAIN
+    // SOUND PROPERTIES
     // -------------------------------------------- //
-    private NatureSounds main;
-    private boolean loaded;
-    private String fileName;
+    @Getter @Setter public List<String> soundNames = new ArrayList<>();
 
     // -------------------------------------------- //
     // CONDITIONS
@@ -43,110 +49,51 @@ public class Sound {
     private CooldownCondition cooldownCondition;
     private EntityNearCondition entityNearCondition;
     private RegionCondition regionCondition;
-    private Double chance;
+    @Getter @Setter public float minVolume;
+    @Getter @Setter public float maxVolume;
+    @Getter @Setter public float pitch;
+    @Getter @Setter public String subtitle;
+    @Getter @Setter public Double chance;
+    // -------------------------------------------- //
+    // IDENTIFIER & MAIN
+    // -------------------------------------------- //
+    @Getter @Setter private NatureSounds main;
 
-    // -------------------------------------------- //
-    // SOUND PROPERTIES
-    // -------------------------------------------- //
-    private List<String> soundNames = new ArrayList<>();
-    private float minVolume;
-    private float maxVolume;
-    private float pitch;
-    private String subtitle;
 
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    Sound(NatureSounds main, String fileName, YamlConfiguration soundConfiguration) {
-        loaded = false;
-        assert main != null;
-        this.main = main;
-        // -------------------------------------------- //
-        //  FILE NAME
-        // -------------------------------------------- //
-        if (fileName == null || fileName.equalsIgnoreCase("")) {
-            ErrorLogger.error("Tried to load a file with no name. How is that even possible?");
-            return;
-        } else {
-            this.fileName = fileName;
-        }
-        // -------------------------------------------- //
-        // CONFIGURATION SECTION
-        // -------------------------------------------- //
-        if (soundConfiguration == null) {
-            ErrorLogger.error("Tried to load a configuration file that was not a configuration file");
-            return;
-        }
-        // -------------------------------------------- //
-        // SOUND NAME
-        // -------------------------------------------- //
-        try {
-            soundNames = soundConfiguration.getStringList("sound.names");
-        } catch (NullPointerException ex) {
-            ErrorLogger.errorInFile("No sound name(s) specified", fileName);
-            return;
-        }
-        // -------------------------------------------- //
-        // SOUND MIN VOLUME
-        // -------------------------------------------- //
-        try {
-            minVolume = Float.parseFloat("" + soundConfiguration.getDouble("sound.minVolume"));
-            if (minVolume < 0) {
-                ErrorLogger.errorInFile("Min-volume cannot be negative", fileName);
-                return;
-            }
-        } catch (Exception ex) {
-            ErrorLogger.errorInFile("Min-volume was not a number OR it was not specified", fileName);
-            return;
-        }
-        // -------------------------------------------- //
-        // SOUND MAX VOLUME
-        // -------------------------------------------- //
-        try {
-            maxVolume = Float.parseFloat("" + soundConfiguration.getDouble("sound.maxVolume"));
-            if (maxVolume < 0 || maxVolume < minVolume) {
-                ErrorLogger.errorInFile("Max-volume cannot be negative OR smaller than Min-volume", fileName);
-                return;
-            }
-        } catch (Exception ex) {
-            ErrorLogger.errorInFile("Max-volume was not a number OR it was not specified", fileName);
-            return;
-        }
-        // -------------------------------------------- //
-        // SOUND PITCH
-        // -------------------------------------------- //
-        try {
-            pitch = Float.parseFloat("" + soundConfiguration.getDouble("sound.pitch"));
-            if (pitch < 0 || pitch > 2) {
-                ErrorLogger.errorInFile("Pitch was not a number between 0 and 2", fileName);
-                return;
-            }
-        } catch (Exception ex) {
-            ErrorLogger.errorInFile("Pitch was not a number OR it was not specified", fileName);
-            return;
-        }
-        // -------------------------------------------- //
-        // SUBTITLE
-        // -------------------------------------------- //
-        try {
-            subtitle = soundConfiguration.getString("sound.subtitle");
-        } catch (Exception ex) {
-            ErrorLogger.errorInFile("Subtitle was not specified", fileName);
-            return;
-        }
-        // -------------------------------------------- //
-        // CHANCE
-        // -------------------------------------------- //
-        try {
-            chance = soundConfiguration.getDouble("chance");
-            if (chance < 0 || chance > 100) {
-                ErrorLogger.errorInFile("Chance was not a number between 0 and 100", fileName);
-                return;
-            }
-        } catch (Exception ex) {
-            ErrorLogger.errorInFile("Chance was not a number OR it was not specified", fileName);
-            return;
-        }
+
+    /**
+     * Create a new Sound Instance.
+     *
+     * @param main               Instance of the Main Class, extending JavaPlugin
+     * @param fileName           Name of the file this Sound Instance is created from.
+     * @param soundConfiguration YAMLConfiguration this Sound Instance is created from.
+     */
+    public Sound(NatureSounds main, String fileName, FileConfiguration soundConfiguration) {
+        assert main != null : "Tried to load a sound file without the main instance.";
+        assert fileName != null : "Tried to load a sound file without a name.";
+        assert soundConfiguration != null : "Tried to load an invalid configuration file.";
+
+        setLoaded(false);
+        setMain(main);
+        setFileName(fileName);
+
+        setSoundNames(soundConfiguration.getStringList("sound.names"));
+        setMinVolume(NumberUtils.toFloat(soundConfiguration.getDouble("sound.minVolume") + "", 0f));
+        setMinVolume(NumberUtils.toFloat(soundConfiguration.getDouble("sound.maxVolume") + "", 1f));
+        setPitch(NumberUtils.toFloat(soundConfiguration.getDouble("sound.pitch") + "", 1f));
+        setSubtitle(soundConfiguration.getString("sound.subtitle"));
+        setChance(NumberUtils.toDouble(soundConfiguration.getDouble("chance") + "", 50d));
+
+        assert !soundNames.isEmpty() : "No music file names specified in " + fileName;
+        assert minVolume >= 0f : "Min-volume cannot be negative in " + fileName;
+        assert maxVolume >= 0f && maxVolume > minVolume : "Max-volume cannot be negative or smaller than min-volume in " + fileName;
+        assert pitch >= 0f && pitch <= 2f : "Pitch was not a number between 0 and 2 in " + fileName;
+        assert subtitle != null : "Subtitle was not specified in " + fileName;
+        assert chance >= 0 && chance <= 100 : "Chance was not a number between 0 and 100 in " + fileName;
+
         weatherCondition = new WeatherCondition(soundConfiguration, fileName);
         altitudeCondition = new AltitudeCondition(soundConfiguration, fileName);
         biomeCondition = new BiomeCondition(soundConfiguration, fileName);
@@ -154,46 +101,45 @@ public class Sound {
         timeCondition = new TimeCondition(soundConfiguration, fileName);
         worldCondition = new WorldCondition(soundConfiguration, fileName);
         cooldownCondition = new CooldownCondition(soundConfiguration, fileName);
-        regionCondition = new RegionCondition(soundConfiguration, fileName, main.hasWorldGuard);
-        loaded = true;
+        regionCondition = new RegionCondition(soundConfiguration, fileName, main.isWorldGuardHooked());
+
+        setLoaded(true);
     }
 
     // -------------------------------------------- //
-    // GETTERS
+    // UTIL
     // -------------------------------------------- //
-    private boolean isLoaded() {
-        return loaded;
+
+    /**
+     * Get a random volume between the two volume bounds associated with this Sound object.
+     *
+     * @return Randomized volume.
+     */
+    private Float getRandomVolume() {
+        return minVolume + main.getRandom().nextFloat() * (maxVolume - minVolume);
     }
 
-    private Float getVolumeBetween(Float minVolume, Float maxVolume) {
-        return minVolume + main.random.nextFloat() * (maxVolume - minVolume);
-    }
-
-    public List<String> getSoundNames() {
-        return soundNames;
-    }
-
+    /**
+     * Get a random music file name from the sound names associated with this Sound object.
+     *
+     * @return Randomized sound name from the sound names list.
+     */
     private String getRandomSoundName() {
-        try {
-            return soundNames.get(main.random.nextInt(soundNames.size()));
-        } catch (IllegalArgumentException ex) {
-            return soundNames.get(0);
-        }
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
+        return soundNames.get(main.getRandom().nextInt(soundNames.size()));
     }
 
     // -------------------------------------------- //
     // RUNNER
     // -------------------------------------------- //
-    public void run(Player player, Location location) {
+
+    /**
+     * Attempts to execute this sound, validate its conditions and then plays the sound.
+     *
+     * @param player Player that should hear the sound.
+     */
+    public void run(Player player) {
         if (!isLoaded()) return;
+        Location location = player.getLocation();
         World world = location.getWorld();
         if (weatherCondition != null && weatherCondition.isEnabled()) {
             if (!weatherCondition.isTrue(world)) return;
@@ -221,50 +167,28 @@ public class Sound {
         }
         double random = 100 * main.random.nextDouble();
         if (random <= chance) {
-            playSound(player, location, getRandomSoundName(), minVolume, maxVolume, pitch);
+            playSound(player, location, getRandomSoundName());
         }
     }
 
-    private void playSound(Player player, Location location, String soundName, Float minVolume, Float maxVolume, Float pitch) {
+    /**
+     * Plays a sound to the player.
+     *
+     * @param player    The player who should be hearing the sound.
+     * @param location  The location this sound should be played from.
+     * @param soundName The name of the sound to be played.
+     */
+    private void playSound(Player player, Location location, String soundName) {
         cooldownCondition.setCooldown(player);
-        player.playSound(location, soundName, getVolumeBetween(minVolume, maxVolume), pitch);
+        player.playSound(location, soundName, getRandomVolume(), pitch);
     }
 
-    public void forceRun(Player player) {
-        player.playSound(player.getLocation(), getRandomSoundName(), getVolumeBetween(minVolume, maxVolume), pitch);
-    }
-
-    public List<String> getDescriptiveLore() {
-        List<String> lore = new ArrayList<>();
-        lore.add(" ");
-        lore.add("§7YML File: §b" + fileName);
-        lore.add("§7Ogg files: §b" + soundNames.size());
-        lore.add("§7Description: §b" + subtitle);
-        lore.add(" ");
-        lore.add("§b➜ Click to modify this sound");
-        return lore;
-    }
-
-    private List<String> getSoundFilesLore() {
-        List<String> lore = new ArrayList<>();
-        lore.add("§7Music files:");
-        if (soundNames.size() < 1) {
-            lore.add("§8 • §bNone");
-        } else {
-            for (String name : soundNames) {
-                lore.add("§8 • §b" + name);
-            }
-        }
-        lore.add(" ");
-        lore.add("§b➜ Click to modify these sounds");
-        return lore;
-    }
-
-    public Float getMinVolume() {
-        return minVolume;
-    }
-
-    public Float getMaxVolume() {
-        return maxVolume;
+    /**
+     * Plays the sound to the player regardless of the conditions.
+     *
+     * @param player The player who should be hearing the sound.
+     */
+    public void forcePlaySound(Player player) {
+        player.playSound(player.getLocation(), getRandomSoundName(), getRandomVolume(), pitch);
     }
 }

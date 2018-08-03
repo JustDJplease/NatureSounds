@@ -15,12 +15,14 @@
 
 package me.theblockbender.nature.sounds;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Lang {
 
-    static FileConfiguration languageFile;
+    @Getter @Setter public static FileConfiguration languageFile;
 
     // -------------------------------------------- //
     // MESSAGE FORMATTERS
@@ -60,7 +62,7 @@ public class Lang {
         }
     }
 
-    static org.bukkit.ChatColor getBukkitColor(String subkey) {
+    public static org.bukkit.ChatColor getBukkitColor(String subkey) {
         try {
             return org.bukkit.ChatColor.valueOf(languageFile.getString("color." + subkey + "-word").toUpperCase());
         } catch (IllegalArgumentException ex) {

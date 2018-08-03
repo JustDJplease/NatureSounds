@@ -17,7 +17,7 @@ package me.theblockbender.nature.sounds.conditions;
 
 import me.theblockbender.nature.sounds.ErrorLogger;
 import org.bukkit.World;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class WeatherCondition {
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public WeatherCondition(YamlConfiguration soundConfiguration, String fileName) {
+    public WeatherCondition(FileConfiguration soundConfiguration, String fileName) {
         try {
             if (soundConfiguration.contains("condition.weather")) {
                 weatherTypes = soundConfiguration.getStringList("condition.weather");

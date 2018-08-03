@@ -18,7 +18,7 @@ package me.theblockbender.nature.sounds.conditions;
 import me.theblockbender.nature.sounds.ErrorLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class WorldCondition {
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public WorldCondition(YamlConfiguration config, String fileName) {
+    public WorldCondition(FileConfiguration config, String fileName) {
         try {
             if (config.contains("condition.world")) {
                 worlds = config.getStringList("condition.world");

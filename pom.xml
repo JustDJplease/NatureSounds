@@ -116,6 +116,13 @@
             <version>LATEST</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.2</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -129,21 +136,8 @@
                 <includes>
                     <include>**/*.yml</include>
                     <include>**/*.properties</include>
-                </includes>
-                <excludes>
-                    <exclude>**/*.zip</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <targetPath>.</targetPath>
-                <directory>${basedir}/src/main/resources/</directory>
-                <includes>
                     <include>**/*.zip</include>
                 </includes>
-                <excludes>
-                    <exclude>**/*.yml</exclude>
-                    <exclude>**/*.properties</exclude>
-                </excludes>
             </resource>
         </resources>
         <plugins>

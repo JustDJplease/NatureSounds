@@ -58,7 +58,7 @@ public class SoundsMenu {
         for (Sound sound : main.getSounds()) {
             MenuButton button = new MenuButton(new UtilItem(Material.DROWNED_SPAWN_EGG)
                     .setName("§9§lSound: " + StringUtils.capitalize(sound.getFileName().replace(".yml", "").replace("_", " ")))
-                    .setLore(sound.getDescriptiveLore())
+                    .setLore("", "§7YML File: §b" + sound.getFileName(), "§7Ogg files: §b" + sound.getSoundNames().size(), "§7Description: §b" + sound.getSubtitle(), "", "§b➜ Click to modify this sound")
                     .hideFlags().create());
             button.setHandler(event -> UtilTask.sync(task -> {
                 event.getWhoClicked().closeInventory();

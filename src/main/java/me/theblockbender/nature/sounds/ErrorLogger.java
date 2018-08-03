@@ -19,6 +19,7 @@ import org.bukkit.Bukkit;
 
 import java.util.logging.Logger;
 
+@Deprecated
 public class ErrorLogger {
 
     private static int errors = 0;

@@ -16,7 +16,7 @@
 package me.theblockbender.nature.sounds.conditions;
 
 import me.theblockbender.nature.sounds.ErrorLogger;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -33,7 +33,7 @@ public class CooldownCondition {
     // CONSTRUCTOR
     // -------------------------------------------- //
 
-    public CooldownCondition(YamlConfiguration soundConfiguration, String fileName) {
+    public CooldownCondition(FileConfiguration soundConfiguration, String fileName) {
         try {
             if (soundConfiguration.contains("condition.cooldown")) {
                 cooldown = soundConfiguration.getLong("condition.cooldown");

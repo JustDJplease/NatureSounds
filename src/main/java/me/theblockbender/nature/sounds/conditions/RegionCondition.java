@@ -22,7 +22,7 @@ import me.theblockbender.nature.sounds.ErrorLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class RegionCondition {
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public RegionCondition(YamlConfiguration config, String fileName, boolean hasWorldGuard) {
+    public RegionCondition(FileConfiguration config, String fileName, boolean hasWorldGuard) {
         if (!hasWorldGuard) {
             ErrorLogger.errorInFile("WorldGuard is not enabled. Region conditions cannot be used!", fileName);
             isEnabled = false;

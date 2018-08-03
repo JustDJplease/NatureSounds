@@ -18,7 +18,7 @@ package me.theblockbender.nature.sounds.conditions;
 import me.theblockbender.nature.sounds.ErrorLogger;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class BiomeCondition {
     // -------------------------------------------- //
     // CONSTRUCTOR
     // -------------------------------------------- //
-    public BiomeCondition(YamlConfiguration soundConfiguration, String fileName) {
+    public BiomeCondition(FileConfiguration soundConfiguration, String fileName) {
         try {
             if (soundConfiguration.contains("condition.biome")) {
                 biomes = soundConfiguration.getStringList("condition.biome");
