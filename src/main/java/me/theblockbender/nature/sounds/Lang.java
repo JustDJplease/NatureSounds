@@ -20,6 +20,9 @@ import lombok.Setter;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
+/**
+ * Finished
+ */
 public class Lang {
 
     @Getter @Setter public static FileConfiguration languageFile;
@@ -27,7 +30,6 @@ public class Lang {
     // -------------------------------------------- //
     // MESSAGE FORMATTERS
     // -------------------------------------------- //
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static String format(String key) {
         if (!languageFile.contains(key)) return "§cError! Message §e" + key + "§c was not found!";
         String message = languageFile.getString(key);
@@ -44,7 +46,6 @@ public class Lang {
         return format("prefix") + format(key);
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static String color(String message) {
         message = message.replace("<error>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.error")));
         message = message.replace("<argument>", ChatColor.translateAlternateColorCodes('&', languageFile.getString("color.argument")));

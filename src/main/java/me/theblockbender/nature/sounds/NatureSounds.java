@@ -30,6 +30,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 
+/**
+ * Finished
+ */
 public class NatureSounds extends JavaPlugin {
 
     // -------------------------------------------- //
@@ -37,12 +40,11 @@ public class NatureSounds extends JavaPlugin {
     // -------------------------------------------- //
     @Getter @Setter public static NatureSounds inst;
     public final Map<String, Sound> sounds = new HashMap<>();
+    public final Set<UUID> playersWithRP = new HashSet<>();
     @Getter @Setter public Random random;
     @Getter @Setter public UtilWebServer webServer;
     @Getter @Setter public UtilResourcePack resourcePack;
     @Getter @Setter public Menus menuInstances;
-
-    public final Set<UUID> playersWithRP = new HashSet<>();
     @Getter @Setter boolean WorldGuardHooked = false;
 
     // -------------------------------------------- //
